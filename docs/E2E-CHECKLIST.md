@@ -71,7 +71,7 @@ Use this when OpenAI / live YouTube should not be required (this is the **only**
 - [ ] **Scan packaging QR** is URL paste (camera scan not in this build); paste works
 - [ ] **Skip** video is allowed; Analyzing still runs on the manual
 - [ ] Analyzing checklist moves: Reading manual → Watching video → Merging steps → Checking conflicts (live status text; skip-video still shows the video row as skipped)
-- [ ] Fixture path above: Analyzing finishes without a paid key
+- [ ] Fixture path above: Analyzing finishes without a paid key (checklist advances; no *Importing a module script failed.*)
 - [ ] Review: **Filled from video** → **Accept** (if any fills)
 - [ ] Review: **Conflicts** → **Keep manual** and **Use video** (Use video must **not** overwrite the printed action; it records a tip)
 - [ ] **Open guide** → step list for that draft → play at least one step

@@ -42,6 +42,7 @@ jobs:
           test -f dist/404.html
           touch dist/.nojekyll
           grep -q '/visual-guide/' dist/index.html
+          node scripts/check-pages-chunks.mjs
       - uses: actions/configure-pages@v5
         if: github.event_name != 'pull_request'
       - uses: actions/upload-pages-artifact@v3

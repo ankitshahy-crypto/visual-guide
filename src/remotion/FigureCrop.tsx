@@ -1,7 +1,7 @@
 import type { FC } from "react";
-import { Img, staticFile } from "remotion";
+import { Img } from "remotion";
 import { computeCrop } from "../lib/crop";
-import { isInlineImage, pageImagePath } from "../lib/pageImage";
+import { pageImageUrl } from "../lib/pageImage";
 import type { BBox } from "../types/guide";
 import { T } from "./theme";
 
@@ -19,11 +19,10 @@ interface Props {
 /** Shows one region of a manual page, zoomed to fit, with optional highlight rings. */
 export const FigureCrop: FC<Props> = ({ image, bbox, aspect, w, h, zoom = 1, highlights = [], ringProgress = 1 }) => {
   const c = computeCrop({ w, h, bbox, aspect, zoom });
-  const src = pageImagePath(image);
   return (
     <div style={{ position: "relative", width: w, height: h, overflow: "hidden", background: T.paper }}>
       <Img
-        src={isInlineImage(src) ? src : staticFile(src)}
+        src={pageImageUrl(image)}
         style={{ position: "absolute", width: c.pageW, height: c.pageH, left: c.left, top: c.top }}
       />
       {/* mask everything outside the figure so neighbouring panels never show */}

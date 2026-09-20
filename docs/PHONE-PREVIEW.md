@@ -36,6 +36,25 @@ Pages ships `dist/` only. Live PDF / page-photo + YouTube waits on APIs that 404
 
 **Chair sample is unaffected.** For live processing, run `npm run dev` (or a host with `/api/pipeline`).
 
+## Verify after merge (Pages)
+
+Wait for Actions → **Pages** on `main` to be green, then hard-refresh Safari (or open a Private tab) so the old hashed JS is not reused.
+
+1. https://ankitshahy-crypto.github.io/visual-guide/ — home, orange hero, Home / New / Help pill.
+2. **Try MagicH Pro Chair** → step list thumbs load (not `/assets/...` 404s) → open step 1. Paper-white clip + hashed MP3. Replay if silent.
+3. `#/new` → **Use fixture pages (no API key)** (or `#/new?fixture=1`). Analyzing checklist must advance; it must **not** show *Importing a module script failed.*
+4. Analyzing → Review → Open guide. Draft appears under Your guides. Chair sample still on home.
+
+Local reproduction of the same `base` (before merge):
+
+```bash
+VITE_BASE=/visual-guide/ npm run build
+node scripts/check-pages-chunks.mjs
+npx vite preview --base /visual-guide/ --host --port 4173
+# open http://127.0.0.1:4173/visual-guide/#/new?fixture=1
+# then http://127.0.0.1:4173/visual-guide/#/p/newtral-magich-pro-assembly
+```
+
 ## Backup (anonymous Vercel — expires unless claimed)
 
 Root-host Vercel still uses relative Vite `base` (`./`). Claim within ~60 minutes if you use this path.

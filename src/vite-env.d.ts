@@ -9,6 +9,8 @@ interface ImportMetaEnv {
   readonly VITE_OPENAI_TTS_VOICE?: string;
   /** Origin that serves `/api/pipeline/*` for packaged iOS (empty = same origin / Vite). */
   readonly VITE_PIPELINE_API_URL?: string;
+  /** Vite `base` for GitHub Pages (`/visual-guide/`). Empty locally / Capacitor (`./`). */
+  readonly VITE_BASE?: string;
 }
 
 interface ImportMeta {

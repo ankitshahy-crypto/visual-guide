@@ -1,4 +1,6 @@
+import * as pdfjs from "pdfjs-dist";
 import type { PDFPageProxy } from "pdfjs-dist";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import type { SourcePage } from "../types/guide";
 import type { UploadFile } from "./types";
 
@@ -8,12 +10,10 @@ export interface RasterPage extends SourcePage {
 
 let workerConfigured = false;
 
-async function loadPdfJs() {
-  const pdfjs = await import("pdfjs-dist");
+function loadPdfJs() {
   if (!workerConfigured) {
     try {
-      const worker = await import("pdfjs-dist/build/pdf.worker.min.mjs?url");
-      pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
+      pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
     } catch {
       // Vitest / node: fake worker
     }
@@ -37,9 +37,9 @@ function dataUrlToUint8(dataUrl: string): Uint8Array {
  * Requires a canvas (browser). Tests should stub this.
  */
 export async function rasterizePdf(file: UploadFile, startPageIndex: number): Promise<RasterPage[]> {
-  const pdfjs = await loadPdfJs();
+  const pdfjsLib = loadPdfJs();
   const data = dataUrlToUint8(file.dataUrl);
-  const doc = await pdfjs.getDocument({ data }).promise;
+  const doc = await pdfjsLib.getDocument({ data }).promise;
   const out: RasterPage[] = [];
   const max = Math.min(doc.numPages, 40);
   for (let n = 1; n <= max; n++) {
