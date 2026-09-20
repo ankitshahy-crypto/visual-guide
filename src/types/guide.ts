@@ -1,9 +1,10 @@
-// Mirrors schema.py (v0.1). Keep the two in sync by hand until we generate one from the other.
+// Mirrors schema.py (v0.2). Keep the two in sync by hand until we generate one from the other.
 
 export type ContentModel = "procedural" | "expository";
 export type Template = "parts_overview" | "figure_action" | "options" | "caution";
 export type PartKind = "component" | "fastener" | "tool";
-export type Provenance = "manual" | "inferred" | "generated";
+export type Provenance = "manual" | "inferred" | "generated" | "inferred_from_video";
+export type ReviewKind = "uncertainty" | "conflict";
 export type Verb =
   | "flip" | "place" | "insert" | "slide" | "press" | "snap"
   | "fasten" | "tighten" | "choose" | "remove" | "rotate" | "check";
@@ -22,12 +23,25 @@ export interface SourcePage {
   height?: number | null;
 }
 
-export interface Source {
+export interface ManualSource {
   type: string;
   file?: string | null;
   pages: SourcePage[];
   missing_pages: string[];
   notes?: string | null;
+}
+
+export interface VideoSource {
+  youtube_url?: string | null;
+  packaging_url?: string | null;
+  file?: string | null;
+  title?: string | null;
+  notes?: string | null;
+}
+
+export interface Sources {
+  manual: ManualSource;
+  video?: VideoSource | null;
 }
 
 export interface Part { id: string; name: string; qty: number; kind: PartKind; provenance: Provenance }
@@ -41,6 +55,7 @@ export interface Action {
   tool?: string | null;
   direction?: Direction | null;
   detail: string;
+  provenance?: Provenance | null;
 }
 
 export type BBox = [number, number, number, number];
@@ -50,6 +65,13 @@ export interface Narration { standard: string; simple: string }
 export interface Note { text: string; provenance: Provenance }
 export interface Choice { id: string; label: string }
 export interface Options { prompt: string; choices: Choice[]; default?: string | null }
+
+export interface ReviewNote {
+  kind: ReviewKind;
+  text: string;
+  manual_claim?: string | null;
+  video_claim?: string | null;
+}
 
 export interface Step {
   id: string;
@@ -67,7 +89,7 @@ export interface Step {
   options?: Options | null;
   checkpoint?: string | null;
   estimated_seconds: number;
-  review_notes: string[];
+  review_notes: ReviewNote[];
 }
 
 export interface Guide {
@@ -76,7 +98,7 @@ export interface Guide {
   title: string;
   content_model: ContentModel;
   product: Product;
-  source: Source;
+  source: Sources;
   parts: Part[];
   steps: Step[];
 }
@@ -86,5 +108,13 @@ export function partById(guide: Guide, id: string): Part | undefined {
 }
 
 export function pageByKey(guide: Guide, key: string): SourcePage | undefined {
-  return guide.source.pages.find((p) => p.page === key);
+  return guide.source.manual.pages.find((p) => p.page === key);
+}
+
+export function reviewText(notes: ReviewNote[]): string {
+  return notes.map((n) => n.text).join(" ");
+}
+
+export function hasConflict(notes: ReviewNote[]): boolean {
+  return notes.some((n) => n.kind === "conflict");
 }

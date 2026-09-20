@@ -1,6 +1,6 @@
 import { Check, Flag } from "lucide-react";
 import type { Guide, Step } from "../types/guide";
-import { pageByKey } from "../types/guide";
+import { hasConflict, pageByKey, reviewText } from "../types/guide";
 import { asBBox, computeCrop } from "../lib/crop";
 import { pageImageUrl } from "../lib/pageImage";
 import { mmss } from "../lib/timing";
@@ -60,8 +60,8 @@ export default function StepList({ guide, selected, completed, onSelect }: Props
                   {step.parts_used.length > 0 ? <span>{step.parts_used.map((p) => p.id).join(" ")}</span> : null}
                   {startWith ? <span>start with {startWith}</span> : null}
                   {step.review_notes.length > 0 ? (
-                    <span className="inline-flex items-center gap-1 text-action" title={step.review_notes.join(" ")}>
-                      <Flag size={14} /> review
+                    <span className="inline-flex items-center gap-1 text-action" title={reviewText(step.review_notes)}>
+                      <Flag size={14} /> {hasConflict(step.review_notes) ? "conflict" : "review"}
                     </span>
                   ) : null}
                   {done ? (

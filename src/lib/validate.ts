@@ -1,18 +1,47 @@
-import type { Guide, Step } from "../types/guide";
+import type { Guide, ReviewNote, Sources, Step } from "../types/guide";
+
+const SUPPORTED = new Set(["0.1", "0.2"]);
+
+/** Lift v0.1 source/review_notes shapes so the player and pipeline share one Guide type. */
+export function coerceGuide(raw: unknown): Guide {
+  if (!raw || typeof raw !== "object") throw new Error("guide JSON is empty");
+  const g = { ...(raw as Record<string, unknown>) };
+  const src = g.source as Record<string, unknown> | undefined;
+  if (src && !("manual" in src) && ("pages" in src || "type" in src)) {
+    g.source = { manual: src } as unknown as Sources;
+  }
+  if (Array.isArray(g.steps)) {
+    g.steps = (g.steps as Record<string, unknown>[]).map((s) => ({
+      ...s,
+      review_notes: coerceNotes(s.review_notes),
+    }));
+  }
+  return g as unknown as Guide;
+}
+
+function coerceNotes(raw: unknown): ReviewNote[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((item) => {
+    if (typeof item === "string") return { kind: "uncertainty" as const, text: item };
+    return item as ReviewNote;
+  });
+}
 
 /** Runtime checks mirroring schema.py Guide.cross_checks. Throws if the JSON is not a valid Guide. */
 export function assertGuide(raw: unknown): Guide {
-  const guide = raw as Guide;
-  if (!guide || typeof guide !== "object") throw new Error("guide JSON is empty");
-  if (guide.schema_version !== "0.1") throw new Error(`unsupported schema_version '${guide.schema_version}'`);
+  const guide = coerceGuide(raw);
+  if (!SUPPORTED.has(guide.schema_version)) {
+    throw new Error(`unsupported schema_version '${guide.schema_version}'`);
+  }
   if (!guide.steps?.length) throw new Error("guide must have at least one step");
   if (!guide.parts?.length) throw new Error("guide must have a parts catalog");
+  if (!guide.source?.manual) throw new Error("guide.source.manual is required");
 
   const partIds = new Set(guide.parts.map((p) => p.id));
   if (partIds.size !== guide.parts.length) throw new Error("duplicate part ids");
   const partsById = Object.fromEntries(guide.parts.map((p) => [p.id, p]));
   const toolIds = new Set(guide.parts.filter((p) => p.kind === "tool").map((p) => p.id));
-  const pageKeys = new Set(guide.source.pages.map((p) => p.page));
+  const pageKeys = new Set(guide.source.manual.pages.map((p) => p.page));
 
   const indices = guide.steps.map((s) => s.index);
   const start = indices[0];
@@ -21,6 +50,13 @@ export function assertGuide(raw: unknown): Guide {
 
   const stepIds = guide.steps.map((s) => s.id);
   if (new Set(stepIds).size !== stepIds.length) throw new Error("duplicate step ids");
+
+  if (guide.source.video) {
+    const v = guide.source.video;
+    if (!v.youtube_url && !v.packaging_url && !v.file) {
+      throw new Error("video source needs youtube_url, packaging_url, or file");
+    }
+  }
 
   for (const s of guide.steps) {
     checkStepShape(s);

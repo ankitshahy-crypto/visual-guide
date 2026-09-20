@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1",
+  "schema_version": "0.2",
   "guide_id": "newtral-magich-pro-assembly",
   "title": "Newtral MagicH Pro — Assembly",
   "content_model": "procedural",
@@ -9,75 +9,77 @@
     "category": "office chair"
   },
   "source": {
-    "type": "pdf",
-    "file": "Magic_H-BPRO_Ergonomic_Office_Chair_with_Foldable_Footrest_Magic_H-GPRO_.pdf",
-    "pages": [
-      {
-        "page": "1",
-        "label": "cover",
-        "image": "pages/p-01.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "2",
-        "label": "contents",
-        "image": "pages/p-02.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "3",
-        "label": "1",
-        "image": "pages/p-03.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "4",
-        "label": "2",
-        "image": "pages/p-04.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "5",
-        "label": "3",
-        "image": "pages/p-05.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "6",
-        "label": "4",
-        "image": "pages/p-06.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "7",
-        "label": "5",
-        "image": "pages/p-07.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "8",
-        "label": "6",
-        "image": "pages/p-08.jpg",
-        "width": 748,
-        "height": 1075
-      },
-      {
-        "page": "9",
-        "label": "7",
-        "image": "pages/p-09.jpg",
-        "width": 748,
-        "height": 1075
-      }
-    ],
-    "missing_pages": [],
-    "notes": "Manufacturer PDF, 40 pages, English section is PDF pages 1-9 (printed 1-7); other languages follow. Diagrams are vector; part letters and quantities inside the step figures are outlined text and do NOT appear in the text layer, so the parser must read them visually. Figure bboxes are normalized to the rendered page image (130 dpi, 748x1075). The parts list says each screw type ships with one spare."
+    "manual": {
+      "type": "pdf",
+      "file": "Magic_H-BPRO_Ergonomic_Office_Chair_with_Foldable_Footrest_Magic_H-GPRO_.pdf",
+      "pages": [
+        {
+          "page": "1",
+          "label": "cover",
+          "image": "pages/p-01.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "2",
+          "label": "contents",
+          "image": "pages/p-02.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "3",
+          "label": "1",
+          "image": "pages/p-03.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "4",
+          "label": "2",
+          "image": "pages/p-04.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "5",
+          "label": "3",
+          "image": "pages/p-05.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "6",
+          "label": "4",
+          "image": "pages/p-06.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "7",
+          "label": "5",
+          "image": "pages/p-07.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "8",
+          "label": "6",
+          "image": "pages/p-08.jpg",
+          "width": 748,
+          "height": 1075
+        },
+        {
+          "page": "9",
+          "label": "7",
+          "image": "pages/p-09.jpg",
+          "width": 748,
+          "height": 1075
+        }
+      ],
+      "missing_pages": [],
+      "notes": "Manufacturer PDF, 40 pages, English section is PDF pages 1-9 (printed 1-7); other languages follow. Diagrams are vector; part letters and quantities inside the step figures are outlined text and do NOT appear in the text layer, so the parser must read them visually. Figure bboxes are normalized to the rendered page image (130 dpi, 748x1075). The parts list says each screw type ships with one spare."
+    }
   },
   "parts": [
     {
@@ -823,7 +825,10 @@
       "checkpoint": "The cover sits flush with no gap.",
       "estimated_seconds": 9,
       "review_notes": [
-        "Parts list shows G as a set of three covers; the step diagram shows one location. Confirm where the other two go."
+        {
+          "kind": "uncertainty",
+          "text": "Parts list shows G as a set of three covers; the step diagram shows one location. Confirm where the other two go."
+        }
       ]
     },
     {

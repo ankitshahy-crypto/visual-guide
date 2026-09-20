@@ -10,7 +10,8 @@
     "studio": "remotion studio src/remotion/index.ts",
     "render": "remotion render src/remotion/index.ts",
     "render:all": "node scripts/render-all.mjs",
-    "validate": "python3 scripts/validate.py"
+    "validate": "python3 scripts/validate.py",
+    "test:pipeline": "vitest run src/pipeline/mergeSources.test.ts"
   },
   "dependencies": {
     "@remotion/cli": "4.0.526",
@@ -28,7 +29,8 @@
     "@vitejs/plugin-react": "^4.3.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^5.0.1"
   },
   "overrides": {
     "remotion": "4.0.526",

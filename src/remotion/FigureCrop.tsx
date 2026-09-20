@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { Img, staticFile } from "remotion";
 import { computeCrop } from "../lib/crop";
-import { pageImagePath } from "../lib/pageImage";
+import { isInlineImage, pageImagePath } from "../lib/pageImage";
 import type { BBox } from "../types/guide";
 import { T } from "./theme";
 
@@ -23,7 +23,7 @@ export const FigureCrop: FC<Props> = ({ image, bbox, aspect, w, h, zoom = 1, hig
   return (
     <div style={{ position: "relative", width: w, height: h, overflow: "hidden", background: T.paper }}>
       <Img
-        src={/^https?:\/\//.test(src) ? src : staticFile(src)}
+        src={isInlineImage(src) ? src : staticFile(src)}
         style={{ position: "absolute", width: c.pageW, height: c.pageH, left: c.left, top: c.top }}
       />
       {/* mask everything outside the figure so neighbouring panels never show */}

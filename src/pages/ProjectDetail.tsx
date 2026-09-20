@@ -1,13 +1,20 @@
 import { useCallback, useMemo, useState } from "react";
 import { Play, Square } from "lucide-react";
-import type { Guide, NarrationLevel } from "../types/guide";
+import type { NarrationLevel } from "../types/guide";
+import { hasConflict } from "../types/guide";
 import { mmss } from "../lib/timing";
+import type { StoredProject } from "../lib/projectsStore";
 import StepPlayer from "../components/StepPlayer";
 import StepList from "../components/StepList";
 
-interface Props { guide: Guide; projectName: string }
+interface Props {
+  project: StoredProject;
+  onBack: () => void;
+  onDownload?: () => void;
+}
 
-export default function ProjectDetail({ guide, projectName }: Props) {
+export default function ProjectDetail({ project, onBack, onDownload }: Props) {
+  const guide = project.guide;
   const [selected, setSelected] = useState(guide.steps[0].id);
   const [level, setLevel] = useState<NarrationLevel>("standard");
   const [playAll, setPlayAll] = useState(false);
@@ -17,9 +24,10 @@ export default function ProjectDetail({ guide, projectName }: Props) {
   const idx = guide.steps.findIndex((s) => s.id === selected);
   const step = guide.steps[idx] ?? guide.steps[0];
   const total = useMemo(() => guide.steps.reduce((n, s) => n + s.estimated_seconds, 0), [guide]);
+  const conflicted = guide.steps.filter((s) => hasConflict(s.review_notes)).length;
+  const video = guide.source.video;
 
   const onEnded = useCallback(() => {
-    // Checkpoint band is the last beat of the clip. The step is not complete until that fires.
     setCompleted((prev) => {
       const next = new Set(prev);
       next.add(step.id);
@@ -49,8 +57,22 @@ export default function ProjectDetail({ guide, projectName }: Props) {
   return (
     <div className="min-h-full">
       <header className="px-4 pt-5 pb-3 md:px-8">
-        <h1 className="text-2xl font-bold leading-tight">{projectName}</h1>
-        <p className="text-ash">{guide.product.brand} {guide.product.model} · {guide.steps.length} steps · {mmss(total)}</p>
+        <div className="mb-2 flex flex-wrap items-center gap-3 text-sm">
+          <button type="button" className="underline-offset-2 hover:underline" onClick={onBack}>Projects</button>
+          {onDownload ? (
+            <button type="button" className="underline-offset-2 hover:underline" onClick={onDownload}>Download draft JSON</button>
+          ) : null}
+        </div>
+        <h1 className="text-2xl font-bold leading-tight">{project.name}</h1>
+        <p className="text-ash">
+          {guide.product.brand} {guide.product.model} · {guide.steps.length} steps · {mmss(total)}
+          {video ? " · manual + video" : " · manual"}
+        </p>
+        {conflicted > 0 ? (
+          <p className="mt-2 border border-action bg-paper px-3 py-2 text-sm">
+            {conflicted} step{conflicted === 1 ? "" : "s"} flagged: manual and video disagree. The printed manual stands until you resolve the orange conflict flag.
+          </p>
+        ) : null}
       </header>
 
       <div className="md:grid md:grid-cols-[minmax(0,480px)_1fr] md:gap-8 md:px-8">
@@ -92,6 +114,14 @@ export default function ProjectDetail({ guide, projectName }: Props) {
 
         <section aria-label="Steps" className="md:pt-0">
           <StepList guide={guide} selected={selected} completed={completed} onSelect={select} />
+          {project.pipeline.stubbed.length > 0 ? (
+            <details className="mx-4 my-4 text-sm text-ash md:mx-0">
+              <summary className="cursor-pointer font-bold text-ink">Pipeline stubs ({project.pipeline.stubbed.length})</summary>
+              <ul className="mt-2 list-disc pl-5">
+                {project.pipeline.stubbed.map((s) => <li key={s}>{s}</li>)}
+              </ul>
+            </details>
+          ) : null}
         </section>
       </div>
     </div>

@@ -1,12 +1,17 @@
-/** Resolve SourcePage.image to a path under /public. Golden files live in public/golden/. */
+/** Resolve SourcePage.image to a path the player / Remotion can load. */
 export function pageImagePath(image: string): string {
+  if (/^(data:|blob:|https?:\/\/)/.test(image)) return image;
   const trimmed = image.replace(/^\//, "");
-  if (trimmed.startsWith("golden/") || /^https?:\/\//.test(trimmed)) return trimmed;
+  if (trimmed.startsWith("golden/") || trimmed.startsWith("projects/")) return trimmed;
   return `golden/${trimmed}`;
 }
 
 export function pageImageUrl(image: string): string {
   const path = pageImagePath(image);
-  if (/^https?:\/\//.test(path)) return path;
+  if (/^(data:|blob:|https?:\/\/)/.test(path)) return path;
   return `/${path}`;
+}
+
+export function isInlineImage(src: string): boolean {
+  return /^(data:|blob:|https?:\/\/)/.test(src);
 }
