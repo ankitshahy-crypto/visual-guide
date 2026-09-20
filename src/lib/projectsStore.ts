@@ -19,6 +19,8 @@ export interface StoredProject {
   files: StoredFile[];
   guide: Guide;
   pipeline: { log: string[]; stubbed: string[] };
+  /** Keys of inferred_from_video fills the creator accepted on Review. */
+  acceptedFills?: string[];
 }
 
 const DB_NAME = "visual-guide";

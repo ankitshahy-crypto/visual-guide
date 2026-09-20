@@ -11,10 +11,11 @@ interface Props {
   autoPlay: boolean;
   replayKey: number;
   onEnded: () => void;
+  controls?: boolean;
 }
 
 /** The same StepClip the renderer uses, played live in the browser. */
-export default function StepPlayer({ guide, step, level, autoPlay, replayKey, onEnded }: Props) {
+export default function StepPlayer({ guide, step, level, autoPlay, replayKey, onEnded, controls = false }: Props) {
   const ref = useRef<PlayerRef>(null);
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function StepPlayer({ guide, step, level, autoPlay, replayKey, on
         fps={FPS}
         compositionWidth={CLIP_W}
         compositionHeight={CLIP_H}
-        controls
+        controls={controls}
         autoPlay={autoPlay}
         clickToPlay
         acknowledgeRemotionLicense

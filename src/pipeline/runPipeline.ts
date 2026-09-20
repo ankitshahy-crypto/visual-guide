@@ -16,20 +16,31 @@ export interface RunPipelineOutput extends PipelineResult {
   guide: Guide;
 }
 
+export type PipelineStage = "parse" | "video" | "merge" | "conflicts";
+
+export interface RunPipelineOptions {
+  onStage?: (stage: PipelineStage) => void | Promise<void>;
+}
+
 /**
  * Creator pipeline: parseManual → analyzeVideo → mergeSources → validate.
  * Manual is source of truth. Video is gap-fill only.
  */
-export async function runPipeline(input: RunPipelineInput): Promise<RunPipelineOutput> {
+export async function runPipeline(input: RunPipelineInput, opts?: RunPipelineOptions): Promise<RunPipelineOutput> {
   const log: string[] = [];
   const stubbed: string[] = [];
   const guideId = slugify(input.name);
+  const notify = async (stage: PipelineStage) => {
+    await opts?.onStage?.(stage);
+  };
 
+  await notify("parse");
   log.push("parseManual");
   const manual = await parseManual(input.name, input.files);
   log.push(...manual.log);
   stubbed.push(...manual.stubbed);
 
+  await notify("video");
   log.push("analyzeVideo");
   const video = analyzeVideo(manual, {
     youtubeUrl: input.youtubeUrl,
@@ -42,6 +53,7 @@ export async function runPipeline(input: RunPipelineInput): Promise<RunPipelineO
     log.push("no video locator — skip");
   }
 
+  await notify("merge");
   log.push("mergeSources (manual wins; video fills gaps; conflicts → review_notes)");
   const guide = mergeSources({
     title: input.name,
@@ -51,6 +63,7 @@ export async function runPipeline(input: RunPipelineInput): Promise<RunPipelineO
     video,
   });
 
+  await notify("conflicts");
   log.push("validate");
   const valid = assertGuide(guide);
   log.push(`OK ${valid.steps.length} steps, ${valid.parts.length} parts`);

@@ -13,6 +13,7 @@
 
 html, body, #root { height: 100%; }
 body { background: var(--color-desk); color: var(--color-ink); font-family: var(--font-sans); }
+button, input, textarea, select { border-radius: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }

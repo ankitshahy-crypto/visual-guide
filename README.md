@@ -2,7 +2,7 @@
 
 Visual Guide turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
 
-The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is a working form + player so the owner can agree on design before screen polish.
+The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, paper white).
 
 The **Newtral MagicH Pro office chair is a golden test fixture**, not the product.
 
@@ -24,6 +24,28 @@ npm run render:all
 
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
+## Screen map (this PR)
+
+Phone-width column on a desk-gray field. Paper white, black line art, square corners, one orange accent (`#f0552b`) for primary / do-this-now. Letter tags are black squares. Green (`#1e8e5a`) is the checkpoint band. Orange badge = review / conflict.
+
+**Assembler**
+
+| Hash | Screen | What it does |
+| --- | --- | --- |
+| `#/` | Projects | List (golden chair + local drafts) and **New guide** |
+| `#/p/:id` | Step list | Simple words + Play all; cropped thumbs; numbered rows; orange Review badge |
+| `#/p/:id/s/:stepId` | Clip player | Number/title, letter chips, figure, caption, green checkpoint (inside the clip); Replay / Next. Choice overlay when the step has options. |
+
+**Creator**
+
+| Hash | Screen | What it does |
+| --- | --- | --- |
+| `#/new` | New guide | Name; **Manual (required)** PDF + page photos; **Video (optional)** YouTube URL, Scan packaging QR (URL paste until camera exists), Skip; Continue |
+| `#/new/analyzing` | Analyzing | Checklist in order: Reading manual → Watching video → Merging steps → Checking conflicts |
+| `#/p/:id/review` | Review | Filled from video (Accept) + Conflicts (Keep manual / Use video) → **Open guide** (then step list / player for that draft) |
+
+Scan packaging QR is labeled as a URL paste in this web build. Same field as a camera scan would fill.
+
 ## Assembler
 
 Open a project (start with the chair sample):
@@ -33,12 +55,12 @@ Open a project (start with the chair sample):
 3. Green checkpoint band at the end of the clip. The step is not marked complete until that band has played. Skipping away mid-clip does not count.
 4. Choice steps show the options and which one to start with (chair step 7).
 5. **Simple words** toggle: every step has both standard and simple narration.
-6. **Play all** from the current step. Tap any step to replay it.
+6. **Play all** from the step list. **Replay** / **Next** on the player.
 7. Orange **review** flag for parser uncertainty; **conflict** when the optional video disagrees with the manual. The printed manual always stands.
 
 ## Creator (this PR)
 
-`#/new` — name the project, upload a PDF and/or page photos (required), optionally paste a YouTube URL and/or a packaging QR URL. That runs:
+`#/new` → `#/new/analyzing` → `#/p/:id/review` (when video fills or conflicts exist) → step list / player.
 
 1. **parseManual** — turns uploads into `source.manual` pages the player can crop. Vision read of letters/bboxes is stubbed (placeholder part `X`, full-page crop, review flags).
 2. **analyzeVideo** — stores the locator. Does **not** fetch YouTube yet. If a URL is present it proposes example gap-fills (click/feel, orientation) plus a conflict so merge can be tested.
@@ -46,13 +68,15 @@ Open a project (start with the chair sample):
 4. **validate** — schema + parts catalog.
 5. **narrate** — fills standard + simple if the parse did not.
 
-Drafts persist in **IndexedDB** in this browser. Download draft JSON from the player to commit under `projects/<id>/guide.json` (see that folder's README). Large PDFs may hit browser storage limits until a job runner writes to disk.
+On Review, Accept keeps an inferred video fill. Keep manual drops the conflict flag (manual already stands). Use video records the video claim as a tip and does **not** overwrite the manual action.
+
+Drafts persist in **IndexedDB** in this browser. Large PDFs may hit browser storage limits until a job runner writes to disk.
 
 ## Manual + QR / YouTube gap-fill
 
 The printed or photographed **manual is the source of truth**. Many products also ship a QR on the box that opens a YouTube install video. That video is useful for things paper omits — order that is easier to *see*, click/feel, which way a part faces, hidden fasteners — and dangerous if it silently overrides the manual.
 
-Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets an orange conflict flag with both claims. A human resolves it. We never drop a manual fact to match the video.
+Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets an orange conflict flag with both claims. A human resolves it on Review. We never drop a manual fact to match the video.
 
 ## Differentiators (product, not ads)
 
@@ -68,8 +92,9 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | --- | --- |
 | Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Vision model on page images (letters, qty, bboxes) |
 | Golden chair fixture still plays | PDF page rasterization (pdf.js) |
-| Clip player: Simple words, Play all, checkpoints, review/conflict flags | YouTube / packaging-QR fetch + transcription + beat alignment |
-| New project form + local draft persist | TTS audio (`<Audio>` slot in `StepClip`) |
+| Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | YouTube / packaging-QR fetch + transcription + beat alignment |
+| Clip player: Simple words, Play all, Replay/Next, checkpoints, review/conflict flags | Camera QR scan (URL paste stands in) |
+| New guide + local draft persist + Review keep-manual / use-video | TTS audio (`<Audio>` slot in `StepClip`) |
 | Pipeline modules with real merge rules; stubs labeled | Human step editor |
 | | Auth, share/publish |
 | | Native iOS app shell |
@@ -82,7 +107,8 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `golden/newtral-magich-pro.json` — chair fixture (copy at `src/data/golden/`)
 - `src/types/guide.ts` — TypeScript mirror
 - `src/pipeline/` — parseManual, analyzeVideo, mergeSources, narrate, runPipeline
-- `src/pages/` — project list, new project, player
+- `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player
+- `src/chrome/` — phone shell, header, toggles, buttons
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts
 - `public/golden/pages/` — chair manual page images
