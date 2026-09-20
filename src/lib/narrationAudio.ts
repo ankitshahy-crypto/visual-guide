@@ -3,6 +3,7 @@ import { cues as cuesFromText, splitSentences } from "./sentences";
 import { estimateDurationMs, normalizeNarration } from "./ttsHash";
 import { FPS } from "./timing";
 import narrationIndex from "../data/narration-index.json";
+import { publicUrl } from "./publicUrl";
 
 export interface NarrationFile {
   hash: string;
@@ -42,8 +43,7 @@ export type NarrationMode = "files" | "live" | "none";
 export const bundledNarrationIndex = narrationIndex as NarrationIndex;
 
 export function publicAudioSrc(file: string): string {
-  const rel = file.replace(/^\//, "");
-  return `/${rel}`;
+  return publicUrl(file);
 }
 
 export function resolveLinesFromIndex(text: string, index: NarrationIndex = bundledNarrationIndex): ResolvedAudioLine[] | null {

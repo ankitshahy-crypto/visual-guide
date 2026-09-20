@@ -1,3 +1,5 @@
+import { publicUrl } from "./publicUrl";
+
 /** Resolve SourcePage.image to a path the player / Remotion can load. */
 export function pageImagePath(image: string): string {
   if (/^(data:|blob:|https?:\/\/)/.test(image)) return image;
@@ -9,7 +11,7 @@ export function pageImagePath(image: string): string {
 export function pageImageUrl(image: string): string {
   const path = pageImagePath(image);
   if (/^(data:|blob:|https?:\/\/)/.test(path)) return path;
-  return `/${path}`;
+  return publicUrl(path);
 }
 
 export function isInlineImage(src: string): boolean {

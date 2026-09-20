@@ -28,6 +28,8 @@ npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-n
 
 Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
 
+iPhone Safari (no Mac): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — GitHub Pages HTTPS preview at `https://ankitshahy-crypto.github.io/visual-guide/` after the Pages workflow on `main` (Settings → Pages → Source: **GitHub Actions**, once).
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)
