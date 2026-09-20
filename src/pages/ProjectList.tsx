@@ -44,11 +44,13 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
         }
       />
 
-      <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 pb-4 pt-1">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-3 pt-1">
         <section
           data-home-hero
           aria-labelledby="home-hero-heading"
-          className="overflow-hidden rounded-[28px] bg-action p-3 pt-4 text-paper"
+          className={`flex min-h-[18rem] flex-col overflow-hidden rounded-[28px] bg-action p-3 pt-4 text-paper ${
+            drafts.length === 0 ? "flex-1" : ""
+          }`}
         >
           <div className="px-2">
             <p id="home-hero-heading" className="text-[1.65rem] font-bold leading-[1.15]">
@@ -70,17 +72,17 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
             </ol>
           </div>
 
-          <article className="mt-4 rounded-[22px] bg-desk p-4 text-chrome-ink">
-            <div className="flex items-start gap-3">
-              <FigureThumb guide={golden.guide} step={thumbStep} size={72} className="rounded-2xl" />
-              <div className="min-w-0 pt-0.5">
+          <article className="mt-auto rounded-[22px] bg-desk p-4 text-chrome-ink">
+            <div className="flex items-center gap-3">
+              <FigureThumb guide={golden.guide} step={thumbStep} size={56} className="rounded-2xl" />
+              <div className="min-w-0">
                 <p className="text-xs font-bold tracking-wide text-action">Sample</p>
                 <h3 className="mt-0.5 text-xl font-bold leading-tight">{golden.name}</h3>
-                <p className="mt-1 text-sm leading-snug text-ash">
-                  {golden.guide.steps.length} steps with checkpoints. Simple words on every clip.
-                </p>
               </div>
             </div>
+            <p className="mt-3 text-sm leading-snug text-ash">
+              {golden.guide.steps.length} steps with checkpoints. Simple words on every clip.
+            </p>
             <button
               type="button"
               onClick={() => onOpen(golden.id)}
@@ -91,7 +93,7 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
           </article>
         </section>
 
-        <section aria-labelledby="your-guides-heading">
+        <section aria-labelledby="your-guides-heading" className="mt-4 shrink-0">
           <h2 id="your-guides-heading" className="px-0.5 text-lg font-bold">Your guides</h2>
           {drafts.length === 0 ? (
             <div className="mt-3 rounded-2xl border border-rule bg-chrome px-4 py-4">
@@ -111,7 +113,7 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
           )}
         </section>
 
-        <p className="px-0.5 text-sm leading-snug text-ash">
+        <p className="mt-3 shrink-0 px-0.5 text-sm leading-snug text-ash">
           Help & support{" "}
           <a
             href={SUPPORT_MAILTO}
