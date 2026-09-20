@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Visual Guide</string>
+	<string>Plainstep</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Visual Guide</string>
+	<string>Plainstep</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -27,9 +27,9 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>Visual Guide will use the camera to scan a packaging QR code. Scanning is not in this build — paste the YouTube or packaging URL instead.</string>
+	<string>Plainstep will use the camera to scan a packaging QR code. Scanning is not in this build — paste the YouTube or packaging URL instead.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Visual Guide reads page photos and PDFs you pick from Files or Photos so it can build assembly clips from the printed manual.</string>
+	<string>Plainstep reads page photos and PDFs you pick from Files or Photos so it can build assembly clips from the printed manual.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

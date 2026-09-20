@@ -1,6 +1,8 @@
-# Visual Guide
+# Plainstep
 
-Visual Guide turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
+**Plainstep** turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
+
+This GitHub repository is still named `visual-guide`. The product name is **Plainstep**.
 
 The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, paper white).
 
@@ -55,7 +57,7 @@ npm run ios:open          # opens ios/App/App.xcodeproj
 In Xcode:
 
 1. Select the **App** target.
-2. Signing & Capabilities → your Team. Change **Bundle Identifier** if `app.visualguide.ios` is taken (also change `appId` in `capacitor.config.ts` to match).
+2. Signing & Capabilities → your Team. Change **Bundle Identifier** if `app.plainstep.ios` is taken (also change `appId` in `capacitor.config.ts` to match).
 3. Run destination: iPhone 16 simulator (or any iOS 14+ sim).
 4. Press Run. First SPM resolve needs network (`capacitor-swift-pm`).
 
@@ -83,7 +85,7 @@ npm run ios:open
 | Outbound network | Whatever the browser allows | HTTPS to YouTube / `i.ytimg.com` / `noembed.com` / Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) / optional `api.openai.com`. ATS is default (HTTPS only). No YouTube embed; we fetch metadata and poster JPEGs |
 | Remotion CLI / `npm run narrate` | Yes | N/A (Mac/Linux tools, not in the ipa) |
 
-App name on the home screen: **Visual Guide**. Placeholder bundle id: `app.visualguide.ios`.
+App name on the home screen: **Plainstep**. Placeholder bundle id: `app.plainstep.ios`. Locked app icon: white field, black step path, orange check (`public/icons/plainstep-app-icon.png`, Xcode `AppIcon`).
 
 ### Permissions (`ios/App/App/Info.plist`)
 
@@ -100,7 +102,7 @@ Photo Library *add* / microphone keys are omitted (we do not save to Camera Roll
 Not done in this PR. Paid account required after Simulator.
 
 1. Enroll at [developer.apple.com/programs](https://developer.apple.com/programs).
-2. App Store Connect (ASC) → Apps → **+** → name **Visual Guide**, bundle id `app.visualguide.ios` (or your changed id), SKU of your choice.
+2. App Store Connect (ASC) → Apps → **+** → name **Plainstep**, bundle id `app.plainstep.ios` (or your changed id), SKU of your choice.
 3. Xcode target → Signing & Capabilities → Team. Enable **Automatically manage signing** for Debug. For distribution, Xcode creates an Apple Distribution cert + App Store provisioning profile.
 4. `npm run ios:sync`. Product → Archive (Any iOS Device). Organizer → Distribute App → App Store Connect → Upload.
 5. ASC → TestFlight → wait for processing → Internal testers (App Store Connect Users) first. External TestFlight needs a Beta App Review (privacy policy URL, contact, demo account if you later add auth).
@@ -248,7 +250,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Auth, share/publish |
 | Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | App Store / TestFlight (cert + ASC; checklist above) |
 | Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | Hosted `/api/pipeline` for device YouTube captions / OpenAI |
-| Capacitor iOS shell (`ios/`, bundle id `app.visualguide.ios`) | Marketing site / brand campaign (**later**) |
+| Capacitor iOS shell (`ios/`, bundle id `app.plainstep.ios`, product name Plainstep) | Marketing site / brand campaign (**later**) |
 | New guide + local draft persist + Review keep-manual / use-video | |
 | parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | |
 | analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | |
@@ -267,7 +269,8 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player
 - `src/chrome/` — phone shell, header, toggles, buttons
 - `src/native/` — Capacitor status bar / keyboard / splash init
-- `capacitor.config.ts` — app id `app.visualguide.ios`, `webDir: dist`
+- `capacitor.config.ts` — app id `app.plainstep.ios`, app name Plainstep, `webDir: dist`
+- `public/icons/plainstep-app-icon.png` — locked 1024 App Store / PWA icon
 - `ios/` — Xcode project (SPM). `npm run ios:sync` copies `dist/` into `ios/App/App/public`
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts

@@ -9,14 +9,14 @@ import { KeyboardResize } from "@capacitor/keyboard";
 const liveReload = process.env.CAPACITOR_LIVE_RELOAD?.trim();
 
 const config: CapacitorConfig = {
-  appId: "app.visualguide.ios",
-  appName: "Visual Guide",
+  appId: "app.plainstep.ios",
+  appName: "Plainstep",
   webDir: "dist",
   backgroundColor: "#ffffff",
   ios: {
     contentInset: "never",
     preferredContentMode: "mobile",
-    scheme: "Visual Guide",
+    scheme: "Plainstep",
     limitsNavigationsToAppBoundDomains: false,
   },
   plugins: {

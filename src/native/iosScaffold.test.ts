@@ -9,11 +9,11 @@ describe("iOS Capacitor scaffold", () => {
   const pbx = readFileSync(resolve(root, "ios/App/App.xcodeproj/project.pbxproj"), "utf8");
   const cap = readFileSync(resolve(root, "capacitor.config.ts"), "utf8");
 
-  it("uses Visual Guide + placeholder bundle id that is easy to change", () => {
-    expect(cap).toContain('appId: "app.visualguide.ios"');
-    expect(cap).toContain('appName: "Visual Guide"');
-    expect(plist).toContain("<string>Visual Guide</string>");
-    expect(pbx).toContain("PRODUCT_BUNDLE_IDENTIFIER = app.visualguide.ios;");
+  it("uses Plainstep + placeholder bundle id that is easy to change", () => {
+    expect(cap).toContain('appId: "app.plainstep.ios"');
+    expect(cap).toContain('appName: "Plainstep"');
+    expect(plist).toContain("<string>Plainstep</string>");
+    expect(pbx).toContain("PRODUCT_BUNDLE_IDENTIFIER = app.plainstep.ios;");
   });
 
   it("declares camera + photo library usage (QR scan is still URL paste)", () => {
@@ -27,5 +27,12 @@ describe("iOS Capacitor scaffold", () => {
     expect(iphoneBlock).toContain("UIInterfaceOrientationPortrait");
     expect(iphoneBlock).not.toContain("UIInterfaceOrientationLandscapeLeft");
     expect(pbx).toContain("CapApp-SPM");
+  });
+
+  it("ships a 1024×1024 RGB AppIcon for the locked Plainstep mark", () => {
+    const icon = readFileSync(resolve(root, "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png"));
+    expect([...icon.subarray(0, 8)]).toEqual([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    expect(icon.readUInt32BE(16)).toBe(1024);
+    expect(icon.readUInt32BE(20)).toBe(1024);
   });
 });
