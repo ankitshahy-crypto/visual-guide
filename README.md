@@ -26,6 +26,8 @@ npm run render:all
 npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-ng or OPENAI_API_KEY)
 ```
 
+Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)
@@ -274,6 +276,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `capacitor.config.ts` — app id `app.plainstep.ios`, app name Plainstep, `webDir: dist`
 - `public/icons/plainstep-app-icon.png` — locked 1024 App Store / PWA icon
 - `ios/` — Xcode project (SPM). `npm run ios:sync` copies `dist/` into `ios/App/App/public`
+- `docs/E2E-CHECKLIST.md` — one human pass (assembler + creator + iOS shell)
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts
 - `public/golden/pages/` — chair manual page images

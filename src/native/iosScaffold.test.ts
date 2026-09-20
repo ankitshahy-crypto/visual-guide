@@ -15,7 +15,7 @@ function walk(dir: string, out: string[] = []): string[] {
     if (SKIP_DIR.has(name)) continue;
     const p = join(dir, name);
     const rel = relative(root, p).replaceAll("\\", "/");
-    if (rel.startsWith("ios/App/App/public") || rel === "ios/App/App/capacitor.config.json" || rel === "ios/App/App/config.xml") {
+    if (rel.startsWith("ios/App/App/public") || rel === "ios/App/App/capacitor.config.json" || rel === "ios/App/App/config.xml" || rel === "docs/E2E-CHECKLIST.md") {
       continue;
     }
     const st = statSync(p);
@@ -29,6 +29,15 @@ describe("iOS Capacitor scaffold", () => {
   const plist = readFileSync(resolve(root, "ios/App/App/Info.plist"), "utf8");
   const pbx = readFileSync(resolve(root, "ios/App/App.xcodeproj/project.pbxproj"), "utf8");
   const cap = readFileSync(resolve(root, "capacitor.config.ts"), "utf8");
+
+  it("points README at the human E2E checklist", () => {
+    const readme = readFileSync(resolve(root, "README.md"), "utf8");
+    expect(readme).toContain("docs/E2E-CHECKLIST.md");
+    const e2e = readFileSync(resolve(root, "docs/E2E-CHECKLIST.md"), "utf8");
+    expect(e2e).toContain("## A. Assembler");
+    expect(e2e).toContain("## B. Creator");
+    expect(e2e).toContain("## Findings");
+  });
 
   it("uses Plainstep + placeholder bundle id that is easy to change", () => {
     expect(cap).toContain('appId: "app.plainstep.ios"');
