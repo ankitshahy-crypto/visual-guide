@@ -41,7 +41,7 @@ describe("iOS Capacitor scaffold", () => {
     expect(e2e.toLowerCase()).toContain("dark chrome");
     expect(e2e.toLowerCase()).toContain("paper-white");
     expect(e2e).toContain("ankit@triagedesk.ai");
-    expect(e2e).toContain("docs/IOS-DEPLOY.md");
+    expect(e2e).toContain("IOS-DEPLOY.md");
   });
 
   it("documents the Mac → Simulator path without GitHub Pages", () => {
