@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --color-paper: #ffffff;
+  --color-ink: #000000;
+  --color-action: #f0552b;
+  --color-check: #1e8e5a;
+  --color-desk: #e9edf1;
+  --color-ash: #6b6f75;
+  --color-rule: #c9ced4;
+}
+
+html, body, #root { height: 100%; }
+body { background: var(--color-desk); color: var(--color-ink); font-family: var(--font-sans); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

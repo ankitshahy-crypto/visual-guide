@@ -1,0 +1,16 @@
+node_modules
+dist
+dist-ssr
+out
+.vite
+.remotion
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+__pycache__/
+*.py[cod]
+.venv/
+.python-version
+*.tsbuildinfo

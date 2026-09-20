@@ -1,0 +1,875 @@
+{
+  "schema_version": "0.1",
+  "guide_id": "newtral-magich-pro-assembly",
+  "title": "Newtral MagicH Pro — Assembly",
+  "content_model": "procedural",
+  "product": {
+    "brand": "Newtral",
+    "model": "MagicH-BPRO / MagicH-GPRO",
+    "category": "office chair"
+  },
+  "source": {
+    "type": "pdf",
+    "file": "Magic_H-BPRO_Ergonomic_Office_Chair_with_Foldable_Footrest_Magic_H-GPRO_.pdf",
+    "pages": [
+      {
+        "page": "1",
+        "label": "cover",
+        "image": "pages/p-01.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "2",
+        "label": "contents",
+        "image": "pages/p-02.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "3",
+        "label": "1",
+        "image": "pages/p-03.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "4",
+        "label": "2",
+        "image": "pages/p-04.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "5",
+        "label": "3",
+        "image": "pages/p-05.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "6",
+        "label": "4",
+        "image": "pages/p-06.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "7",
+        "label": "5",
+        "image": "pages/p-07.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "8",
+        "label": "6",
+        "image": "pages/p-08.jpg",
+        "width": 748,
+        "height": 1075
+      },
+      {
+        "page": "9",
+        "label": "7",
+        "image": "pages/p-09.jpg",
+        "width": 748,
+        "height": 1075
+      }
+    ],
+    "missing_pages": [],
+    "notes": "Manufacturer PDF, 40 pages, English section is PDF pages 1-9 (printed 1-7); other languages follow. Diagrams are vector; part letters and quantities inside the step figures are outlined text and do NOT appear in the text layer, so the parser must read them visually. Figure bboxes are normalized to the rendered page image (130 dpi, 748x1075). The parts list says each screw type ships with one spare."
+  },
+  "parts": [
+    {
+      "id": "A",
+      "name": "Headrest",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "B",
+      "name": "Backrest",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "C",
+      "name": "Backrest bracket",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "D",
+      "name": "Seat",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "E",
+      "name": "Armrest (set of 2)",
+      "qty": 2,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "F",
+      "name": "Mechanism",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "G",
+      "name": "Silicone cover (set of 3)",
+      "qty": 3,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "H",
+      "name": "Bolt M6x50mm",
+      "qty": 4,
+      "kind": "fastener",
+      "provenance": "manual"
+    },
+    {
+      "id": "I",
+      "name": "Bolt M6x35mm",
+      "qty": 6,
+      "kind": "fastener",
+      "provenance": "manual"
+    },
+    {
+      "id": "J",
+      "name": "Bolt M8x16mm",
+      "qty": 3,
+      "kind": "fastener",
+      "provenance": "manual"
+    },
+    {
+      "id": "K",
+      "name": "Locking knob",
+      "qty": 1,
+      "kind": "fastener",
+      "provenance": "manual"
+    },
+    {
+      "id": "L",
+      "name": "Hex key",
+      "qty": 1,
+      "kind": "tool",
+      "provenance": "manual"
+    },
+    {
+      "id": "M",
+      "name": "Base (four legs attached)",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "N",
+      "name": "Base leg (fifth)",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "P",
+      "name": "Bolt M6x20mm (pre-installed on base)",
+      "qty": 1,
+      "kind": "fastener",
+      "provenance": "manual"
+    },
+    {
+      "id": "Q",
+      "name": "Caster",
+      "qty": 5,
+      "kind": "component",
+      "provenance": "manual"
+    },
+    {
+      "id": "R",
+      "name": "Gas lift",
+      "qty": 1,
+      "kind": "component",
+      "provenance": "manual"
+    }
+  ],
+  "steps": [
+    {
+      "id": "s0",
+      "index": 0,
+      "source_label": null,
+      "title": "Check your parts",
+      "template": "parts_overview",
+      "parts_used": [
+        {
+          "id": "A",
+          "qty": 1
+        },
+        {
+          "id": "B",
+          "qty": 1
+        },
+        {
+          "id": "C",
+          "qty": 1
+        },
+        {
+          "id": "D",
+          "qty": 1
+        },
+        {
+          "id": "E",
+          "qty": 2
+        },
+        {
+          "id": "F",
+          "qty": 1
+        },
+        {
+          "id": "G",
+          "qty": 3
+        },
+        {
+          "id": "H",
+          "qty": 4
+        },
+        {
+          "id": "I",
+          "qty": 6
+        },
+        {
+          "id": "J",
+          "qty": 3
+        },
+        {
+          "id": "K",
+          "qty": 1
+        },
+        {
+          "id": "L",
+          "qty": 1
+        },
+        {
+          "id": "M",
+          "qty": 1
+        },
+        {
+          "id": "N",
+          "qty": 1
+        },
+        {
+          "id": "P",
+          "qty": 1
+        },
+        {
+          "id": "Q",
+          "qty": 5
+        },
+        {
+          "id": "R",
+          "qty": 1
+        }
+      ],
+      "tools": [
+        "L"
+      ],
+      "actions": [],
+      "figure": {
+        "page": "3",
+        "bbox": [
+          0.05,
+          0.11,
+          0.95,
+          0.94
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Before you start, lay out every part and check it against the list. You should have thirteen bolts in three sizes, five casters, and one hex key. Everything is tightened with that one key. You'll find one extra of each bolt type in the bag. That's a spare, not a missed step.",
+        "simple": "First, lay out all the parts. Count them. You need 13 bolts, 5 wheels, and 1 hex key. One extra bolt of each size is a spare."
+      },
+      "warnings": [],
+      "tips": [
+        {
+          "text": "Each screw type ships with one spare.",
+          "provenance": "manual"
+        },
+        {
+          "text": "Sort the three bolt sizes into separate piles now: H is 50mm, I is 35mm, J is 16mm.",
+          "provenance": "inferred"
+        }
+      ],
+      "options": null,
+      "checkpoint": "Every part on the list is present and the bolts are sorted by letter.",
+      "estimated_seconds": 14,
+      "review_notes": []
+    },
+    {
+      "id": "s1",
+      "index": 1,
+      "source_label": "Step 1",
+      "title": "Attach the mechanism to the seat",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "D",
+          "qty": 1
+        },
+        {
+          "id": "F",
+          "qty": 1
+        },
+        {
+          "id": "H",
+          "qty": 4
+        }
+      ],
+      "tools": [
+        "L"
+      ],
+      "actions": [
+        {
+          "verb": "flip",
+          "object": "D",
+          "target": null,
+          "qty": null,
+          "tool": null,
+          "direction": null,
+          "detail": "Turn the seat upside down on a soft surface."
+        },
+        {
+          "verb": "place",
+          "object": "F",
+          "target": "D",
+          "qty": null,
+          "tool": null,
+          "direction": "down",
+          "detail": "Set the mechanism on the underside of the seat with its four holes over the seat's threaded inserts."
+        },
+        {
+          "verb": "fasten",
+          "object": "H",
+          "target": "F",
+          "qty": 4,
+          "tool": "L",
+          "direction": "clockwise",
+          "detail": "Start all four bolts by hand, then tighten with the hex key."
+        }
+      ],
+      "figure": {
+        "page": "4",
+        "bbox": [
+          0.056,
+          0.185,
+          0.5,
+          0.532
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step one: attach the mechanism to the seat. Flip the seat upside down. Place the mechanism, part F, on the underside so its four holes line up with the seat. Insert the four H bolts and tighten them with the L hex key.",
+        "simple": "Step 1. Turn the seat over. Put part F on the bottom. Line up the holes. Put in the 4 H bolts. Tighten them with the L key."
+      },
+      "warnings": [],
+      "tips": [
+        {
+          "text": "Get all four bolts started before tightening any of them fully, so the holes stay aligned.",
+          "provenance": "inferred"
+        }
+      ],
+      "options": null,
+      "checkpoint": "The mechanism sits flat against the seat and all four bolts are snug.",
+      "estimated_seconds": 16,
+      "review_notes": []
+    },
+    {
+      "id": "s2",
+      "index": 2,
+      "source_label": "Step 2",
+      "title": "Attach the armrests",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "E",
+          "qty": 2
+        },
+        {
+          "id": "I",
+          "qty": 6
+        }
+      ],
+      "tools": [
+        "L"
+      ],
+      "actions": [
+        {
+          "verb": "place",
+          "object": "E",
+          "target": "D",
+          "qty": 2,
+          "tool": null,
+          "direction": null,
+          "detail": "With the seat still upside down, hold each armrest bracket against the mounting plate on its side of the seat."
+        },
+        {
+          "verb": "fasten",
+          "object": "I",
+          "target": "E",
+          "qty": 6,
+          "tool": "L",
+          "direction": "clockwise",
+          "detail": "Three bolts per armrest. Start by hand, then tighten with the hex key."
+        }
+      ],
+      "figure": {
+        "page": "4",
+        "bbox": [
+          0.5,
+          0.185,
+          0.944,
+          0.532
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step two: attach the armrests. Keep the seat upside down. Position each armrest, part E, against the mounting plate on the side of the seat. Secure each side with three I bolts, six in total, using the hex key.",
+        "simple": "Step 2. Keep the seat upside down. Put an armrest, part E, on each side. Use 3 I bolts on each side. Tighten with the L key."
+      },
+      "warnings": [],
+      "tips": [],
+      "options": null,
+      "checkpoint": "Both armrests are bolted on and don't rock when you push them.",
+      "estimated_seconds": 15,
+      "review_notes": []
+    },
+    {
+      "id": "s3",
+      "index": 3,
+      "source_label": "Step 3",
+      "title": "Attach the backrest bracket",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "C",
+          "qty": 1
+        },
+        {
+          "id": "J",
+          "qty": 3
+        }
+      ],
+      "tools": [
+        "L"
+      ],
+      "actions": [
+        {
+          "verb": "place",
+          "object": "C",
+          "target": "F",
+          "qty": null,
+          "tool": null,
+          "direction": null,
+          "detail": "Position the bracket at the rear of the mechanism and line up its three holes."
+        },
+        {
+          "verb": "fasten",
+          "object": "J",
+          "target": "C",
+          "qty": 3,
+          "tool": "L",
+          "direction": "clockwise",
+          "detail": "Insert the three J bolts and tighten with the hex key."
+        }
+      ],
+      "figure": {
+        "page": "4",
+        "bbox": [
+          0.056,
+          0.59,
+          0.5,
+          0.935
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step three: attach the backrest bracket. Position bracket C at the rear of the mechanism and line up the three holes. Fasten it with the three J bolts.",
+        "simple": "Step 3. Put bracket C on the back of the mechanism. Line up 3 holes. Put in 3 J bolts. Tighten."
+      },
+      "warnings": [],
+      "tips": [],
+      "options": null,
+      "checkpoint": "The bracket's curved arm points away from the seat and doesn't move when you pull on it.",
+      "estimated_seconds": 13,
+      "review_notes": []
+    },
+    {
+      "id": "s4",
+      "index": 4,
+      "source_label": "Step 4",
+      "title": "Assemble the base",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "M",
+          "qty": 1
+        },
+        {
+          "id": "N",
+          "qty": 1
+        },
+        {
+          "id": "P",
+          "qty": 1
+        }
+      ],
+      "tools": [
+        "L"
+      ],
+      "actions": [
+        {
+          "verb": "insert",
+          "object": "N",
+          "target": "M",
+          "qty": null,
+          "tool": null,
+          "direction": "in",
+          "detail": "Slide the fifth leg into the open socket on the base hub."
+        },
+        {
+          "verb": "fasten",
+          "object": "P",
+          "target": "N",
+          "qty": 1,
+          "tool": "L",
+          "direction": "clockwise",
+          "detail": "Bolt P is already sitting in the hub. Tighten it with the hex key to lock the leg."
+        }
+      ],
+      "figure": {
+        "page": "4",
+        "bbox": [
+          0.5,
+          0.59,
+          0.944,
+          0.935
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step four: assemble the base. The base, part M, arrives with four legs attached and one bolt, P, already in place. Slide the fifth leg, part N, into the open socket and tighten bolt P with the hex key.",
+        "simple": "Step 4. Take the base, part M. Push leg N into the empty slot. Tighten bolt P with the L key."
+      },
+      "warnings": [],
+      "tips": [],
+      "options": null,
+      "checkpoint": "All five legs are even and the fifth leg doesn't wiggle.",
+      "estimated_seconds": 14,
+      "review_notes": []
+    },
+    {
+      "id": "s5",
+      "index": 5,
+      "source_label": "Step 5",
+      "title": "Insert the gas lift and casters",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "R",
+          "qty": 1
+        },
+        {
+          "id": "Q",
+          "qty": 5
+        }
+      ],
+      "tools": [],
+      "actions": [
+        {
+          "verb": "insert",
+          "object": "R",
+          "target": "M",
+          "qty": 1,
+          "tool": null,
+          "direction": "down",
+          "detail": "Drop the gas lift into the center hole of the base, wide end down."
+        },
+        {
+          "verb": "press",
+          "object": "Q",
+          "target": "M",
+          "qty": 5,
+          "tool": null,
+          "direction": "in",
+          "detail": "Push a caster into the socket at the end of each leg until it seats. Five in total."
+        }
+      ],
+      "figure": {
+        "page": "5",
+        "bbox": [
+          0.07,
+          0.148,
+          0.505,
+          0.465
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step five: insert the gas lift and casters. Drop the gas lift, part R, into the center hole of the base, wide end down. Then push a caster, part Q, into the socket at the end of each leg until it seats. Five in total.",
+        "simple": "Step 5. Put the gas lift R into the middle of the base. Push a wheel Q into each leg. Do all 5."
+      },
+      "warnings": [],
+      "tips": [
+        {
+          "text": "If a caster won't seat, stand the base on the caster and press down with your body weight.",
+          "provenance": "inferred"
+        }
+      ],
+      "options": null,
+      "checkpoint": "The gas lift stands straight and all five casters roll freely.",
+      "estimated_seconds": 16,
+      "review_notes": []
+    },
+    {
+      "id": "s6",
+      "index": 6,
+      "source_label": "Step 6",
+      "title": "Put the seat on the base",
+      "template": "figure_action",
+      "parts_used": [],
+      "tools": [],
+      "actions": [
+        {
+          "verb": "flip",
+          "object": "D",
+          "target": null,
+          "qty": null,
+          "tool": null,
+          "direction": null,
+          "detail": "Turn the seat assembly right side up."
+        },
+        {
+          "verb": "place",
+          "object": "D",
+          "target": "R",
+          "qty": null,
+          "tool": null,
+          "direction": "down",
+          "detail": "Lower the mechanism's center socket onto the top of the gas lift and press down firmly."
+        }
+      ],
+      "figure": {
+        "page": "5",
+        "bbox": [
+          0.505,
+          0.13,
+          0.936,
+          0.465
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step six: put the seat on the base. Turn the seat assembly upright, then lower the socket under the mechanism onto the top of the gas lift. Press down firmly. It locks fully the first time you sit in it.",
+        "simple": "Step 6. Turn the seat right side up. Set it on top of the gas lift. Push down hard."
+      },
+      "warnings": [
+        {
+          "text": "Keep fingers clear of the socket as the seat drops onto the gas lift.",
+          "provenance": "inferred"
+        }
+      ],
+      "tips": [],
+      "options": null,
+      "checkpoint": "The seat is centered on the lift and doesn't lift off when you pull up on it.",
+      "estimated_seconds": 14,
+      "review_notes": []
+    },
+    {
+      "id": "s7",
+      "index": 7,
+      "source_label": "Step 7",
+      "title": "Attach the backrest and choose its height",
+      "template": "options",
+      "parts_used": [
+        {
+          "id": "B",
+          "qty": 1
+        },
+        {
+          "id": "K",
+          "qty": 1
+        }
+      ],
+      "tools": [],
+      "actions": [
+        {
+          "verb": "place",
+          "object": "B",
+          "target": "C",
+          "qty": null,
+          "tool": null,
+          "direction": "in",
+          "detail": "Hold the backrest against the bracket so the bracket's end enters the slot on the back of the backrest."
+        },
+        {
+          "verb": "choose",
+          "object": "B",
+          "target": null,
+          "qty": null,
+          "tool": null,
+          "direction": null,
+          "detail": "Line the bracket up with height mark 1, 2, or 3 inside the slot."
+        },
+        {
+          "verb": "fasten",
+          "object": "K",
+          "target": "B",
+          "qty": 1,
+          "tool": null,
+          "direction": "clockwise",
+          "detail": "Push knob K through from behind and tighten by hand."
+        }
+      ],
+      "figure": {
+        "page": "5",
+        "bbox": [
+          0.07,
+          0.56,
+          0.936,
+          0.935
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step seven: attach the backrest. Hold the backrest, part B, against the bracket so the bracket's end goes into the slot on the back. Inside the slot are three height marks: one, two, and three. Line up with the one you want, then push knob K through from behind and tighten it by hand. You can change this later.",
+        "simple": "Step 7. Put the backrest B onto the bracket. Pick a height: 1, 2, or 3. Push knob K in from the back and turn it tight."
+      },
+      "warnings": [],
+      "tips": [
+        {
+          "text": "Start with position 2 and adjust after you've sat in the chair.",
+          "provenance": "inferred"
+        }
+      ],
+      "options": {
+        "prompt": "Choose the backrest height",
+        "choices": [
+          {
+            "id": "1",
+            "label": "Position 1 (top mark)"
+          },
+          {
+            "id": "2",
+            "label": "Position 2 (middle mark)"
+          },
+          {
+            "id": "3",
+            "label": "Position 3 (bottom mark)"
+          }
+        ],
+        "default": "2"
+      },
+      "checkpoint": "The backrest doesn't slide when you push down on it and the knob is snug.",
+      "estimated_seconds": 20,
+      "review_notes": []
+    },
+    {
+      "id": "s8",
+      "index": 8,
+      "source_label": "Step 8",
+      "title": "Attach the silicone cover",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "G",
+          "qty": 1
+        }
+      ],
+      "tools": [],
+      "actions": [
+        {
+          "verb": "snap",
+          "object": "G",
+          "target": "C",
+          "qty": 1,
+          "tool": null,
+          "direction": "in",
+          "detail": "Press the cover over the bracket joint on the side of the backrest until it snaps on."
+        }
+      ],
+      "figure": {
+        "page": "6",
+        "bbox": [
+          0.064,
+          0.125,
+          0.505,
+          0.458
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step eight: attach the silicone cover. Snap cover G over the bracket joint on the side of the backrest.",
+        "simple": "Step 8. Snap cover G over the joint on the side."
+      },
+      "warnings": [],
+      "tips": [],
+      "options": null,
+      "checkpoint": "The cover sits flush with no gap.",
+      "estimated_seconds": 9,
+      "review_notes": [
+        "Parts list shows G as a set of three covers; the step diagram shows one location. Confirm where the other two go."
+      ]
+    },
+    {
+      "id": "s9",
+      "index": 9,
+      "source_label": "Step 9",
+      "title": "Attach the headrest",
+      "template": "figure_action",
+      "parts_used": [
+        {
+          "id": "A",
+          "qty": 1
+        }
+      ],
+      "tools": [],
+      "actions": [
+        {
+          "verb": "insert",
+          "object": "A",
+          "target": "B",
+          "qty": 1,
+          "tool": null,
+          "direction": "down",
+          "detail": "Slide the headrest post straight down into the slot at the top of the backrest until it seats."
+        }
+      ],
+      "figure": {
+        "page": "6",
+        "bbox": [
+          0.505,
+          0.125,
+          0.936,
+          0.458
+        ],
+        "highlights": []
+      },
+      "narration": {
+        "standard": "Step nine: attach the headrest. Slide the headrest post, part A, straight down into the slot at the top of the backrest until it seats. That's the chair assembled.",
+        "simple": "Step 9. Push the headrest A down into the top of the backrest. Done."
+      },
+      "warnings": [],
+      "tips": [],
+      "options": null,
+      "checkpoint": "The headrest holds its position and the chair is complete.",
+      "estimated_seconds": 10,
+      "review_notes": []
+    }
+  ]
+}
