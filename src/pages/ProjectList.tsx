@@ -2,7 +2,6 @@ import { Plus } from "lucide-react";
 import type { StoredProject } from "../lib/projectsStore";
 import { LEGAL_OWNER, SUPPORT_EMAIL, SUPPORT_MAILTO } from "../lib/support";
 import AppHeader from "../chrome/AppHeader";
-import OrangeButton from "../chrome/OrangeButton";
 import FigureThumb from "../components/FigureThumb";
 
 const HOW_IT_WORKS = [
@@ -99,7 +98,7 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
             <div className="mt-3 rounded-2xl border border-rule bg-chrome px-4 py-4">
               <p className="font-bold">No guides yet</p>
               <p className="mt-1 text-sm leading-snug text-ash">
-                Tap New guide to turn a PDF or page photos into clips.
+                Tap New to turn a PDF or page photos into clips.
               </p>
             </div>
           ) : (
@@ -113,7 +112,7 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
           )}
         </section>
 
-        <p className="mt-3 shrink-0 px-0.5 text-sm leading-snug text-ash">
+        <p className="mt-3 shrink-0 px-0.5 pb-1 text-sm leading-snug text-ash">
           Help & support{" "}
           <a
             href={SUPPORT_MAILTO}
@@ -123,10 +122,6 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
           </a>
           <span className="mt-0.5 block">{LEGAL_OWNER}</span>
         </p>
-      </div>
-
-      <div className="bg-chrome px-4 pb-6 pt-2">
-        <OrangeButton className="rounded-full" onClick={onNew}>New guide</OrangeButton>
       </div>
     </div>
   );

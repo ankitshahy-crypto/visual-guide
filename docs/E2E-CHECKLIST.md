@@ -34,7 +34,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair**, Your guides (drafts or empty-state card), orange **New guide**. Help `ankit@triagedesk.ai`. No tab bar.
+- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair**, Your guides (drafts or empty-state card). Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
 - [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
@@ -84,9 +84,9 @@ On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack
 
 - [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still under Your guides (IndexedDB: this browser / this app install). Golden chair still the hero sample
 - [ ] Chrome strings say **Plainstep** (tab title, home screen). No leftover **Visual Guide** in headers, titles, or system name
-- [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet.
+- [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet. Bottom **Help** tab opens `#/help` with the same mailbox.
 - [ ] Chrome is dark (near-black), clip player stage is paper-white (black line art, orange do-this-now, green checkpoint on white)
-- [ ] Safe areas on iOS: header below notch; Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
+- [ ] Safe areas on iOS: header below notch; Home/New/Help pill and Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
 - [ ] New guide file pick on iOS does not crash (photo library / camera usage strings are in Info.plist; camera scan still unused)
 
 ---

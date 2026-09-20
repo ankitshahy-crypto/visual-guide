@@ -5,6 +5,8 @@ import { describe, expect, it } from "vitest";
 const root = resolve(import.meta.dirname, "../..");
 const home = readFileSync(resolve(import.meta.dirname, "ProjectList.tsx"), "utf8");
 const app = readFileSync(resolve(import.meta.dirname, "../App.tsx"), "utf8");
+const nav = readFileSync(resolve(root, "src/chrome/BottomNav.tsx"), "utf8");
+const help = readFileSync(resolve(import.meta.dirname, "HelpPage.tsx"), "utf8");
 const stepPlayer = readFileSync(resolve(root, "src/components/StepPlayer.tsx"), "utf8");
 
 describe("in-app home (Projects)", () => {
@@ -19,8 +21,7 @@ describe("in-app home (Projects)", () => {
     expect(home).toContain("Try MagicH Pro Chair");
     expect(home).toContain("Your guides");
     expect(home).toContain("No guides yet");
-    expect(home).toContain("Tap New guide to turn a PDF or page photos into clips.");
-    expect(home).toContain("New guide");
+    expect(home).toContain("Tap New to turn a PDF or page photos into clips.");
     expect(home).toContain("Sample");
   });
 
@@ -31,20 +32,31 @@ describe("in-app home (Projects)", () => {
   });
 
   it("does not clone Pocket home chrome", () => {
-    expect(home).not.toContain("Refer");
-    expect(home).not.toContain("streak");
-    expect(home).not.toContain("Training your Pocket");
-    expect(home).not.toContain("Ask Pocket");
-    expect(home).not.toContain("Start now");
-    expect(home).not.toMatch(/tab bar|bottom-nav|Ask Pocket/i);
+    const ui = home + nav + help;
+    expect(ui).not.toContain("Refer");
+    expect(ui).not.toContain("streak");
+    expect(ui).not.toContain("Training your Pocket");
+    expect(ui).not.toContain("Ask Pocket");
+    expect(ui).not.toContain("Start now");
+    expect(nav).toContain('label: "Home"');
+    expect(nav).toContain('label: "New"');
+    expect(nav).toContain('label: "Help"');
+    expect(nav).not.toContain('label: "Settings"');
+    expect(nav).not.toContain("Ask Pocket");
   });
 
-  it("keeps help, seller, and the orange New guide CTA", () => {
+  it("keeps help, seller, and a Home/New/Help pill nav", () => {
     expect(home).toContain("SUPPORT_EMAIL");
     expect(home).toContain("SUPPORT_MAILTO");
     expect(home).toContain("LEGAL_OWNER");
     expect(home).toContain("Help & support");
-    expect(home).toContain("onClick={onNew}>New guide</OrangeButton>");
+    expect(nav).toContain("data-bottom-nav");
+    expect(nav).toContain("rounded-full");
+    expect(app).toContain('h === "/help"');
+    expect(app).toContain("<BottomNav");
+    expect(help).toContain("SUPPORT_MAILTO");
+    expect(help).toContain("SUPPORT_EMAIL");
+    expect(help).toContain("LEGAL_OWNER");
   });
 
   it("does not add a marketing-site route", () => {
@@ -53,8 +65,10 @@ describe("in-app home (Projects)", () => {
     expect(app).toContain('return { page: "list" }');
   });
 
-  it("keeps the clip player paper-white", () => {
+  it("keeps the clip player paper-white and hides the tab there", () => {
     expect(stepPlayer).toContain("bg-paper");
     expect(stepPlayer).toContain("Paper-white stage");
+    expect(app).toContain('route.page === "help" ? "help"');
+    expect(app).toContain("tab ? (");
   });
 });

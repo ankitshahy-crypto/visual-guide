@@ -134,7 +134,8 @@ Phone-width column on a near-black desk. **App chrome** is charcoal (`#111214`) 
 
 | Hash | Screen | What it does |
 | --- | --- | --- |
-| `#/` | Home (Projects) | **Plainstep** wordmark, orange hero (pitch + How it works + **Try MagicH Pro Chair**), Your guides (local drafts / empty), **New guide**. Hamburger: Projects, New guide, **Help & support** (`mailto:ankit@triagedesk.ai`) |
+| `#/` | Home (Projects) | **Plainstep** wordmark, orange hero (pitch + How it works + **Try MagicH Pro Chair**), Your guides, floating **Home / New / Help** pill. Hamburger: Projects, New guide, **Help & support** (`mailto:ankit@triagedesk.ai`) |
+| `#/help` | Help | In-app help & support; mail `ankit@triagedesk.ai`; seller TriageDesk AI LLC |
 | `#/p/:id` | Step list | Simple words + Play all; cropped thumbs; numbered rows; orange Review badge |
 | `#/p/:id/s/:stepId` | Clip player | Number/title, letter chips, figure, caption, green checkpoint (inside the clip); Replay / Next. Choice overlay when the step has options. |
 
@@ -283,8 +284,8 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `public/narration/` — cached MP3s (`{hash}.mp3`); `cache/` is runtime-only
 - `src/pipeline/fixtures/` — recorded MagicH parse + sample video observation for CI/demo
 - `public/fixtures/` — sample page photos for the creator walkthrough
-- `src/pages/` — Home (Projects), New guide, Analyzing, Review, step list, clip player
-- `src/chrome/` — phone shell, header, toggles, buttons (menu includes Help & support mailto)
+- `src/pages/` — Home (Projects), New guide, Analyzing, Help, Review, step list, clip player
+- `src/chrome/` — phone shell, header, bottom Home/New/Help pill, toggles, buttons (menu includes Help & support mailto)
 - `src/lib/support.ts` — support email + legal owner constants
 - `src/native/` — Capacitor status bar / keyboard / splash init
 - `capacitor.config.ts` — app id `app.plainstep.ios`, app name Plainstep, `webDir: dist`
