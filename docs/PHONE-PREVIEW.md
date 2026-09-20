@@ -2,7 +2,11 @@
 
 Public HTTPS preview of **main** (in-app Plainstep home + Home / New / Help pill). Open in iPhone Safari — no Mac required.
 
-Live URL and claim link are posted on the latest preview PR after each anonymous Vercel deploy. **Claim within ~60 minutes** or the temporary URL expires.
+**Live (iPhone Safari):** https://temporary-fast-marsh-l6h0whc.vercel.app/
+
+**Claim this deployment (do this within ~60 minutes):** https://vercel.com/claim-deployment?code=46ef38d1-d0d2-4a69-86d3-b4d57a768276
+
+If the claim window passes, the temporary `*.vercel.app` URL expires. Redeploy with the commands below and claim the new link.
 
 ## What you should see
 
