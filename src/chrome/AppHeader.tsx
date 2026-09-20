@@ -4,6 +4,8 @@ import MenuSheet from "./MenuSheet";
 
 interface Props {
   title: string;
+  subtitle?: string;
+  wordmark?: boolean;
   back?: () => void;
   menu?: boolean;
   onProjects?: () => void;
@@ -15,6 +17,8 @@ interface Props {
 
 export default function AppHeader({
   title,
+  subtitle,
+  wordmark = false,
   back,
   menu = false,
   onProjects,
@@ -50,13 +54,27 @@ export default function AppHeader({
 
   const right = trailing ?? (showMenu && menuSide === "right" ? menuBtn : <span className="h-10 w-10" />);
 
+  const mark = wordmark ? (
+    <img
+      src={`${import.meta.env.BASE_URL}icons/plainstep-app-icon.svg`}
+      alt=""
+      width={32}
+      height={32}
+      className="h-8 w-8 shrink-0 border border-rule bg-paper"
+    />
+  ) : null;
+
   return (
     <>
-      <header className="flex items-center gap-2 px-4 pb-2 pt-4">
+      <header className={`flex gap-2 px-4 pb-2 pt-4 ${subtitle ? "items-start" : "items-center"}`}>
         {left}
-        <h1 className={`min-w-0 flex-1 text-2xl font-bold leading-tight ${align === "center" ? "text-center" : ""}`}>
-          {title}
-        </h1>
+        <div className={`min-w-0 flex-1 ${align === "center" ? "text-center" : ""}`}>
+          <h1 className={`text-2xl font-bold leading-tight ${wordmark ? "flex items-center gap-2" : ""} ${align === "center" && wordmark ? "justify-center" : ""}`}>
+            {mark}
+            {title}
+          </h1>
+          {subtitle ? <p className="mt-1 text-sm leading-snug text-ash">{subtitle}</p> : null}
+        </div>
         <div className="flex h-10 min-w-10 items-center justify-center">{right}</div>
       </header>
       {open && showMenu ? (

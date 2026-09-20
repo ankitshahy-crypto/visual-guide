@@ -75,12 +75,15 @@ describe("iOS Capacitor scaffold", () => {
     const readme = readFileSync(resolve(root, "README.md"), "utf8");
     const menu = readFileSync(resolve(root, "src/chrome/MenuSheet.tsx"), "utf8");
     const support = readFileSync(resolve(root, "src/lib/support.ts"), "utf8");
+    const home = readFileSync(resolve(root, "src/pages/ProjectList.tsx"), "utf8");
     expect(support).toContain(email);
     expect(support).toContain(owner);
     expect(readme).toContain(email);
     expect(readme).toContain(owner);
     expect(support).toContain("mailto:");
     expect(menu).toContain("SUPPORT_MAILTO");
+    expect(home).toContain("SUPPORT_MAILTO");
+    expect(home).toContain("LEGAL_OWNER");
   });
 
   it("uses Plainstep + placeholder bundle id that is easy to change", () => {
