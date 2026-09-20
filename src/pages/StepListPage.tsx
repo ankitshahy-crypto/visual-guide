@@ -25,13 +25,13 @@ export default function StepListPage({
   onOpenStep,
 }: Props) {
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <AppHeader title={project.name} back={onBack} align="center" />
       <div className="flex items-center justify-between gap-3 px-4 py-2">
         <Toggle on={simpleWords} onChange={onSimpleWords} label="Simple words" />
         <Toggle on={playAll} onChange={onPlayAll} label="Play all" accent />
       </div>
-      <div className="flex-1 px-4 pb-8">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-8">
         <StepList guide={project.guide} completed={completed} onSelect={onOpenStep} />
       </div>
     </div>

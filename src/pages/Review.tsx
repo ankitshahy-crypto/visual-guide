@@ -38,10 +38,10 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
   };
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <AppHeader title="Review" menu menuSide="right" onProjects={onProjects} onNew={onNew} />
 
-      <div className="flex-1 space-y-6 px-4 pb-4 pt-2">
+      <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-4 pb-4 pt-2">
         <section>
           <h2 className="mb-2 font-bold">Filled from video</h2>
           {fills.length === 0 ? (
@@ -63,7 +63,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
                     </div>
                   </div>
                   <div className="mt-3 flex justify-end">
-                    <InkButton className="w-auto px-5 py-2 text-base" onClick={() => accept(item)}>Accept</InkButton>
+                    <InkButton className="!w-auto px-5 py-2 text-base" onClick={() => accept(item)}>Accept</InkButton>
                   </div>
                 </li>
               ))}
@@ -104,7 +104,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
         </section>
       </div>
 
-      <div className="px-4 pb-6 pt-2">
+      <div className="bg-paper px-4 pb-6 pt-2">
         <OrangeButton onClick={onOpenGuide}>Open guide</OrangeButton>
       </div>
     </div>

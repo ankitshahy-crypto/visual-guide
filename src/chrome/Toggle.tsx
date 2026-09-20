@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function Toggle({ on, onChange, label, accent = false }: Props) {
-  const track = on ? (accent ? "bg-action" : "bg-ink") : "bg-[#d4d4d4]";
+  const track = on ? (accent ? "#f0552b" : "#000000") : "#c8c8c8";
   return (
     <label className="inline-flex cursor-pointer items-center gap-2">
       <button
@@ -15,10 +15,18 @@ export default function Toggle({ on, onChange, label, accent = false }: Props) {
         aria-checked={on}
         aria-label={label}
         onClick={() => onChange(!on)}
-        className={`relative h-7 w-12 shrink-0 border border-ink ${track} focus:outline-none focus-visible:ring-2 focus-visible:ring-action`}
+        className="relative shrink-0 overflow-hidden border-2 border-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+        style={{ width: 48, height: 28, background: track }}
       >
         <span
-          className={`absolute top-0.5 h-5 w-5 border border-ink bg-paper ${on ? "left-[1.55rem]" : "left-0.5"}`}
+          className="absolute bg-paper"
+          style={{
+            width: 20,
+            height: 20,
+            top: 2,
+            left: on ? 22 : 2,
+            border: "2px solid #000",
+          }}
         />
       </button>
       <span className="text-base">{label}</span>

@@ -15,7 +15,7 @@ interface Props {
 
 export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, onProjects }: Props) {
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <AppHeader
         title="Projects"
         menu
@@ -33,14 +33,14 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
         }
       />
 
-      <div className="flex-1 space-y-4 px-4 pb-4 pt-2">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4 pt-2">
         <ProjectCard project={golden} onOpen={onOpen} />
         {drafts.map((p) => (
           <ProjectCard key={p.id} project={p} onOpen={onOpen} onDelete={() => onDelete(p.id)} />
         ))}
       </div>
 
-      <div className="px-4 pb-6 pt-2">
+      <div className="bg-paper px-4 pb-6 pt-2">
         <OrangeButton onClick={onNew}>New guide</OrangeButton>
       </div>
     </div>

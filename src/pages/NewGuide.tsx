@@ -56,10 +56,10 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
   };
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <AppHeader title="New guide" back={onCancel} align="center" />
 
-      <div className="flex-1 space-y-6 px-4 pb-4 pt-2">
+      <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-4 pb-4 pt-2">
         <label className="block">
           <span className="font-bold">Project name:</span>
           <input
@@ -136,7 +136,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
         {error ? <p className="text-action" role="alert">{error}</p> : null}
       </div>
 
-      <div className="px-4 pb-6 pt-2">
+      <div className="bg-paper px-4 pb-6 pt-2">
         <OrangeButton onClick={continueCreate}>Continue</OrangeButton>
       </div>
     </div>

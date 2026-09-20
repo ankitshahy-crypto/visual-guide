@@ -90,9 +90,9 @@ export default function Analyzing({ onBack, onCreated }: Props) {
   const status = COPY[current][skippedVideo ? "noVideo" : "withVideo"];
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <AppHeader title="Analyzing" />
-      <div className="flex-1 px-4 pb-8 pt-4">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-8 pt-4">
         <ul className="space-y-3">
           {STAGES.map((s) => {
             const isDone = done.has(s.id);

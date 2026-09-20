@@ -38,7 +38,7 @@ export default function PlayerPage({
   const defLabel = step.options?.choices.find((c) => c.id === step.options?.default)?.label;
 
   return (
-    <div className="flex min-h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <div className="flex items-center px-2 pt-2">
         <button
           type="button"
@@ -50,7 +50,7 @@ export default function PlayerPage({
         </button>
       </div>
 
-      <div className="relative flex-1">
+      <div className="relative min-h-0 flex-1 overflow-y-auto">
         <StepPlayer
           guide={guide}
           step={step}
@@ -85,7 +85,7 @@ export default function PlayerPage({
         ) : null}
       </div>
 
-      <div className="grid grid-cols-2 gap-3 px-4 py-4">
+      <div className="grid grid-cols-2 gap-3 bg-paper px-4 py-4">
         <InkButton onClick={onReplay}>Replay</InkButton>
         <OrangeButton variant="outline" onClick={onNext}>{hasNext ? "Next" : "Done"}</OrangeButton>
       </div>
