@@ -41,11 +41,11 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
     <div className="flex h-full min-h-0 flex-col">
       <AppHeader title="Review" menu menuSide="right" onProjects={onProjects} onNew={onNew} />
 
-      <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-4 pb-4 pt-2">
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4 pt-2">
         <section>
           <h2 className="mb-2 font-bold">Filled from video</h2>
           {fills.length === 0 ? (
-            <p className="border border-rule px-3 py-4 text-ash">
+            <p className="border border-rule px-3 py-3 text-ash">
               {listFills(project.guide).length === 0
                 ? "Nothing inferred from video. The printed manual stands."
                 : "All video fills accepted."}
@@ -58,11 +58,10 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-ink text-xs font-bold text-paper">In</span>
                     <div className="min-w-0 flex-1">
                       <p className="font-bold">Inferred from video</p>
-                      <p className="mt-1 text-sm text-ash">Step {item.stepIndex === 0 ? "start" : item.stepIndex}: {item.stepTitle}</p>
-                      <p className="mt-2">{item.text}</p>
+                      <p className="mt-1 line-clamp-2 text-sm">{item.text}</p>
                     </div>
                   </div>
-                  <div className="mt-3 flex justify-end">
+                  <div className="mt-2 flex justify-end">
                     <InkButton className="!w-auto px-5 py-2 text-base" onClick={() => accept(item)}>Accept</InkButton>
                   </div>
                 </li>
@@ -74,7 +73,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
         <section>
           <h2 className="mb-2 font-bold">Conflicts</h2>
           {conflicts.length === 0 ? (
-            <p className="border border-rule px-3 py-4 text-ash">No manual vs video conflicts.</p>
+            <p className="border border-rule px-3 py-3 text-ash">No manual vs video conflicts.</p>
           ) : (
             <ul className="space-y-3">
               {conflicts.map((item, i) => (
@@ -83,13 +82,11 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-action text-sm font-bold text-paper">{i + 1}</span>
                     <div className="min-w-0 flex-1">
                       <p className="font-bold">Manual vs video</p>
-                      <p className="mt-1 text-sm text-ash">Step {item.stepIndex === 0 ? "start" : item.stepIndex}: {item.stepTitle}</p>
-                      <p className="mt-2">{item.text}</p>
                       {item.manualClaim ? (
-                        <p className="mt-2"><span className="font-bold">Manual: </span>{item.manualClaim}</p>
-                      ) : null}
+                        <p className="mt-2 text-sm"><span className="font-bold">Manual: </span>{item.manualClaim}</p>
+                      ) : <p className="mt-2 text-sm">{item.text}</p>}
                       {item.videoClaim ? (
-                        <p className="mt-1"><span className="font-bold">Video: </span>{item.videoClaim}</p>
+                        <p className="mt-1 line-clamp-3 text-sm"><span className="font-bold">Video: </span>{item.videoClaim}</p>
                       ) : null}
                     </div>
                   </div>
