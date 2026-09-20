@@ -26,7 +26,8 @@ type Route =
 
 function routeFromHash(): Route {
   const raw = location.hash.replace(/^#/, "") || "/";
-  const h = raw.endsWith("/") && raw.length > 1 ? raw.slice(0, -1) : raw;
+  const pathOnly = raw.split("?")[0] || "/";
+  const h = pathOnly.endsWith("/") && pathOnly.length > 1 ? pathOnly.slice(0, -1) : pathOnly;
   if (h === "/new") return { page: "new" };
   if (h === "/new/analyzing") return { page: "analyzing" };
   const review = /^\/p\/([^/]+)\/review$/.exec(h);

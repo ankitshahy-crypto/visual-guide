@@ -28,6 +28,56 @@ npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-n
 
 Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
 
+## Open on iPhone (HTTPS, no Mac)
+
+The product destination is still the App Store. Until TestFlight exists, a **static production build** of `main` is the way to tap through Prep + Section A (and Section B fixtures) in **iPhone Safari**.
+
+**iPhone URL (GitHub Pages, after the Pages workflow has run once):**
+
+https://ankitshahy-crypto.github.io/visual-guide/
+
+1. Safari → paste that URL (or the Vercel production URL if you connected the repo).
+2. You should land on **Projects** (`#/`). Title is **Plainstep**. Chrome is dark.
+3. **Section A:** open **MagicH Pro Chair**. Spoken chair clips are bundled MP3s (no API key). If silent, tap **Replay** after a tap (Safari autoplay).
+4. **Section B:** **New guide** → **Use fixture pages (no API key)**, or open `#/new?fixture=1`. That loads `parts-list.jpg` + `assembly-steps.jpg` and `https://www.youtube.com/watch?v=vgfixture001` on the phone — you do not need those files on the Camera Roll. Continue. Analyzing must finish without `OPENAI_API_KEY`.
+
+This host is the Vite `dist/` SPA only. There is **no** Node `/api/pipeline/*` server:
+
+| Path | On this HTTPS preview | On `npm run dev` |
+| --- | --- | --- |
+| Golden chair (Section A) | Works — authored JSON + `public/narration/*.mp3` | Same |
+| Fixture create (Section B) | Works — layout vision + recorded `vgfixture001` (no network, no key) | Same |
+| Live YouTube captions / oEmbed proxy | **No.** Client may try `noembed.com`; captions stay empty | Vite middleware |
+| OpenAI vision / server TTS | **No.** Leave `OPENAI_API_KEY` unset | Optional |
+| Draft TTS | iPhone `speechSynthesis` after a tap | espeak / OpenAI / browser |
+| IndexedDB drafts | This Safari profile | This browser |
+
+Hash routes (`#/p/…`) do not need a server rewrite. `vercel.json`, `netlify.toml`, `public/_redirects`, and `dist/404.html` still fall back to `index.html` for path-style URLs and GitHub Pages.
+
+### Connect Vercel (preferred owner click-path)
+
+No Vercel token is in this environment, so the first production deploy has to be clicked by the repo owner:
+
+1. Open [vercel.com/new](https://vercel.com/new) (log in with the GitHub user that owns `ankitshahy-crypto/visual-guide`).
+2. **Import** `ankitshahy-crypto/visual-guide`.
+3. Framework Preset: **Vite** (auto). Root: repository root. Build: `npm run build`. Output: `dist`.
+4. **Do not** set `OPENAI_API_KEY` or `VITE_OPENAI_API_KEY`. Fixture E2E must stay keyless.
+5. Deploy. Production URL looks like `https://visual-guide.vercel.app` (or the name you pick).
+6. Optional: Project → Settings → Domains → assign `plainstep` later. For iPhone testing the `*.vercel.app` URL is enough.
+7. Later commits to `main` auto-deploy Production.
+
+`vercel.json` already rewrites unknown paths to `index.html` and leaves `/api/*` alone so a later serverless pipeline host can be added without breaking the SPA.
+
+### GitHub Pages (this repo)
+
+1. GitHub → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Push to `main` (or **Actions → Pages → Run workflow**).
+3. Open https://ankitshahy-crypto.github.io/visual-guide/
+
+### Netlify / Cloudflare Pages
+
+Same build (`npm run build` → `dist`). `netlify.toml` and `public/_redirects` (`/* → /index.html` 200) cover those hosts. Do not inject `VITE_OPENAI_API_KEY`.
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)

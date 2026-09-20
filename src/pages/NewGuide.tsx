@@ -1,7 +1,13 @@
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Upload } from "lucide-react";
 import AppHeader from "../chrome/AppHeader";
 import OrangeButton from "../chrome/OrangeButton";
+import {
+  FIXTURE_CREATE_NAME,
+  FIXTURE_CREATE_YOUTUBE_URL,
+  loadFixtureCreatePhotos,
+  wantsFixtureCreate,
+} from "../lib/fixtureCreate";
 import { setPendingCreate } from "../lib/pendingCreate";
 import type { StoredFile } from "../lib/projectsStore";
 
@@ -19,8 +25,10 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
   const [pdfs, setPdfs] = useState<StoredFile[]>([]);
   const [photos, setPhotos] = useState<StoredFile[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [fixtureBusy, setFixtureBusy] = useState(false);
   const pdfRef = useRef<HTMLInputElement>(null);
   const photoRef = useRef<HTMLInputElement>(null);
+  const fixtureStarted = useRef(false);
 
   const onPdf = async (e: ChangeEvent<HTMLInputElement>) => {
     const next = await readFiles(e.target.files, "pdf");
@@ -33,6 +41,31 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
     if (next.length) setPhotos((prev) => [...prev, ...next]);
     e.target.value = "";
   };
+
+  const applyFixturePages = async () => {
+    setError(null);
+    setFixtureBusy(true);
+    try {
+      const next = await loadFixtureCreatePhotos();
+      setPhotos(next);
+      setPdfs([]);
+      setYoutubeUrl(FIXTURE_CREATE_YOUTUBE_URL);
+      setPackagingUrl("");
+      setShowQr(false);
+      setSkippedVideo(false);
+      setName((prev) => prev.trim() || FIXTURE_CREATE_NAME);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not load fixture pages.");
+    } finally {
+      setFixtureBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    if (fixtureStarted.current || !wantsFixtureCreate()) return;
+    fixtureStarted.current = true;
+    void applyFixturePages();
+  }, []);
 
   const skipVideo = () => {
     setYoutubeUrl("");
@@ -89,6 +122,17 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
           </div>
           <input ref={pdfRef} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(e) => void onPdf(e)} />
           <input ref={photoRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" multiple className="hidden" onChange={(e) => void onPhotos(e)} />
+          <button
+            type="button"
+            disabled={fixtureBusy}
+            onClick={() => void applyFixturePages()}
+            className="mt-3 w-full border border-rule bg-chrome px-3 py-2.5 text-chrome-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-action disabled:opacity-40"
+          >
+            {fixtureBusy ? "Loading fixture pages…" : "Use fixture pages (no API key)"}
+          </button>
+          <p className="mt-2 text-sm text-ash">
+            Phone / static host: loads the chair parts-list + assembly-steps photos and the recorded fixture YouTube id. Same as docs/E2E-CHECKLIST.md Section B. OPENAI_API_KEY is not used.
+          </p>
         </section>
 
         <section>

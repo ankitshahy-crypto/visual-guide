@@ -11,17 +11,19 @@ Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bot
 **Platform for this session**
 
 - [ ] Web (`npm run dev`)
+- [ ] Hosted HTTPS preview (iPhone Safari — no Mac). README **Open on iPhone**: https://ankitshahy-crypto.github.io/visual-guide/ (or the Vercel production URL)
 - [ ] iOS Simulator (this shell)
-- [ ] Physical iPhone (optional)
+- [ ] Physical iPhone (Capacitor / TestFlight, optional)
 
-Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and **B** if a Mac + Simulator can pick files) on iOS. Packaged iOS has no Vite `/api/pipeline` server — use the fixture YouTube URL, or skip live captions (see README **What works where**).
+Run **A–C** on web. On the **HTTPS preview**, run **Prep** (title / icon / Projects) + **A** + **B fixture path**. Packaged iOS and the static preview have no Vite `/api/pipeline` server — use the fixture YouTube URL (or **Use fixture pages**), or skip live captions (see README **What works where** / **Open on iPhone**).
 
 ---
 
 ## Prep
 
-- [ ] `npm install`
+- [ ] `npm install` (skip on the hosted iPhone preview)
 - [ ] Web: `npm run dev` → http://localhost:5173 (`#/` Projects)
+- [ ] Hosted iPhone: Safari → https://ankitshahy-crypto.github.io/visual-guide/ (`#/` Projects). Add to Home Screen is optional
 - [ ] iOS (Mac): `npm run ios:sync` then `npm run ios:open` — README **Open in Xcode / run Simulator**. Select **App** target, Team, iPhone simulator, Run
 - [ ] Browser tab / PWA title is **Plainstep**
 - [ ] iOS home screen / Simulator name is **Plainstep** (not a mid-word capital S)
@@ -62,6 +64,8 @@ Use this when OpenAI / live YouTube should not be required:
 2. Manual: `public/fixtures/parts-list.jpg` and `public/fixtures/assembly-steps.jpg` (or `public/golden/pages/p-03.jpg` + `p-04.jpg`)
 3. Video: `https://www.youtube.com/watch?v=vgfixture001` (recorded fixture, no network)
 4. Continue
+
+On **iPhone Safari** (hosted preview): tap **Use fixture pages (no API key)** or open `#/new?fixture=1` instead of picking files. Same two JPEGs + fixture YouTube id, no Camera Roll, no `OPENAI_API_KEY`.
 
 - [ ] Name is required (empty name shows an error)
 - [ ] Manual is required (Continue without PDF/photos shows an error)
