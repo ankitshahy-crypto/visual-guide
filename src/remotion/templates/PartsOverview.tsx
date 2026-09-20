@@ -16,8 +16,6 @@ const NOTE_H = 110;
 
 /** The parts list as a grid of letter tags — the checklist the user ticks against the bag. */
 export const PartsOverview: FC<Props> = ({ step, guide, level }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
   const sch = schedule(step);
   const parts = guide.parts;
   const cols = 4;
@@ -33,11 +31,10 @@ export const PartsOverview: FC<Props> = ({ step, guide, level }) => {
     <AbsoluteFill style={{ background: T.paper, fontFamily: T.font }}>
       <StepHeader step={step} width={CLIP_W} />
       <div style={{ position: "absolute", top: HEADER_H, left: PAD, width: gridW, display: "flex", flexWrap: "wrap", gap }}>
-        {parts.map((p, i) => {
-          const s = spring({ frame: frame - sch.body.from - i * 2, fps, config: { damping: 200 } });
+        {parts.map((p) => {
           const tool = p.kind === "tool";
           return (
-            <div key={p.id} style={{ width: tileW, height: tileH, border: tool ? `2px dashed ${T.ash}` : `2px solid ${T.ink}`, display: "flex", flexDirection: "column", opacity: s, transform: `scale(${0.9 + 0.1 * s})` }}>
+            <div key={p.id} style={{ width: tileW, height: tileH, border: tool ? `2px dashed ${T.ash}` : `2px solid ${T.ink}`, display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ background: tool ? T.paper : T.ink, color: tool ? T.ink : T.paper, fontWeight: 700, fontSize: 28, width: 48, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>{p.id}</div>
                 <div style={{ fontSize: 24, color: T.ash, paddingRight: 10 }}>×{p.qty}</div>

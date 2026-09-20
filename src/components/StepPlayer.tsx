@@ -42,6 +42,7 @@ export default function StepPlayer({ guide, step, level, autoPlay, replayKey, on
         controls
         autoPlay={autoPlay}
         clickToPlay
+        acknowledgeRemotionLicense
         style={{ width: "100%", height: "100%" }}
       />
     </div>

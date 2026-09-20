@@ -29,7 +29,6 @@ export const FigureAction: FC<Props> = ({ step, guide, level }) => {
   const page = step.figure ? pageByKey(guide, step.figure.page) : undefined;
   const aspect = page?.width && page?.height ? page.width / page.height : 0.7;
   const zoom = interpolate(frame, [sch.body.from, sch.total], [1.0, 1.14], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const figIn = interpolate(frame, [sch.body.from, sch.body.from + 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const ring = spring({ frame: frame - sch.body.from - 10, fps, config: { damping: 14 } });
 
   const chips = step.parts_used.map((r) => ({ ref: r, part: partById(guide, r.id) }));
@@ -38,12 +37,11 @@ export const FigureAction: FC<Props> = ({ step, guide, level }) => {
     <AbsoluteFill style={{ background: T.paper, fontFamily: T.font }}>
       <StepHeader step={step} width={CLIP_W} />
 
-      {/* parts used, as the manual's letter tags */}
+      {/* parts used, as the manual's letter tags — visible on frame 0 so a paused clip still reads */}
       <div style={{ position: "absolute", top: HEADER_H, left: PAD, right: PAD, height: CHIPS_H, display: "flex", gap: 14, alignContent: "flex-start", flexWrap: "wrap", overflow: "hidden", paddingTop: 6 }}>
-        {chips.map(({ ref, part }, i) => {
-          const s = spring({ frame: frame - 6 - i * 3, fps, config: { damping: 200 } });
+        {chips.map(({ ref, part }) => {
           return (
-            <div key={ref.id} style={{ ...box({ borderWidth: 2 }), display: "flex", alignItems: "center", height: 56, opacity: s, transform: `translateY(${(1 - s) * 10}px)` }}>
+            <div key={ref.id} style={{ ...box({ borderWidth: 2 }), display: "flex", alignItems: "center", height: 56 }}>
               <div style={{ background: T.ink, color: T.paper, fontWeight: 700, fontSize: 28, width: 52, height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>{ref.id}</div>
               <div style={{ padding: "0 16px", fontSize: 26, color: T.ink }}>
                 {part?.name ?? ref.id}{ref.qty > 1 ? ` ×${ref.qty}` : ""}
@@ -51,11 +49,10 @@ export const FigureAction: FC<Props> = ({ step, guide, level }) => {
             </div>
           );
         })}
-        {step.tools.map((t, i) => {
+        {step.tools.map((t) => {
           const part = partById(guide, t);
-          const s = spring({ frame: frame - 6 - (chips.length + i) * 3, fps, config: { damping: 200 } });
           return (
-            <div key={t} style={{ display: "flex", alignItems: "center", height: 56, border: `2px dashed ${T.ash}`, opacity: s }}>
+            <div key={t} style={{ display: "flex", alignItems: "center", height: 56, border: `2px dashed ${T.ash}` }}>
               <div style={{ color: T.ink, fontWeight: 700, fontSize: 28, width: 52, textAlign: "center" }}>{t}</div>
               <div style={{ padding: "0 16px 0 4px", fontSize: 26, color: T.ash }}>{part?.name ?? "tool"}</div>
             </div>
@@ -64,7 +61,7 @@ export const FigureAction: FC<Props> = ({ step, guide, level }) => {
       </div>
 
       {/* the manual's own drawing, zoomed to this step */}
-      <div style={{ position: "absolute", top: FIG_TOP, left: 0, width: CLIP_W, height: FIG_H, opacity: figIn }}>
+      <div style={{ position: "absolute", top: FIG_TOP, left: 0, width: CLIP_W, height: FIG_H }}>
         {step.figure && page ? (
           <FigureCrop
             image={page.image}
