@@ -12,7 +12,7 @@ Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bot
 
 - [ ] Web (`npm run dev`)
 - [ ] iOS Simulator (this shell)
-- [ ] Physical iPhone (optional)
+- [ ] Physical iPhone (optional) — or https://ankitshahy-crypto.github.io/visual-guide/ after [PHONE-PREVIEW.md](PHONE-PREVIEW.md)
 
 Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and **B** if a Mac + Simulator can pick files) on iOS. Packaged iOS has no Vite `/api/pipeline` server — use the fixture YouTube URL, or skip live captions (see README **What works where**).
 
