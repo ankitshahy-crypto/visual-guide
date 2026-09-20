@@ -11,19 +11,23 @@
     "render": "remotion render src/remotion/index.ts",
     "render:all": "node scripts/render-all.mjs",
     "validate": "python3 scripts/validate.py",
-    "test:pipeline": "vitest run src/pipeline/mergeSources.test.ts"
+    "test": "vitest run",
+    "test:pipeline": "vitest run src/pipeline src/lib"
   },
   "dependencies": {
     "@remotion/cli": "4.0.526",
     "@remotion/google-fonts": "4.0.526",
     "@remotion/player": "4.0.526",
+    "jpeg-js": "^0.4.4",
     "lucide-react": "^0.475.0",
+    "pdfjs-dist": "4.10.38",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "remotion": "4.0.526"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.0",

@@ -66,7 +66,7 @@ function sampleManual(): ManualParse {
 function sampleVideo(): VideoProposal {
   return {
     source: { youtube_url: "https://youtu.be/stub" },
-    fetchStatus: "stubbed",
+    fetchStatus: "fixture",
     log: [],
     stubbed: [],
     beats: [

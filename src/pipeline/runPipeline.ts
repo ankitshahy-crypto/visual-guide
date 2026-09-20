@@ -1,9 +1,10 @@
 import { assertGuide } from "../lib/validate";
 import { analyzeVideo } from "./analyzeVideo";
 import { mergeSources } from "./mergeSources";
-import { parseManual } from "./parseManual";
+import { parseManual, type ParseManualOptions } from "./parseManual";
 import type { PipelineResult, UploadFile } from "./types";
 import type { Guide } from "../types/guide";
+import type { AnalyzeVideoOptions } from "./analyzeVideo";
 
 export interface RunPipelineInput {
   name: string;
@@ -19,7 +20,9 @@ export interface RunPipelineOutput extends PipelineResult {
 export type PipelineStage = "parse" | "video" | "merge" | "conflicts";
 
 export interface RunPipelineOptions {
-  onStage?: (stage: PipelineStage) => void | Promise<void>;
+  onStage?: (stage: PipelineStage, detail?: string) => void | Promise<void>;
+  parse?: ParseManualOptions;
+  video?: AnalyzeVideoOptions;
 }
 
 /**
@@ -30,21 +33,34 @@ export async function runPipeline(input: RunPipelineInput, opts?: RunPipelineOpt
   const log: string[] = [];
   const stubbed: string[] = [];
   const guideId = slugify(input.name);
-  const notify = async (stage: PipelineStage) => {
-    await opts?.onStage?.(stage);
+  const notify = async (stage: PipelineStage, detail?: string) => {
+    await opts?.onStage?.(stage, detail);
   };
 
-  await notify("parse");
+  await notify("parse", "Reading the printed pages…");
   log.push("parseManual");
-  const manual = await parseManual(input.name, input.files);
+  const manual = await parseManual(input.name, input.files, {
+    ...opts?.parse,
+    onProgress: async (detail) => {
+      opts?.parse?.onProgress?.(detail);
+      await notify("parse", detail);
+    },
+  });
   log.push(...manual.log);
   stubbed.push(...manual.stubbed);
 
-  await notify("video");
+  const hasVideo = Boolean(input.youtubeUrl?.trim() || input.packagingUrl?.trim());
+  await notify("video", hasVideo ? "Filling gaps from manufacturer video…" : "No video — skipping.");
   log.push("analyzeVideo");
-  const video = analyzeVideo(manual, {
+  const video = await analyzeVideo(manual, {
     youtubeUrl: input.youtubeUrl,
     packagingUrl: input.packagingUrl,
+  }, {
+    ...opts?.video,
+    onProgress: async (detail) => {
+      opts?.video?.onProgress?.(detail);
+      await notify("video", detail);
+    },
   });
   if (video) {
     log.push(...video.log);
@@ -53,17 +69,17 @@ export async function runPipeline(input: RunPipelineInput, opts?: RunPipelineOpt
     log.push("no video locator — skip");
   }
 
-  await notify("merge");
+  await notify("merge", hasVideo ? "Keeping the manual; filling gaps from video…" : "Building steps from the manual…");
   log.push("mergeSources (manual wins; video fills gaps; conflicts → review_notes)");
   const guide = mergeSources({
     title: input.name,
     guideId,
-    product: { brand: "Unknown", model: input.name, category: "unspecified" },
+    product: manual.product ?? { brand: "Unknown", model: input.name, category: "unspecified" },
     manual,
     video,
   });
 
-  await notify("conflicts");
+  await notify("conflicts", hasVideo ? "Flagging disagreements — the printed page stands." : "Checking the draft against the schema…");
   log.push("validate");
   const valid = assertGuide(guide);
   log.push(`OK ${valid.steps.length} steps, ${valid.parts.length} parts`);

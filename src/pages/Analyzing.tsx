@@ -32,6 +32,7 @@ export default function Analyzing({ onBack, onCreated }: Props) {
   const [current, setCurrent] = useState<PipelineStage>("parse");
   const [done, setDone] = useState<Set<PipelineStage>>(new Set());
   const [skippedVideo, setSkippedVideo] = useState(false);
+  const [live, setLive] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const onCreatedRef = useRef(onCreated);
   const onBackRef = useRef(onBack);
@@ -48,6 +49,7 @@ export default function Analyzing({ onBack, onCreated }: Props) {
     }
     const hasVideo = Boolean(pending.youtubeUrl || pending.packagingUrl);
     setSkippedVideo(!hasVideo);
+    let lastStage: PipelineStage | null = null;
 
     void (async () => {
       try {
@@ -59,16 +61,20 @@ export default function Analyzing({ onBack, onCreated }: Props) {
             packagingUrl: pending.packagingUrl,
           },
           {
-            onStage: async (stage) => {
+            onStage: async (stage, detail) => {
               if (cancelled || seq !== analyzeSeq) return;
               setCurrent(stage);
+              if (detail) setLive(detail);
               setDone((prev) => {
                 const next = new Set(prev);
                 const idx = STAGES.findIndex((s) => s.id === stage);
                 STAGES.slice(0, idx).forEach((s) => next.add(s.id));
                 return next;
               });
-              await sleep(stage === "video" && !hasVideo ? 350 : 600);
+              if (lastStage !== stage) {
+                lastStage = stage;
+                await sleep(stage === "video" && !hasVideo ? 350 : 600);
+              }
             },
           },
         );
@@ -87,7 +93,7 @@ export default function Analyzing({ onBack, onCreated }: Props) {
     return () => { cancelled = true; };
   }, []);
 
-  const status = COPY[current][skippedVideo ? "noVideo" : "withVideo"];
+  const status = live || COPY[current][skippedVideo ? "noVideo" : "withVideo"];
 
   return (
     <div className="flex h-full min-h-0 flex-col">
