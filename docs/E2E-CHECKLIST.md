@@ -21,7 +21,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 ## Prep
 
 - [ ] `npm install`
-- [ ] Web: `npm run dev` → http://localhost:5173 (`#/` Projects)
+- [ ] Web: `npm run dev` → http://localhost:5173 (`#/` home / Projects)
 - [ ] iOS (Mac): `npm run ios:sync` then `npm run ios:open` — README **Open in Xcode / run Simulator**. Select **App** target, Team, iPhone simulator, Run
 - [ ] Browser tab / PWA title is **Plainstep**
 - [ ] iOS home screen / Simulator name is **Plainstep** (not a mid-word capital S)
@@ -34,7 +34,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` Projects lists the chair sample (and any local drafts below it) on **dark chrome** (charcoal, light text, orange New guide)
+- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair**, Your guides (drafts or empty-state card). Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
 - [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
@@ -74,7 +74,7 @@ Use this when OpenAI / live YouTube should not be required:
 - [ ] Review: **Filled from video** → **Accept** (if any fills)
 - [ ] Review: **Conflicts** → **Keep manual** and **Use video** (Use video must **not** overwrite the printed action; it records a tip)
 - [ ] **Open guide** → step list for that draft → play at least one step
-- [ ] Draft appears on Projects; golden chair is still there unchanged
+- [ ] Draft appears under Your guides; golden chair is still the hero sample unchanged
 
 On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack captions; the fixture URL above still exercises gap-fill offline. Note that in Findings if it fails.
 
@@ -82,11 +82,11 @@ On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack
 
 ## C. Regression / polish
 
-- [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still on Projects (IndexedDB: this browser / this app install). Golden chair still listed
+- [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still under Your guides (IndexedDB: this browser / this app install). Golden chair still the hero sample
 - [ ] Chrome strings say **Plainstep** (tab title, home screen). No leftover **Visual Guide** in headers, titles, or system name
-- [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet.
+- [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet. Bottom **Help** tab opens `#/help` with the same mailbox.
 - [ ] Chrome is dark (near-black), clip player stage is paper-white (black line art, orange do-this-now, green checkpoint on white)
-- [ ] Safe areas on iOS: header below notch; Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
+- [ ] Safe areas on iOS: header below notch; Home/New/Help pill and Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
 - [ ] New guide file pick on iOS does not crash (photo library / camera usage strings are in Info.plist; camera scan still unused)
 
 ---

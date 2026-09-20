@@ -4,9 +4,11 @@ import { assertGuide } from "./lib/validate";
 import { deleteDraft, getDraft, listDrafts, saveDraft, type StoredProject } from "./lib/projectsStore";
 import { needsReview } from "./lib/review";
 import PhoneShell from "./chrome/PhoneShell";
+import BottomNav, { type BottomTab } from "./chrome/BottomNav";
 import ProjectList from "./pages/ProjectList";
 import NewGuide from "./pages/NewGuide";
 import Analyzing from "./pages/Analyzing";
+import HelpPage from "./pages/HelpPage";
 import Review from "./pages/Review";
 import StepListPage from "./pages/StepListPage";
 import PlayerPage from "./pages/PlayerPage";
@@ -20,6 +22,7 @@ type Route =
   | { page: "list" }
   | { page: "new" }
   | { page: "analyzing" }
+  | { page: "help" }
   | { page: "steps"; id: string }
   | { page: "review"; id: string }
   | { page: "player"; id: string; stepId: string };
@@ -29,6 +32,7 @@ function routeFromHash(): Route {
   const h = raw.endsWith("/") && raw.length > 1 ? raw.slice(0, -1) : raw;
   if (h === "/new") return { page: "new" };
   if (h === "/new/analyzing") return { page: "analyzing" };
+  if (h === "/help") return { page: "help" };
   const review = /^\/p\/([^/]+)\/review$/.exec(h);
   if (review) return { page: "review", id: decodeURIComponent(review[1]) };
   const player = /^\/p\/([^/]+)\/s\/([^/]+)$/.exec(h);
@@ -174,80 +178,102 @@ export default function App() {
     }
   };
 
+  const tab: BottomTab | null =
+    route.page === "list" ? "home"
+      : route.page === "new" || route.page === "analyzing" ? "new"
+        : route.page === "help" ? "help"
+          : null;
+
   return (
     <PhoneShell>
-      {route.page === "list" ? (
-        <ProjectList
-          golden={golden}
-          drafts={drafts}
-          onOpen={(id) => go(`/p/${encodeURIComponent(id)}`)}
-          onNew={() => go("/new")}
-          onDelete={onDelete}
-          onProjects={() => go("/")}
-        />
-      ) : null}
+      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+          {route.page === "list" ? (
+            <ProjectList
+              golden={golden}
+              drafts={drafts}
+              onOpen={(id) => go(`/p/${encodeURIComponent(id)}`)}
+              onNew={() => go("/new")}
+              onDelete={onDelete}
+              onProjects={() => go("/")}
+            />
+          ) : null}
 
-      {route.page === "new" ? (
-        <NewGuide onCancel={() => go("/")} onContinue={() => go("/new/analyzing")} />
-      ) : null}
+          {route.page === "new" ? (
+            <NewGuide onCancel={() => go("/")} onContinue={() => go("/new/analyzing")} />
+          ) : null}
 
-      {route.page === "analyzing" ? (
-        <Analyzing onBack={() => go("/new")} onCreated={onCreated} />
-      ) : null}
+          {route.page === "analyzing" ? (
+            <Analyzing onBack={() => go("/new")} onCreated={onCreated} />
+          ) : null}
 
-      {route.page === "review" && open ? (
-        <Review
-          key={open.id}
-          project={open}
-          onProjects={() => go("/")}
-          onNew={() => go("/new")}
-          onOpenGuide={() => go(`/p/${encodeURIComponent(open.id)}`)}
-          onChange={(next) => { void patchOpen(next); }}
-        />
-      ) : null}
+          {route.page === "help" ? (
+            <HelpPage onHome={() => go("/")} onNew={() => go("/new")} />
+          ) : null}
 
-      {route.page === "steps" && open ? (
-        <StepListPage
-          key={open.id}
-          project={open}
-          simpleWords={simpleWords}
-          playAll={playAll}
-          completed={completed}
-          onSimpleWords={setSimpleWords}
-          onPlayAll={onPlayAll}
-          onBack={() => go("/")}
-          onOpenStep={(stepId) => go(`/p/${encodeURIComponent(open.id)}/s/${encodeURIComponent(stepId)}`)}
-        />
-      ) : null}
+          {route.page === "review" && open ? (
+            <Review
+              key={open.id}
+              project={open}
+              onProjects={() => go("/")}
+              onNew={() => go("/new")}
+              onOpenGuide={() => go(`/p/${encodeURIComponent(open.id)}`)}
+              onChange={(next) => { void patchOpen(next); }}
+            />
+          ) : null}
 
-      {route.page === "player" && open && playerStep ? (
-        <PlayerPage
-          key={`${open.id}-${playerStep.id}`}
-          guide={open.guide}
-          step={playerStep}
-          level={level}
-          replayKey={replayKey}
-          onReplay={() => setReplayKey((k) => k + 1)}
-          onNext={() => {
-            const nextStep = steps[playerIdx + 1];
-            if (nextStep) go(`/p/${encodeURIComponent(open.id)}/s/${encodeURIComponent(nextStep.id)}`);
-            else {
-              setPlayAll(false);
-              go(`/p/${encodeURIComponent(open.id)}`);
-            }
-          }}
-          onBack={() => go(`/p/${encodeURIComponent(open.id)}`)}
-          onEnded={onEnded}
-          hasNext={playerIdx >= 0 && playerIdx < steps.length - 1}
-        />
-      ) : null}
+          {route.page === "steps" && open ? (
+            <StepListPage
+              key={open.id}
+              project={open}
+              simpleWords={simpleWords}
+              playAll={playAll}
+              completed={completed}
+              onSimpleWords={setSimpleWords}
+              onPlayAll={onPlayAll}
+              onBack={() => go("/")}
+              onOpenStep={(stepId) => go(`/p/${encodeURIComponent(open.id)}/s/${encodeURIComponent(stepId)}`)}
+            />
+          ) : null}
 
-      {(route.page === "steps" || route.page === "review" || route.page === "player") && missing ? (
-        <p className="px-4 py-8 text-ash">
-          No project with that id in this browser.{" "}
-          <button type="button" className="underline" onClick={() => go("/")}>Back to projects</button>
-        </p>
-      ) : null}
+          {route.page === "player" && open && playerStep ? (
+            <PlayerPage
+              key={`${open.id}-${playerStep.id}`}
+              guide={open.guide}
+              step={playerStep}
+              level={level}
+              replayKey={replayKey}
+              onReplay={() => setReplayKey((k) => k + 1)}
+              onNext={() => {
+                const nextStep = steps[playerIdx + 1];
+                if (nextStep) go(`/p/${encodeURIComponent(open.id)}/s/${encodeURIComponent(nextStep.id)}`);
+                else {
+                  setPlayAll(false);
+                  go(`/p/${encodeURIComponent(open.id)}`);
+                }
+              }}
+              onBack={() => go(`/p/${encodeURIComponent(open.id)}`)}
+              onEnded={onEnded}
+              hasNext={playerIdx >= 0 && playerIdx < steps.length - 1}
+            />
+          ) : null}
+
+          {(route.page === "steps" || route.page === "review" || route.page === "player") && missing ? (
+            <p className="px-4 py-8 text-ash">
+              No project with that id in this browser.{" "}
+              <button type="button" className="underline" onClick={() => go("/")}>Back to projects</button>
+            </p>
+          ) : null}
+        </div>
+        {tab ? (
+          <BottomNav
+            active={tab}
+            onHome={() => go("/")}
+            onNew={() => go("/new")}
+            onHelp={() => go("/help")}
+          />
+        ) : null}
+      </div>
     </PhoneShell>
   );
 }

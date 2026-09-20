@@ -136,7 +136,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
         {error ? <p className="text-action" role="alert">{error}</p> : null}
       </div>
 
-      <div className="bg-chrome px-4 pb-6 pt-2">
+      <div className="bg-chrome px-4 pb-2 pt-2">
         <OrangeButton onClick={continueCreate}>Continue</OrangeButton>
       </div>
     </div>
