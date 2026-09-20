@@ -32,11 +32,21 @@ Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHEC
 
 The product destination is still the App Store. Until TestFlight exists, a **static production build** of `main` is the way to tap through Prep + Section A (and Section B fixtures) in **iPhone Safari**.
 
-**iPhone URL (GitHub Pages, after the Pages workflow has run once):**
+**iPhone Safari URL (Vercel production preview of this build):**
+
+https://temporary-speedy-orbit-vu265aa.vercel.app/
+
+This deploy is **anonymous**. It stays live if you **claim it within 60 minutes**:
+
+https://vercel.com/claim-deployment?code=e2d3db71-5771-4e08-b1a2-fbaad2adedde
+
+After you claim (or Import the GitHub repo — click-path below), the same HTTPS URL (or your new `*.vercel.app` production domain) is what you open on the phone. No Mac. No `OPENAI_API_KEY`.
+
+**Stable URL after GitHub Pages is enabled** (Settings → Pages → Source: GitHub Actions, then run the Pages workflow on `main`):
 
 https://ankitshahy-crypto.github.io/visual-guide/
 
-1. Safari → paste that URL (or the Vercel production URL if you connected the repo).
+1. Safari → paste the Vercel URL (or the Pages URL once it is live).
 2. You should land on **Projects** (`#/`). Title is **Plainstep**. Chrome is dark.
 3. **Section A:** open **MagicH Pro Chair**. Spoken chair clips are bundled MP3s (no API key). If silent, tap **Replay** after a tap (Safari autoplay).
 4. **Section B:** **New guide** → **Use fixture pages (no API key)**, or open `#/new?fixture=1`. That loads `parts-list.jpg` + `assembly-steps.jpg` and `https://www.youtube.com/watch?v=vgfixture001` on the phone — you do not need those files on the Camera Roll. Continue. Analyzing must finish without `OPENAI_API_KEY`.

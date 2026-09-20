@@ -11,7 +11,7 @@ Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bot
 **Platform for this session**
 
 - [ ] Web (`npm run dev`)
-- [ ] Hosted HTTPS preview (iPhone Safari — no Mac). README **Open on iPhone**: https://ankitshahy-crypto.github.io/visual-guide/ (or the Vercel production URL)
+- [ ] Hosted HTTPS preview (iPhone Safari — no Mac). README **Open on iPhone**: https://temporary-speedy-orbit-vu265aa.vercel.app/ (claim within 60 min; Pages later: https://ankitshahy-crypto.github.io/visual-guide/)
 - [ ] iOS Simulator (this shell)
 - [ ] Physical iPhone (Capacitor / TestFlight, optional)
 
