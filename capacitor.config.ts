@@ -14,9 +14,10 @@ const config: CapacitorConfig = {
   webDir: "dist",
   backgroundColor: "#ffffff",
   ios: {
+    // Xcode *build* scheme (target is still `App`). Not a display name.
+    // Future URL / deep-link schemes: lowercase `plainstep`.
     contentInset: "never",
     preferredContentMode: "mobile",
-    scheme: "Plainstep",
     limitsNavigationsToAppBoundDomains: false,
   },
   plugins: {

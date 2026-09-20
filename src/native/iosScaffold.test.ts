@@ -1,8 +1,29 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { extname, join, relative, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const root = resolve(import.meta.dirname, "../..");
+
+const SKIP_DIR = new Set(["node_modules", "dist", ".git", "out", "__pycache__", "xcuserdata", "DerivedData"]);
+const TEXT_EXT = new Set([
+  ".ts", ".tsx", ".html", ".md", ".json", ".plist", ".py", ".svg",
+  ".webmanifest", ".pbxproj", ".css", ".swift", ".xml", ".xcconfig", ".example",
+]);
+
+function walk(dir: string, out: string[] = []): string[] {
+  for (const name of readdirSync(dir)) {
+    if (SKIP_DIR.has(name)) continue;
+    const p = join(dir, name);
+    const rel = relative(root, p).replaceAll("\\", "/");
+    if (rel.startsWith("ios/App/App/public") || rel === "ios/App/App/capacitor.config.json" || rel === "ios/App/App/config.xml") {
+      continue;
+    }
+    const st = statSync(p);
+    if (st.isDirectory()) walk(p, out);
+    else if (TEXT_EXT.has(extname(name)) || name === ".env.example") out.push(p);
+  }
+  return out;
+}
 
 describe("iOS Capacitor scaffold", () => {
   const plist = readFileSync(resolve(root, "ios/App/App/Info.plist"), "utf8");
@@ -14,6 +35,23 @@ describe("iOS Capacitor scaffold", () => {
     expect(cap).toContain('appName: "Plainstep"');
     expect(plist).toContain("<string>Plainstep</string>");
     expect(pbx).toContain("PRODUCT_BUNDLE_IDENTIFIER = app.plainstep.ios;");
+  });
+
+  it("locks display spelling to Plainstep (capital P only) and ids to lowercase plainstep", () => {
+    const forbidden = [
+      "Plain" + "Step",
+      "plain" + "Step",
+      "Visual" + " Guide",
+      "app.visual" + "guide",
+    ];
+    const hits: string[] = [];
+    for (const file of walk(root)) {
+      const text = readFileSync(file, "utf8");
+      for (const needle of forbidden) {
+        if (text.includes(needle)) hits.push(`${relative(root, file)}: ${needle}`);
+      }
+    }
+    expect(hits).toEqual([]);
   });
 
   it("declares camera + photo library usage (QR scan is still URL paste)", () => {

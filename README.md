@@ -2,7 +2,7 @@
 
 **Plainstep** turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
 
-This GitHub repository is still named `visual-guide`. The product name is **Plainstep**.
+This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**.
 
 The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, paper white).
 
@@ -87,6 +87,8 @@ npm run ios:open
 
 App name on the home screen: **Plainstep**. Placeholder bundle id: `app.plainstep.ios`. Locked app icon: white field, black step path, orange check (`public/icons/plainstep-app-icon.png`, Xcode `AppIcon`).
 
+**Spelling (locked).** UI, Xcode, and App Store listing: `Plainstep` (capital P only). Bundle id / hosts / future URL schemes: lowercase `plainstep`. A later logo lockup may use a mid-word capital S; the app display name does not.
+
 ### Permissions (`ios/App/App/Info.plist`)
 
 | Key | Why |
@@ -102,7 +104,7 @@ Photo Library *add* / microphone keys are omitted (we do not save to Camera Roll
 Not done in this PR. Paid account required after Simulator.
 
 1. Enroll at [developer.apple.com/programs](https://developer.apple.com/programs).
-2. App Store Connect (ASC) → Apps → **+** → name **Plainstep**, bundle id `app.plainstep.ios` (or your changed id), SKU of your choice.
+2. App Store Connect (ASC) → Apps → **+** → name **Plainstep** (capital P only), bundle id `app.plainstep.ios` (or your changed id), SKU of your choice.
 3. Xcode target → Signing & Capabilities → Team. Enable **Automatically manage signing** for Debug. For distribution, Xcode creates an Apple Distribution cert + App Store provisioning profile.
 4. `npm run ios:sync`. Product → Archive (Any iOS Device). Organizer → Distribute App → App Store Connect → Upload.
 5. ASC → TestFlight → wait for processing → Internal testers (App Store Connect Users) first. External TestFlight needs a Beta App Review (privacy policy URL, contact, demo account if you later add auth).
