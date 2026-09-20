@@ -2,9 +2,21 @@ import type { CapacitorConfig } from "@capacitor/cli";
 import { KeyboardResize } from "@capacitor/keyboard";
 
 /**
- * Optional live-reload into the iOS Simulator from a Mac:
- *   CAPACITOR_LIVE_RELOAD=http://<lan-ip>:5173 npx cap sync ios
- * Leave unset for the packaged `dist/` bundle (TestFlight / device).
+ * Optional live-reload into the iOS Simulator / device from a Mac.
+ * Packaged default (unset): WKWebView loads bundled `dist/` — chair + fixture,
+ * no `/api/pipeline`. GitHub Pages is not used.
+ *
+ *   # Simulator (shares the Mac loopback)
+ *   npm run dev
+ *   npm run ios:live-sync          # CAPACITOR_LIVE_RELOAD=http://localhost:5173
+ *
+ *   # Physical iPhone on the same LAN
+ *   npm run dev -- --host --port 5173
+ *   CAPACITOR_LIVE_RELOAD=http://<mac-lan-ip>:5173 npm run ios:sync
+ *
+ * Unset CAPACITOR_LIVE_RELOAD and re-run `npm run ios:sync` before Archive /
+ * TestFlight or the app will keep loading that URL instead of `dist/`.
+ * See docs/IOS-DEPLOY.md.
  */
 const liveReload = process.env.CAPACITOR_LIVE_RELOAD?.trim();
 

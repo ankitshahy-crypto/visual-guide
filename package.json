@@ -14,8 +14,9 @@
     "narrate": "node scripts/generate-narration.mjs",
     "test": "vitest run",
     "test:pipeline": "vitest run src/pipeline src/lib",
-    "ios:sync": "npm run build && npx cap sync ios",
-    "ios:open": "npx cap open ios"
+    "ios:sync": "npm run build && npx cap sync ios && node scripts/check-ios-bundle.mjs",
+    "ios:open": "node scripts/ios-open.mjs",
+    "ios:live-sync": "CAPACITOR_LIVE_RELOAD=${CAPACITOR_LIVE_RELOAD:-http://localhost:5173} npm run ios:sync"
   },
   "dependencies": {
     "@capacitor/app": "^7.1.2",

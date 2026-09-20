@@ -1,0 +1,2 @@
+# Placeholder so Xcode's `public` folder reference exists after clone.
+# `npm run ios:sync` replaces this directory with Vite `dist/` (gitignored).

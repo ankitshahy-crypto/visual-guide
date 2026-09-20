@@ -1,24 +1,53 @@
 import { fetchPipelineJson, pipelineApiBase } from "./pipelineApi";
 import { forcePipelineFixture } from "../pipeline/env";
 
-/** Shown when Analyzing would otherwise spin on a static host with no `/api/pipeline`. */
+/** Shown when Analyzing would otherwise spin with no `/api/pipeline`. */
 export const LIVE_PROCESSING_NEEDS_SERVER =
-  "Live processing needs a server. Use fixture pages on this preview, or run locally with API.";
+  "Live processing needs a server. Use fixture pages, or run with npm run dev / set VITE_PIPELINE_API_URL.";
+
+export type LocationLike = {
+  protocol?: string;
+  hostname?: string;
+  port?: string;
+};
+
+export function currentLocation(): LocationLike {
+  if (typeof location === "undefined") return {};
+  return {
+    protocol: location.protocol,
+    hostname: location.hostname,
+    port: location.port,
+  };
+}
 
 export function hostnameLooksStatic(hostname: string): boolean {
   return hostname.trim().toLowerCase().endsWith(".github.io");
 }
 
 /**
- * GitHub Pages (and any `*.github.io`) ships `dist/` only — no Vite `/api/pipeline/*`
- * unless `VITE_PIPELINE_API_URL` points at a real host.
+ * Packaged Capacitor iOS loads the bundled `dist/` at `https://localhost` (no port).
+ * Live-reload (`CAPACITOR_LIVE_RELOAD=http://localhost:5173`) uses http + a Vite port
+ * and is *not* packaged — `/api/pipeline` then hits `npm run dev`.
+ */
+export function looksLikePackagedCapacitor(loc: LocationLike = currentLocation()): boolean {
+  const host = (loc.hostname ?? "").trim().toLowerCase();
+  const protocol = (loc.protocol ?? "").trim().toLowerCase();
+  const port = `${loc.port ?? ""}`;
+  return protocol === "https:" && host === "localhost" && port === "";
+}
+
+/**
+ * No live `/api/pipeline` on this origin unless `VITE_PIPELINE_API_URL` is set.
+ * True for GitHub Pages and for the packaged iOS bundle. False for `npm run dev`
+ * and for Capacitor live-reload against Vite.
  */
 export function looksLikeStaticHost(
-  hostname = typeof location !== "undefined" ? location.hostname : "",
+  hostname = currentLocation().hostname ?? "",
   apiBase = pipelineApiBase(),
 ): boolean {
   if (apiBase) return false;
-  return hostnameLooksStatic(hostname);
+  if (hostnameLooksStatic(hostname)) return true;
+  return looksLikePackagedCapacitor();
 }
 
 let probeCache: boolean | undefined;
@@ -68,7 +97,7 @@ export function liveUploadBlocked(input: {
   return null;
 }
 
-/** Skip POSTing page images / YouTube fetches at `/api/pipeline` on Pages. */
+/** Skip POSTing page images / YouTube fetches when this origin has no pipeline API. */
 export function shouldSkipLivePipelineApis(): boolean {
   if (forcePipelineFixture()) return true;
   return looksLikeStaticHost();

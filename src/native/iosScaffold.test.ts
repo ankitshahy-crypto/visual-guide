@@ -33,6 +33,7 @@ describe("iOS Capacitor scaffold", () => {
   it("points README at the human E2E checklist", () => {
     const readme = readFileSync(resolve(root, "README.md"), "utf8");
     expect(readme).toContain("docs/E2E-CHECKLIST.md");
+    expect(readme).toContain("docs/IOS-DEPLOY.md");
     const e2e = readFileSync(resolve(root, "docs/E2E-CHECKLIST.md"), "utf8");
     expect(e2e).toContain("## A. Assembler");
     expect(e2e).toContain("## B. Creator");
@@ -40,6 +41,31 @@ describe("iOS Capacitor scaffold", () => {
     expect(e2e.toLowerCase()).toContain("dark chrome");
     expect(e2e.toLowerCase()).toContain("paper-white");
     expect(e2e).toContain("ankit@triagedesk.ai");
+    expect(e2e).toContain("docs/IOS-DEPLOY.md");
+  });
+
+  it("documents the Mac → Simulator path without GitHub Pages", () => {
+    const doc = readFileSync(resolve(root, "docs/IOS-DEPLOY.md"), "utf8");
+    const pkg = readFileSync(resolve(root, "package.json"), "utf8");
+    expect(doc).toContain("git clone https://github.com/ankitshahy-crypto/visual-guide.git");
+    expect(doc).toContain("npm install");
+    expect(doc).toContain("npm run build");
+    expect(doc).toContain("npx cap sync ios");
+    expect(doc).toContain("npx cap open ios");
+    expect(doc).toContain("npm run ios:sync");
+    expect(doc).toContain("npm run ios:open");
+    expect(doc).toContain("npm run ios:live-sync");
+    expect(doc).toContain("npm run dev");
+    expect(doc).toContain("app.plainstep.ios");
+    expect(doc).toContain("$99");
+    expect(doc).toContain("TestFlight");
+    expect(doc).toContain("VITE_PIPELINE_API_URL");
+    expect(doc).toContain("Use fixture pages");
+    expect(doc).toMatch(/GitHub Pages is \*\*No\*\*|does \*\*not\*\* use GitHub Pages|Pages is \*\*No\*\*/);
+    expect(pkg).toContain("\"ios:sync\"");
+    expect(pkg).toContain("\"ios:open\"");
+    expect(pkg).toContain("\"ios:live-sync\"");
+    expect(plist).toContain("NSAllowsLocalNetworking");
   });
 
   it("defaults app chrome to dark and keeps the clip stage paper-white", () => {

@@ -26,6 +26,11 @@
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Plainstep will use the camera to scan a packaging QR code. Scanning is not in this build — paste the YouTube or packaging URL instead.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

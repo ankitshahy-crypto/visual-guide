@@ -28,7 +28,9 @@ npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-n
 
 Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
 
-iPhone Safari (no Mac): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — GitHub Pages HTTPS preview at `https://ankitshahy-crypto.github.io/visual-guide/` after the Pages workflow on `main` (Settings → Pages → Source: **GitHub Actions**, once).
+**iOS on a Mac (product E2E):** [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md) — clone → `npm install` → `npm run ios:sync` → Simulator. **GitHub Pages is not required** for that path. Chair + fixture run from the bundled `dist/`.
+
+iPhone Safari (no Mac, optional preview only): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — GitHub Pages HTTPS at `https://ankitshahy-crypto.github.io/visual-guide/` after the Pages workflow on `main` (Settings → Pages → Source: **GitHub Actions**, once).
 
 **Pages is static `dist/` only — no `/api/pipeline/*`.** Assembler: the **chair** sample. Creator: **Use fixture pages (no API key)** on `#/new`, or open `#/new?fixture=1`. Live PDF/photo + YouTube needs `npm run dev` (or a hosted API). A live upload on this preview errors instead of hanging on Analyzing.
 
@@ -40,44 +42,20 @@ All `remotion` / `@remotion/*` packages are pinned to the same exact version in 
 
 This is the same Vite/React app inside a WKWebView. **Capacitor** wraps `npm run build` (`dist/`) rather than rewriting screens. Expo was not used: an Expo/React Native app would duplicate Projects / New guide / Analyzing / Review / step list / player+TTS, and EAS is Expo-only. A WebView-inside-Expo wrapper is a poorer fit than Capacitor, which is built for this.
 
-Linux CI **cannot** compile an `.ipa`. Scaffold + `Info.plist` + Xcode project live in `ios/`. Build on a Mac.
-
-### Requirements (Mac)
-
-| Tool | Needed? | Notes |
-| --- | --- | --- |
-| macOS + Xcode 16+ (iOS 14.0 deployment target) | **Yes** — simulator, device, Archive | Xcode → Settings → Platforms → iOS SDK |
-| Apple Developer Program ($99/year) | For device, TestFlight, App Store | Simulator works with a free Apple ID |
-| CocoaPods / `pod install` | **No** | This project uses Capacitor 7 **Swift Package Manager** (`ios/App/CapApp-SPM`) |
-| EAS (Expo Application Services) | **No** | Not an Expo app |
-| Node 22 + `npm install` | Yes | Same as web |
-| Physical iPhone | Optional | Simulator is enough to click through screens; TestFlight needs a device |
-
-### Open in Xcode / run Simulator
+Linux CI **cannot** compile an `.ipa`. Scaffold + `Info.plist` + Xcode project live in `ios/`. **Build on a Mac — full command list: [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md).** GitHub Pages is not part of this path.
 
 ```bash
 npm install
-npm run ios:sync          # tsc + vite build → copy dist into ios/App/App/public + SPM packages
-# Xcode resolves @capacitor/* from node_modules (Package.swift path deps). npm install first.
-npm run ios:open          # opens ios/App/App.xcodeproj
+npm run ios:sync          # tsc + vite build → dist/ → ios/App/App/public + verify fixture/chair files
+npm run ios:open          # opens ios/App/App.xcodeproj (refuses if you skipped sync)
+# optional live create against Vite:
+#   npm run dev          # terminal A
+#   npm run ios:live-sync && npm run ios:open
 ```
 
-In Xcode:
+In Xcode: **App** target → Team → iPhone 16 simulator → Run. Bundle id `app.plainstep.ios`. CocoaPods / EAS: not used (Capacitor 7 SPM). Simulator: free Apple ID. Device / TestFlight / App Store: Apple Developer Program ($99/year) — checklist in the deploy doc.
 
-1. Select the **App** target.
-2. Signing & Capabilities → your Team. Change **Bundle Identifier** if `app.plainstep.ios` is taken (also change `appId` in `capacitor.config.ts` to match).
-3. Run destination: iPhone 16 simulator (or any iOS 14+ sim).
-4. Press Run. First SPM resolve needs network (`capacitor-swift-pm`).
-
-Live-reload from `npm run dev` (Mac + simulator on the same LAN):
-
-```bash
-npm run dev
-CAPACITOR_LIVE_RELOAD=http://<mac-lan-ip>:5173 npm run ios:sync
-npm run ios:open
-```
-
-`ios/App/App/public` is gitignored; always `ios:sync` before Archive.
+`ios/App/App/public` is gitignored (placeholder `.gitkeep` only); always `ios:sync` after pull and before Archive. Unset `CAPACITOR_LIVE_RELOAD` and `VITE_BASE` for a packaged build.
 
 ### What works where
 
@@ -89,8 +67,8 @@ npm run ios:open
 | PDF / page-photo picker | OS file picker | Files + Photos; camera permission is declared for a later QR scanner |
 | Scan packaging QR | URL paste | URL paste (same) |
 | Safe area / status bar | N/A (desk-black phone column) | Notch + home indicator padding; light-content status bar (white icons on dark chrome) |
-| `/api/pipeline/*` (YouTube captions, OpenAI vision, espeak/OpenAI TTS files) | Vite middleware | **No Node server.** oEmbed can fall back to `noembed.com`; captions/vision/file-TTS need `VITE_PIPELINE_API_URL` pointing at a host that implements the same routes, or skip video / use browser `speechSynthesis` |
-| Outbound network | Whatever the browser allows | HTTPS to YouTube / `i.ytimg.com` / `noembed.com` / Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) / optional `api.openai.com`. ATS is default (HTTPS only). No YouTube embed; we fetch metadata and poster JPEGs |
+| `/api/pipeline/*` (YouTube captions, OpenAI vision, espeak/OpenAI TTS files) | Vite middleware | **No Node server** in the ipa. Packaged `https://localhost` is treated as no-API (chair + fixture). Live-reload (`ios:live-sync` + `npm run dev`) or bake `VITE_PIPELINE_API_URL` for a hosted API. Browser `speechSynthesis` still works. |
+| Outbound network | Whatever the browser allows | HTTPS to Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`). Live YouTube / `noembed.com` only with live-reload or `VITE_PIPELINE_API_URL`. `NSAllowsLocalNetworking` allows HTTP to Vite on the Mac. No YouTube embed |
 | Remotion CLI / `npm run narrate` | Yes | N/A (Mac/Linux tools, not in the ipa) |
 
 App name on the home screen: **Plainstep**. Placeholder bundle id: `app.plainstep.ios`. Locked app icon: white field, black step path, orange check (`public/icons/plainstep-app-icon.png`, Xcode `AppIcon`).
@@ -104,12 +82,13 @@ App name on the home screen: **Plainstep**. Placeholder bundle id: `app.plainste
 | `NSPhotoLibraryUsageDescription` | New guide → page photos (system picker) |
 | `NSCameraUsageDescription` | Declared for a future packaging-QR scan. **Not used yet** — the control is still URL paste. Do not remove the string or a later camera picker can crash. |
 | `ITSAppUsesNonExemptEncryption` = `false` | HTTPS only; skip the export-compliance question in App Store Connect until you add crypto beyond TLS |
+| `NSAllowsLocalNetworking` | Simulator / device live-reload to `npm run dev` (`http://localhost:5173` or the Mac LAN IP) |
 
 Photo Library *add* / microphone keys are omitted (we do not save to Camera Roll or record audio).
 
 ### Next: Apple Developer + TestFlight (checklist)
 
-Not done in this PR. Paid account required after Simulator.
+Canonical copy: [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md) §4–5. Paid account required after Simulator. Next step for **live** create (not fixture): deploy `/api/pipeline` and set `VITE_PIPELINE_API_URL` at build time.
 
 1. Enroll at [developer.apple.com/programs](https://developer.apple.com/programs).
 2. App Store Connect (ASC) → Apps → **+** → name **Plainstep** (capital P only), bundle id `app.plainstep.ios` (or your changed id), SKU of your choice. Copyright / seller: **TriageDesk AI LLC**.
@@ -299,6 +278,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `capacitor.config.ts` — app id `app.plainstep.ios`, app name Plainstep, `webDir: dist`
 - `public/icons/plainstep-app-icon.png` — locked 1024 App Store / PWA icon
 - `ios/` — Xcode project (SPM). `npm run ios:sync` copies `dist/` into `ios/App/App/public`
+- `docs/IOS-DEPLOY.md` — Mac → Simulator / device / TestFlight (Pages not required)
 - `docs/E2E-CHECKLIST.md` — one human pass (assembler + creator + iOS shell)
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts

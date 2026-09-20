@@ -116,7 +116,7 @@ export default function NewGuide({ onCancel, onContinue, autoFixture }: Props) {
         {staticHost ? (
           <section data-static-preview-banner className="border border-action px-3 py-3">
             <p className="text-sm leading-snug">
-              This preview has no live server. Creator path: recorded fixture pages only.
+              This build has no live pipeline API. Creator path: recorded fixture pages only.
             </p>
             <OrangeButton
               className="mt-3"

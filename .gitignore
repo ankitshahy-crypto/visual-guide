@@ -16,7 +16,8 @@ __pycache__/
 *.tsbuildinfo
 public/narration/cache/
 public/narration/*.wav
-ios/App/App/public
+ios/App/App/public/*
+!ios/App/App/public/.gitkeep
 ios/App/build
 ios/App/Pods
 ios/App/output

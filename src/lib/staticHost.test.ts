@@ -5,6 +5,7 @@ import {
   LIVE_PROCESSING_NEEDS_SERVER,
   hostnameLooksStatic,
   liveUploadBlocked,
+  looksLikePackagedCapacitor,
   looksLikeStaticHost,
   promiseWithTimeout,
 } from "./staticHost";
@@ -21,13 +22,22 @@ describe("static / no-API host", () => {
     expect(looksLikeStaticHost("localhost", "")).toBe(false);
   });
 
+  it("treats packaged Capacitor (https://localhost, no port) as no-API, not Vite live-reload", () => {
+    expect(looksLikePackagedCapacitor({ protocol: "https:", hostname: "localhost", port: "" })).toBe(true);
+    expect(looksLikePackagedCapacitor({ protocol: "http:", hostname: "localhost", port: "5173" })).toBe(false);
+    expect(looksLikePackagedCapacitor({ protocol: "https:", hostname: "localhost", port: "5173" })).toBe(false);
+    expect(looksLikePackagedCapacitor({ protocol: "http:", hostname: "127.0.0.1", port: "" })).toBe(false);
+    expect(looksLikePackagedCapacitor({})).toBe(false);
+  });
+
   it("blocks live upload without fixture when the pipeline is missing", () => {
     expect(liveUploadBlocked({ fixture: true, pipelineAvailable: false })).toBeNull();
     expect(liveUploadBlocked({ fixture: true, pipelineAvailable: true })).toBeNull();
     expect(liveUploadBlocked({ fixture: false, pipelineAvailable: true })).toBeNull();
     expect(liveUploadBlocked({ pipelineAvailable: false })).toBe(LIVE_PROCESSING_NEEDS_SERVER);
     expect(LIVE_PROCESSING_NEEDS_SERVER).toContain("Live processing needs a server");
-    expect(LIVE_PROCESSING_NEEDS_SERVER).toContain("Use fixture pages on this preview");
+    expect(LIVE_PROCESSING_NEEDS_SERVER).toContain("Use fixture pages");
+    expect(LIVE_PROCESSING_NEEDS_SERVER).toContain("VITE_PIPELINE_API_URL");
   });
 
   it("times out a hanging promise", async () => {
@@ -40,6 +50,7 @@ describe("static / no-API host", () => {
     const analyzing = readFileSync(resolve(root, "src/pages/Analyzing.tsx"), "utf8");
     const app = readFileSync(resolve(root, "src/App.tsx"), "utf8");
     expect(neu).toContain("Use fixture pages (no API key)");
+    expect(neu).toContain("This build has no live pipeline API");
     expect(neu).toContain("liveUploadBlocked");
     expect(neu).toContain("autoFixture");
     expect(neu).toContain("data-static-preview-banner");
