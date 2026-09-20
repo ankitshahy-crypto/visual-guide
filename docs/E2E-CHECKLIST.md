@@ -84,6 +84,7 @@ On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack
 
 - [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still on Projects (IndexedDB: this browser / this app install). Golden chair still listed
 - [ ] Chrome strings say **Plainstep** (tab title, home screen). No leftover **Visual Guide** in headers, titles, or system name
+- [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet.
 - [ ] Chrome is dark (near-black), clip player stage is paper-white (black line art, orange do-this-now, green checkpoint on white)
 - [ ] Safe areas on iOS: header below notch; Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
 - [ ] New guide file pick on iOS does not crash (photo library / camera usage strings are in Info.plist; camera scan still unused)

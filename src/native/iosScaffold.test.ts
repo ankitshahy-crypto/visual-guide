@@ -39,6 +39,7 @@ describe("iOS Capacitor scaffold", () => {
     expect(e2e).toContain("## Findings");
     expect(e2e.toLowerCase()).toContain("dark chrome");
     expect(e2e.toLowerCase()).toContain("paper-white");
+    expect(e2e).toContain("ankit@triagedesk.ai");
   });
 
   it("defaults app chrome to dark and keeps the clip stage paper-white", () => {
@@ -66,6 +67,20 @@ describe("iOS Capacitor scaffold", () => {
     const native = readFileSync(resolve(root, "src/native/initNative.ts"), "utf8");
     expect(native).toContain("Style.Light");
     expect(native).not.toContain("Style.Dark");
+  });
+
+  it("wires help & support to ankit@triagedesk.ai (TriageDesk AI LLC)", () => {
+    const email = "ankit@triagedesk.ai";
+    const owner = "TriageDesk AI LLC";
+    const readme = readFileSync(resolve(root, "README.md"), "utf8");
+    const menu = readFileSync(resolve(root, "src/chrome/MenuSheet.tsx"), "utf8");
+    const support = readFileSync(resolve(root, "src/lib/support.ts"), "utf8");
+    expect(support).toContain(email);
+    expect(support).toContain(owner);
+    expect(readme).toContain(email);
+    expect(readme).toContain(owner);
+    expect(support).toContain("mailto:");
+    expect(menu).toContain("SUPPORT_MAILTO");
   });
 
   it("uses Plainstep + placeholder bundle id that is easy to change", () => {

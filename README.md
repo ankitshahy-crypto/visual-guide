@@ -2,7 +2,7 @@
 
 **Plainstep** turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
 
-This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**.
+This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**. Legal owner: **TriageDesk AI LLC**. Help & support: [ankit@triagedesk.ai](mailto:ankit@triagedesk.ai).
 
 The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, **dark chrome** default). The clip / Remotion player stage stays **paper white**.
 
@@ -106,12 +106,23 @@ Photo Library *add* / microphone keys are omitted (we do not save to Camera Roll
 Not done in this PR. Paid account required after Simulator.
 
 1. Enroll at [developer.apple.com/programs](https://developer.apple.com/programs).
-2. App Store Connect (ASC) → Apps → **+** → name **Plainstep** (capital P only), bundle id `app.plainstep.ios` (or your changed id), SKU of your choice.
+2. App Store Connect (ASC) → Apps → **+** → name **Plainstep** (capital P only), bundle id `app.plainstep.ios` (or your changed id), SKU of your choice. Copyright / seller: **TriageDesk AI LLC**.
 3. Xcode target → Signing & Capabilities → Team. Enable **Automatically manage signing** for Debug. For distribution, Xcode creates an Apple Distribution cert + App Store provisioning profile.
 4. `npm run ios:sync`. Product → Archive (Any iOS Device). Organizer → Distribute App → App Store Connect → Upload.
-5. ASC → TestFlight → wait for processing → Internal testers (App Store Connect Users) first. External TestFlight needs a Beta App Review (privacy policy URL, contact, demo account if you later add auth).
-6. Fill ASC privacy nutrition labels. This build: no tracking (`PrivacyInfo.xcprivacy`); drafts stay on-device (IndexedDB). YouTube/Fonts are outbound HTTPS. Update the form if you host `VITE_PIPELINE_API_URL`.
-7. App Store review (later): screenshots, review notes (golden chair is a fixture), encryption export already set in Info.plist.
+5. ASC → TestFlight → wait for processing → Internal testers (App Store Connect Users) first. External TestFlight needs a Beta App Review (privacy policy URL, contact, demo account if you later add auth). **Contact / support email: `ankit@triagedesk.ai`.** There is no hosted support or privacy URL yet — use that mailbox until a marketing/legal page exists. In-app: menu → **Help & support** (`mailto:ankit@triagedesk.ai`).
+6. Fill ASC privacy nutrition labels. This build: no tracking (`PrivacyInfo.xcprivacy`); drafts stay on-device (IndexedDB). YouTube/Fonts are outbound HTTPS. Update the form if you host `VITE_PIPELINE_API_URL`. Privacy questions: **ankit@triagedesk.ai** (same mailbox; no separate privacy URL in this PR).
+7. App Store review (later): screenshots, review notes (golden chair is a fixture; support contact `ankit@triagedesk.ai`), encryption export already set in Info.plist.
+
+### Support & legal (locked)
+
+| Field | Value |
+| --- | --- |
+| Product / App Store name | **Plainstep** |
+| Legal owner | **TriageDesk AI LLC** |
+| Help & support | [ankit@triagedesk.ai](mailto:ankit@triagedesk.ai) |
+| In-app | Hamburger menu → **Help & support** (`mailto:`) |
+| ASC Support URL | Not hosted yet (marketing site later). Testers and App Review: the email above |
+| ASC Privacy Policy URL | Not hosted yet. Privacy contact: the same email. Nutrition labels: no tracking |
 
 Change the bundle id in **both** `capacitor.config.ts` (`appId`) and Xcode (`PRODUCT_BUNDLE_IDENTIFIER` / Signing). Then `npx cap sync ios`.
 
@@ -123,7 +134,7 @@ Phone-width column on a near-black desk. **App chrome** is charcoal (`#111214`) 
 
 | Hash | Screen | What it does |
 | --- | --- | --- |
-| `#/` | Projects | List (golden chair + local drafts) and **New guide** |
+| `#/` | Projects | List (golden chair + local drafts) and **New guide**. Hamburger: Projects, New guide, **Help & support** (`mailto:ankit@triagedesk.ai`) |
 | `#/p/:id` | Step list | Simple words + Play all; cropped thumbs; numbered rows; orange Review badge |
 | `#/p/:id/s/:stepId` | Clip player | Number/title, letter chips, figure, caption, green checkpoint (inside the clip); Replay / Next. Choice overlay when the step has options. |
 
@@ -229,7 +240,7 @@ If neither files nor browser speech are available, the player shows a short stat
 
 - Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill). iOS camera permission is declared for that later scanner.
 - Human step editor, auth, share/publish
-- App Store submission / TestFlight upload (see iOS checklist). Marketing site.
+- App Store submission / TestFlight upload (see iOS checklist). Marketing site and hosted privacy/support pages (email stands in).
 
 ## Manual + QR / YouTube gap-fill
 
@@ -255,6 +266,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | App Store / TestFlight (cert + ASC; checklist above) |
 | Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | Hosted `/api/pipeline` for device YouTube captions / OpenAI |
 | Capacitor iOS shell (`ios/`, bundle id `app.plainstep.ios`, product name Plainstep) | Marketing site / brand campaign (**later**) |
+| Help & support `ankit@triagedesk.ai` (in-app mailto + ASC notes); owner TriageDesk AI LLC | Hosted support / privacy URLs |
 | Dark chrome default (clip / Remotion stage stays paper-white) | System light theme (optional, later) |
 | New guide + local draft persist + Review keep-manual / use-video | |
 | parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | |
@@ -272,7 +284,8 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `src/pipeline/fixtures/` — recorded MagicH parse + sample video observation for CI/demo
 - `public/fixtures/` — sample page photos for the creator walkthrough
 - `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player
-- `src/chrome/` — phone shell, header, toggles, buttons
+- `src/chrome/` — phone shell, header, toggles, buttons (menu includes Help & support mailto)
+- `src/lib/support.ts` — support email + legal owner constants
 - `src/native/` — Capacitor status bar / keyboard / splash init
 - `capacitor.config.ts` — app id `app.plainstep.ios`, app name Plainstep, `webDir: dist`
 - `public/icons/plainstep-app-icon.png` — locked 1024 App Store / PWA icon

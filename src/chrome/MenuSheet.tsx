@@ -1,3 +1,5 @@
+import { LEGAL_OWNER, SUPPORT_EMAIL, SUPPORT_MAILTO } from "../lib/support";
+
 interface Props {
   onClose: () => void;
   onProjects: () => void;
@@ -20,7 +22,18 @@ export default function MenuSheet({ onClose, onProjects, onNew }: Props) {
               New guide
             </button>
           </li>
+          <li>
+            <a
+              href={SUPPORT_MAILTO}
+              className="block w-full px-2 py-2 text-left text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+              onClick={onClose}
+            >
+              Help & support
+              <span className="mt-0.5 block text-sm font-normal text-ash">{SUPPORT_EMAIL}</span>
+            </a>
+          </li>
         </ul>
+        <p className="px-2 pt-2 text-sm text-ash">{LEGAL_OWNER}</p>
       </nav>
     </div>
   );
