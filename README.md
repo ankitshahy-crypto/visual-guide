@@ -13,7 +13,8 @@ One step == one clip. The same React component (`src/remotion/StepClip.tsx`) pla
 ```bash
 npm install
 npm run dev            # http://localhost:5173 — projects list; open the chair sample
-npm run test:pipeline  # mergeSources rules (manual wins, video gap-fill, conflicts)
+npm test               # pipeline + golden chair fixture
+npm run test:pipeline  # same tests (merge, parse, video, review)
 pip install -r requirements.txt
 npm run validate       # pydantic check on both golden JSON copies
 
@@ -58,19 +59,51 @@ Open a project (start with the chair sample):
 6. **Play all** from the step list. **Replay** / **Next** on the player.
 7. Orange **review** flag for parser uncertainty; **conflict** when the optional video disagrees with the manual. The printed manual always stands.
 
-## Creator (this PR)
+## Creator
 
 `#/new` → `#/new/analyzing` → `#/p/:id/review` (when video fills or conflicts exist) → step list / player.
 
-1. **parseManual** — turns uploads into `source.manual` pages the player can crop. Vision read of letters/bboxes is stubbed (placeholder part `X`, full-page crop, review flags).
-2. **analyzeVideo** — stores the locator. Does **not** fetch YouTube yet. If a URL is present it proposes example gap-fills (click/feel, orientation) plus a conflict so merge can be tested.
-3. **mergeSources** — real rules: manual wins; video may add `inferred_from_video` actions/tips; disagreements become `review_notes` of kind `conflict` and never overwrite a manual action, figure, or part.
+1. **parseManual** — rasterizes PDFs (pdf.js), measures photos, then reads letters / quantities / figure regions. Provider chain: layout vision (orange letter tags, step grids) → recorded MagicH fixture when that layout matches → OpenAI vision when a key is configured → PDF text-layer / OCR-like heuristics. Last resort is a structural page draft with uncertainty flags — not a silent stub.
+2. **analyzeVideo** — fetches YouTube oEmbed, captions, and poster frames via the `npm run dev` proxy (`/api/pipeline/...`). Music-only audio is ignored; teaching actions are derived from visuals + the printed manual. Beats are aligned to manual steps: extras become `inferred_from_video` gap-fills; disagreements become orange conflicts. The recorded fixture URL exercises this path offline.
+3. **mergeSources** — manual wins; video may add `inferred_from_video` actions/tips; disagreements become `review_notes` of kind `conflict` and never overwrite a manual action, figure, or part.
 4. **validate** — schema + parts catalog.
 5. **narrate** — fills standard + simple if the parse did not.
 
-On Review, Accept keeps an inferred video fill. Keep manual drops the conflict flag (manual already stands). Use video records the video claim as a tip and does **not** overwrite the manual action.
+Analyzing checklist stages are the real pipeline phases (Reading manual → Watching video → Merging steps → Checking conflicts) with live status text.
+
+On Review, **Accept** keeps an inferred video fill. **Keep manual** drops the conflict flag (manual already stands). **Use video** records the video claim as a tip and does **not** overwrite the manual action.
 
 Drafts persist in **IndexedDB** in this browser. Large PDFs may hit browser storage limits until a job runner writes to disk.
+
+### API keys (optional)
+
+Copy `.env.example` to `.env`. Keys are **not** required for the sample fixture path or CI tests.
+
+| Variable | Where | What it does |
+| --- | --- | --- |
+| `OPENAI_API_KEY` | server (`npm run dev`) | `/api/pipeline/vision` posts page images to OpenAI (default model `gpt-4o-mini`) |
+| `OPENAI_VISION_MODEL` | server | override model id |
+| `VITE_OPENAI_API_KEY` | browser | last-resort direct call; **do not ship this in production** |
+
+Without a key, photos still run local layout vision. Known MagicH / parts-list pages use the recorded fixture. Other manuals use PDF text when present; unknown photos get an honest incomplete catalog (letter tags if the orange grid is visible) and uncertainty notes.
+
+### Sample: page photos + YouTube URL
+
+1. `npm run dev` → **New guide**.
+2. Name the project.
+3. Manual: upload `public/fixtures/parts-list.jpg` and `public/fixtures/assembly-steps.jpg` (or the same files under `public/golden/pages/p-03.jpg` + `p-04.jpg`).
+4. Video: paste `https://www.youtube.com/watch?v=vgfixture001` (recorded fixture — no network). Any real YouTube URL is fetched live in dev; if captions are music-only they are dropped.
+5. Continue. Analyzing runs parse → video → merge → conflicts.
+6. Review lists **Filled from video** (Accept) and **Conflicts** (Keep manual / Use video), then **Open guide**.
+
+`public/golden/pages/` is the full chair scan if you want more steps. The golden player project on `#/` is authored JSON and is **not** overwritten by the creator.
+
+### What's still stubbed
+
+- Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill)
+- TTS audio (`<Audio>` slot in `StepClip`)
+- Human step editor, auth, share/publish
+- Native iOS app shell / App Store / marketing site
 
 ## Manual + QR / YouTube gap-fill
 
@@ -90,23 +123,23 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 
 | Done | Next |
 | --- | --- |
-| Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Vision model on page images (letters, qty, bboxes) |
-| Golden chair fixture still plays | PDF page rasterization (pdf.js) |
-| Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | YouTube / packaging-QR fetch + transcription + beat alignment |
-| Clip player: Simple words, Play all, Replay/Next, checkpoints, review/conflict flags | Camera QR scan (URL paste stands in) |
-| New guide + local draft persist + Review keep-manual / use-video | TTS audio (`<Audio>` slot in `StepClip`) |
-| Pipeline modules with real merge rules; stubs labeled | Human step editor |
-| | Auth, share/publish |
-| | Native iOS app shell |
-| | App Store packaging |
-| | Marketing site / brand campaign (**later**) |
+| Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Camera QR scan (URL paste stands in) |
+| Golden chair fixture still plays | TTS audio (`<Audio>` slot in `StepClip`) |
+| Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Human step editor |
+| Clip player: Simple words, Play all, Replay/Next, checkpoints, review/conflict flags | Auth, share/publish |
+| New guide + local draft persist + Review keep-manual / use-video | Native iOS app shell |
+| parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | App Store packaging |
+| analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | Marketing site / brand campaign (**later**) |
+| mergeSources rules; Analyzing wired to real stages | |
 
 ## Layout
 
 - `schema.py` — Pydantic contract v0.2
 - `golden/newtral-magich-pro.json` — chair fixture (copy at `src/data/golden/`)
 - `src/types/guide.ts` — TypeScript mirror
-- `src/pipeline/` — parseManual, analyzeVideo, mergeSources, narrate, runPipeline
+- `src/pipeline/` — parseManual, analyzeVideo, mergeSources, narrate, runPipeline, layout vision, YouTube fetch
+- `src/pipeline/fixtures/` — recorded MagicH parse + sample video observation for CI/demo
+- `public/fixtures/` — sample page photos for the creator walkthrough
 - `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player
 - `src/chrome/` — phone shell, header, toggles, buttons
 - `src/lib/projectsStore.ts` — IndexedDB drafts

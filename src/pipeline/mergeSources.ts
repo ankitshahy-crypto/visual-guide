@@ -4,8 +4,8 @@ import type { ManualParse, VideoBeat, VideoProposal } from "./types";
 /**
  * mergeSources — manual wins; video fills gaps; disagreements become review flags.
  *
- * This module is real (not a stub). It is the rule the later vision/fetch jobs
- * must keep: never overwrite a manual title, figure, part, or action with video.
+ * This module is real (not a stub). Video never overwrites a manual title,
+ * figure, part, or action — disagreements become review flags.
  */
 export function mergeSources(input: {
   title: string;
