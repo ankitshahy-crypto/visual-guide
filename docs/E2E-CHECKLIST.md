@@ -16,6 +16,8 @@ Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bot
 
 Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and **B** if a Mac + Simulator can pick files) on iOS. Packaged iOS has no Vite `/api/pipeline` server — use the fixture YouTube URL, or skip live captions (see README **What works where**).
 
+**GitHub Pages preview** (`https://ankitshahy-crypto.github.io/visual-guide/`): assembler **chair** + creator **fixture path only**. There is no `/api/pipeline`. Use **Use fixture pages (no API key)** or `#/new?fixture=1`. Do not expect a live PDF/YouTube upload to finish Analyzing on that host.
+
 ---
 
 ## Prep
@@ -56,12 +58,11 @@ Continue is blocked without a name and without a PDF or page photos.
 
 ### Fixture path (no paid APIs)
 
-Use this when OpenAI / live YouTube should not be required:
+Use this when OpenAI / live YouTube should not be required (this is the **only** creator path on GitHub Pages):
 
-1. New guide → name the project
-2. Manual: `public/fixtures/parts-list.jpg` and `public/fixtures/assembly-steps.jpg` (or `public/golden/pages/p-03.jpg` + `p-04.jpg`)
-3. Video: `https://www.youtube.com/watch?v=vgfixture001` (recorded fixture, no network)
-4. Continue
+1. New guide → **Use fixture pages (no API key)**, or open `#/new?fixture=1` (auto-starts Analyzing)
+2. Or name the project and upload `public/fixtures/parts-list.jpg` + `public/fixtures/assembly-steps.jpg` with video `https://www.youtube.com/watch?v=vgfixture001` — **`npm run dev` only**. On Pages, Continue without the fixture button errors instead of hanging.
+3. Analyzing → Review (filled from video + conflicts) → Open guide
 
 - [ ] Name is required (empty name shows an error)
 - [ ] Manual is required (Continue without PDF/photos shows an error)

@@ -1,4 +1,5 @@
-import { pipelineApiUrl } from "../lib/pipelineApi";
+import { fetchPipelineJson } from "../lib/pipelineApi";
+import { shouldSkipLivePipelineApis } from "../lib/staticHost";
 import { openaiApiKey, openaiVisionModel } from "./env";
 import type { Action, Part, Product, Verb } from "../types/guide";
 import type { SourcePage } from "../types/guide";
@@ -8,32 +9,25 @@ const VERBS: Verb[] = ["flip", "place", "insert", "slide", "press", "snap", "fas
 
 export async function openaiVisionExtract(pages: SourcePage[], name: string, keyOverride?: string): Promise<VisionExtract | null> {
   const key = openaiApiKey(keyOverride);
+  // Pages / missing pipeline: do not POST huge page images at a 404 that can hang.
+  if (shouldSkipLivePipelineApis()) return null;
+
   const body = {
     name,
     pages: pages.map((p) => ({ page: p.page, label: p.label, image: p.image })),
   };
 
   // Dev server proxy keeps the key off the client bundle.
-  const viaProxy = await tryFetch(pipelineApiUrl("/api/pipeline/vision"), {
+  const viaProxy = await fetchPipelineJson("/api/pipeline/vision", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }, 8000);
   if (viaProxy) return normalize(viaProxy, "openai");
 
   if (!key) return null;
   const direct = await callOpenAI(pages, name, key);
   return direct ? normalize(direct, "openai") : null;
-}
-
-async function tryFetch(url: string, init: RequestInit): Promise<unknown | null> {
-  try {
-    const res = await fetch(url, init);
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
-    return null;
-  }
 }
 
 export async function callOpenAI(pages: SourcePage[], name: string, key: string): Promise<unknown | null> {

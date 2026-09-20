@@ -15,12 +15,13 @@ import PlayerPage from "./pages/PlayerPage";
 import type { RunPipelineOutput } from "./pipeline/runPipeline";
 import type { StoredFile } from "./lib/projectsStore";
 import type { NarrationLevel } from "./types/guide";
+import { isFixtureQuery, splitHash } from "./lib/hashRoute";
 
 export const GOLDEN_ID = "newtral-magich-pro-assembly";
 
 type Route =
   | { page: "list" }
-  | { page: "new" }
+  | { page: "new"; fixture?: boolean }
   | { page: "analyzing" }
   | { page: "help" }
   | { page: "steps"; id: string }
@@ -28,9 +29,8 @@ type Route =
   | { page: "player"; id: string; stepId: string };
 
 function routeFromHash(): Route {
-  const raw = location.hash.replace(/^#/, "") || "/";
-  const h = raw.endsWith("/") && raw.length > 1 ? raw.slice(0, -1) : raw;
-  if (h === "/new") return { page: "new" };
+  const { path: h, params } = splitHash(location.hash);
+  if (h === "/new") return { page: "new", fixture: isFixtureQuery(params) };
   if (h === "/new/analyzing") return { page: "analyzing" };
   if (h === "/help") return { page: "help" };
   const review = /^\/p\/([^/]+)\/review$/.exec(h);
@@ -200,11 +200,19 @@ export default function App() {
           ) : null}
 
           {route.page === "new" ? (
-            <NewGuide onCancel={() => go("/")} onContinue={() => go("/new/analyzing")} />
+            <NewGuide
+              autoFixture={Boolean(route.fixture)}
+              onCancel={() => go("/")}
+              onContinue={() => go("/new/analyzing")}
+            />
           ) : null}
 
           {route.page === "analyzing" ? (
-            <Analyzing onBack={() => go("/new")} onCreated={onCreated} />
+            <Analyzing
+              onBack={() => go("/new")}
+              onUseFixture={() => go("/new?fixture=1")}
+              onCreated={onCreated}
+            />
           ) : null}
 
           {route.page === "help" ? (

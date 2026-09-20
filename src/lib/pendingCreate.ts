@@ -5,6 +5,8 @@ export interface PendingCreate {
   files: StoredFile[];
   youtubeUrl?: string;
   packagingUrl?: string;
+  /** Recorded fixture pages + vgfixture001 — runs offline (no `/api/pipeline`). */
+  fixture?: boolean;
 }
 
 let pending: PendingCreate | null = null;

@@ -30,6 +30,8 @@ Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHEC
 
 iPhone Safari (no Mac): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — GitHub Pages HTTPS preview at `https://ankitshahy-crypto.github.io/visual-guide/` after the Pages workflow on `main` (Settings → Pages → Source: **GitHub Actions**, once).
 
+**Pages is static `dist/` only — no `/api/pipeline/*`.** Assembler: the **chair** sample. Creator: **Use fixture pages (no API key)** on `#/new`, or open `#/new?fixture=1`. Live PDF/photo + YouTube needs `npm run dev` (or a hosted API). A live upload on this preview errors instead of hanging on Analyzing.
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)
@@ -145,7 +147,7 @@ Phone-width column on a near-black desk. **App chrome** is charcoal (`#111214`) 
 
 | Hash | Screen | What it does |
 | --- | --- | --- |
-| `#/new` | New guide | Name; **Manual (required)** PDF + page photos; **Video (optional)** YouTube URL, Scan packaging QR (URL paste until camera exists), Skip; Continue |
+| `#/new` | New guide | Name; **Manual (required)** PDF + page photos; **Video (optional)** YouTube URL, Scan packaging QR (URL paste until camera exists), Skip; Continue. On a static host (GitHub Pages / missing pipeline): prominent **Use fixture pages (no API key)**. `#/new?fixture=1` starts that recorded path. |
 | `#/new/analyzing` | Analyzing | Checklist in order: Reading manual → Watching video → Merging steps → Checking conflicts |
 | `#/p/:id/review` | Review | Filled from video (Accept) + Conflicts (Keep manual / Use video) → **Open guide** (then step list / player for that draft) |
 
@@ -166,6 +168,8 @@ Open a project (start with the chair sample):
 ## Creator
 
 `#/new` → `#/new/analyzing` → `#/p/:id/review` (when video fills or conflicts exist) → step list / player.
+
+On GitHub Pages (or any host without `/api/pipeline`), live PDF/photo + YouTube is short-circuited: Analyzing times out with *Live processing needs a server. Use fixture pages on this preview, or run locally with API.* Use the fixture button or `#/new?fixture=1` — recorded pages + `vgfixture001` finish Analyzing → Review offline. The chair sample is unchanged.
 
 1. **parseManual** — rasterizes PDFs (pdf.js), measures photos, then reads letters / quantities / figure regions. Provider chain: layout vision (orange letter tags, step grids) → recorded MagicH fixture when that layout matches → OpenAI vision when a key is configured → PDF text-layer / OCR-like heuristics. Last resort is a structural page draft with uncertainty flags — not a silent stub.
 2. **analyzeVideo** — fetches YouTube oEmbed, captions, and poster frames via the `npm run dev` proxy (`/api/pipeline/...`). Music-only audio is ignored; teaching actions are derived from visuals + the printed manual. Beats are aligned to manual steps: extras become `inferred_from_video` gap-fills; disagreements become orange conflicts. The recorded fixture URL exercises this path offline.
@@ -198,7 +202,7 @@ Without a key, photos still run local layout vision. Known MagicH / parts-list p
 
 1. `npm run dev` → **New guide**.
 2. Name the project.
-3. Manual: upload `public/fixtures/parts-list.jpg` and `public/fixtures/assembly-steps.jpg` (or the same files under `public/golden/pages/p-03.jpg` + `p-04.jpg`).
+3. Manual: upload `public/fixtures/parts-list.jpg` and `public/fixtures/assembly-steps.jpg` (or the same files under `public/golden/pages/p-03.jpg` + `p-04.jpg`). **Or** tap **Use fixture pages (no API key)** / open `#/new?fixture=1` (required on GitHub Pages).
 4. Video: paste `https://www.youtube.com/watch?v=vgfixture001` (recorded fixture — no network). Any real YouTube URL is fetched live in dev; if captions are music-only they are dropped.
 5. Continue. Analyzing runs parse → video → merge → conflicts.
 6. Review lists **Filled from video** (Accept) and **Conflicts** (Keep manual / Use video), then **Open guide**.

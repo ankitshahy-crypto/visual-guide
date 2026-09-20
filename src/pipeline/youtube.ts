@@ -1,4 +1,5 @@
-import { pipelineApiUrl } from "../lib/pipelineApi";
+import { fetchPipelineJson } from "../lib/pipelineApi";
+import { shouldSkipLivePipelineApis } from "../lib/staticHost";
 import type { CaptionCue, VideoObservation } from "./types";
 
 const TEACH_RE = /\b(insert|tighten|fasten|attach|flip|place|click|snap|press|rotate|bolts?|screws?|hex|until|seats?|facing|upside|orientation|push|align|slide|start)\b/i;
@@ -61,14 +62,16 @@ export async function fetchVideoObservation(locators: {
   let frames: VideoObservation["frames"] = [];
   let status: VideoObservation["fetchStatus"] = "partial";
 
-  if (videoId) {
-    const meta = await getJson(pipelineApiUrl(`/api/pipeline/youtube/oembed?url=${encodeURIComponent(url)}`))
+  if (videoId && shouldSkipLivePipelineApis()) {
+    log.push("no pipeline API on this host — skipped live YouTube fetch");
+  } else if (videoId) {
+    const meta = await fetchPipelineJson(`/api/pipeline/youtube/oembed?url=${encodeURIComponent(url)}`)
       ?? await getJson(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
     if (meta && typeof meta === "object" && "title" in meta) {
       title = String((meta as { title?: string }).title ?? "") || null;
       log.push(`oEmbed: ${title}`);
     }
-    const capJson = await getJson(pipelineApiUrl(`/api/pipeline/youtube/captions?v=${encodeURIComponent(videoId)}`));
+    const capJson = await fetchPipelineJson(`/api/pipeline/youtube/captions?v=${encodeURIComponent(videoId)}`);
     if (capJson && typeof capJson === "object" && Array.isArray((capJson as { captions?: unknown }).captions)) {
       captions = (capJson as { captions: CaptionCue[] }).captions;
       log.push(`captions: ${captions.length} cues`);
@@ -101,11 +104,17 @@ export async function fetchVideoObservation(locators: {
 }
 
 async function getJson(url: string): Promise<unknown | null> {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 4000);
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: ctrl.signal });
     if (!res.ok) return null;
+    const ct = res.headers.get("content-type") ?? "";
+    if (ct && !/json/i.test(ct)) return null;
     return await res.json();
   } catch {
     return null;
+  } finally {
+    clearTimeout(t);
   }
 }

@@ -3,6 +3,13 @@ import { Check, LoaderCircle } from "lucide-react";
 import AppHeader from "../chrome/AppHeader";
 import { clearPendingCreate, getPendingCreate } from "../lib/pendingCreate";
 import { sleep } from "../lib/sleep";
+import {
+  LIVE_PROCESSING_NEEDS_SERVER,
+  liveUploadBlocked,
+  looksLikeStaticHost,
+  pipelineAvailable,
+  promiseWithTimeout,
+} from "../lib/staticHost";
 import { runPipeline, type PipelineStage } from "../pipeline/runPipeline";
 import type { RunPipelineOutput } from "../pipeline/runPipeline";
 import type { StoredFile } from "../lib/projectsStore";
@@ -24,11 +31,12 @@ const COPY: Record<PipelineStage, { withVideo: string; noVideo: string }> = {
 interface Props {
   onBack: () => void;
   onCreated: (id: string, result: RunPipelineOutput, files: StoredFile[], youtubeUrl?: string, packagingUrl?: string) => void;
+  onUseFixture?: () => void;
 }
 
 let analyzeSeq = 0;
 
-export default function Analyzing({ onBack, onCreated }: Props) {
+export default function Analyzing({ onBack, onCreated, onUseFixture }: Props) {
   const [current, setCurrent] = useState<PipelineStage>("parse");
   const [done, setDone] = useState<Set<PipelineStage>>(new Set());
   const [skippedVideo, setSkippedVideo] = useState(false);
@@ -53,30 +61,42 @@ export default function Analyzing({ onBack, onCreated }: Props) {
 
     void (async () => {
       try {
-        const result = await runPipeline(
-          {
-            name: pending.name,
-            files: pending.files,
-            youtubeUrl: pending.youtubeUrl,
-            packagingUrl: pending.packagingUrl,
-          },
-          {
-            onStage: async (stage, detail) => {
-              if (cancelled || seq !== analyzeSeq) return;
-              setCurrent(stage);
-              if (detail) setLive(detail);
-              setDone((prev) => {
-                const next = new Set(prev);
-                const idx = STAGES.findIndex((s) => s.id === stage);
-                STAGES.slice(0, idx).forEach((s) => next.add(s.id));
-                return next;
-              });
-              if (lastStage !== stage) {
-                lastStage = stage;
-                await sleep(stage === "video" && !hasVideo ? 350 : 600);
-              }
+        const available = looksLikeStaticHost() ? false : await pipelineAvailable();
+        const blocked = liveUploadBlocked({
+          fixture: pending.fixture,
+          pipelineAvailable: available,
+        });
+        if (blocked) throw new Error(blocked);
+
+        const timeoutMs = pending.fixture ? 45_000 : available ? 90_000 : 8_000;
+        const result = await promiseWithTimeout(
+          runPipeline(
+            {
+              name: pending.name,
+              files: pending.files,
+              youtubeUrl: pending.youtubeUrl,
+              packagingUrl: pending.packagingUrl,
             },
-          },
+            {
+              onStage: async (stage, detail) => {
+                if (cancelled || seq !== analyzeSeq) return;
+                setCurrent(stage);
+                if (detail) setLive(detail);
+                setDone((prev) => {
+                  const next = new Set(prev);
+                  const idx = STAGES.findIndex((s) => s.id === stage);
+                  STAGES.slice(0, idx).forEach((s) => next.add(s.id));
+                  return next;
+                });
+                if (lastStage !== stage) {
+                  lastStage = stage;
+                  await sleep(stage === "video" && !hasVideo ? 350 : 600);
+                }
+              },
+            },
+          ),
+          timeoutMs,
+          LIVE_PROCESSING_NEEDS_SERVER,
         );
         if (cancelled || seq !== analyzeSeq) return;
         setDone(new Set(STAGES.map((s) => s.id)));
@@ -126,7 +146,14 @@ export default function Analyzing({ onBack, onCreated }: Props) {
           <p className="mt-8 text-ash" aria-live="polite">{status}</p>
         )}
         {error ? (
-          <button type="button" className="mt-4 underline" onClick={onBack}>Back to New guide</button>
+          <div className="mt-4 space-y-2">
+            {onUseFixture ? (
+              <button type="button" className="block underline" onClick={onUseFixture}>
+                Use fixture pages (no API key)
+              </button>
+            ) : null}
+            <button type="button" className="block underline" onClick={onBack}>Back to New guide</button>
+          </div>
         ) : null}
       </div>
     </div>
