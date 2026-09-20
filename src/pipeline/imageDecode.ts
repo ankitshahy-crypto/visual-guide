@@ -1,9 +1,21 @@
+import * as jpegJs from "jpeg-js";
+
 /** Decode data-URL images without a DOM (jpeg-js) so vision runs in tests and the browser. */
 
 export interface DecodedImage {
   width: number;
   height: number;
   data: Uint8Array; // RGBA
+}
+
+type JpegDecode = (
+  bytes: Uint8Array,
+  opts: { useTArray: boolean; maxMemoryUsageInMB: number },
+) => { width: number; height: number; data: Uint8Array };
+
+function jpegDecode(): JpegDecode | undefined {
+  const mod = jpegJs as { decode?: JpegDecode; default?: { decode?: JpegDecode } };
+  return mod.decode ?? mod.default?.decode;
 }
 
 export function dataUrlToBytes(dataUrl: string): Uint8Array {
@@ -32,8 +44,7 @@ function jpegMagic(dataUrl: string): boolean {
 export async function decodeImage(dataUrl: string): Promise<DecodedImage | null> {
   if (isJpegDataUrl(dataUrl) || !dataUrl.startsWith("data:image/png")) {
     try {
-      const jpeg = await import("jpeg-js");
-      const decode = jpeg.decode ?? (jpeg as { default?: { decode: typeof jpeg.decode } }).default?.decode;
+      const decode = jpegDecode();
       if (!decode) throw new Error("jpeg-js decode missing");
       const raw = decode(dataUrlToBytes(dataUrl), { useTArray: true, maxMemoryUsageInMB: 64 });
       if (raw.width >= 1 && raw.height >= 1) {

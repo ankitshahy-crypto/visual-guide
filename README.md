@@ -32,6 +32,8 @@ iPhone Safari (no Mac): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — GitHu
 
 **Pages is static `dist/` only — no `/api/pipeline/*`.** Assembler: the **chair** sample. Creator: **Use fixture pages (no API key)** on `#/new`, or open `#/new?fixture=1`. Live PDF/photo + YouTube needs `npm run dev` (or a hosted API). A live upload on this preview errors instead of hanging on Analyzing.
 
+After a Pages deploy, Analyzing must not show Safari’s *Importing a module script failed.* (that was a lazy `jpeg-js` / `pdfjs` chunk under the wrong `/assets/` path). Verify steps: [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) **Verify after merge**.
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)

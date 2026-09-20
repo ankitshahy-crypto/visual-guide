@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { pageImageUrl } from "./pageImage";
 import { publicAudioSrc } from "./narrationAudio";
 import { publicUrl } from "./publicUrl";
+import { remotionPublicSrc } from "./remotionSrc";
 
 const root = resolve(import.meta.dirname, "../..");
 
@@ -16,6 +17,9 @@ describe("public asset URLs", () => {
     expect(pageImageUrl("pages/p-01.jpg")).toBe(`${prefix}golden/pages/p-01.jpg`);
     expect(pageImageUrl("https://example.com/x.jpg")).toBe("https://example.com/x.jpg");
     expect(publicUrl("narration/abc.mp3")).not.toBe("/visual-guide/narration/abc.mp3");
+    expect(remotionPublicSrc("golden/pages/p-01.jpg")).toBe(`${prefix}golden/pages/p-01.jpg`);
+    expect(remotionPublicSrc(`${prefix}narration/abc.mp3`)).toBe(`${prefix}narration/abc.mp3`);
+    expect(remotionPublicSrc("data:image/jpeg;base64,xx")).toBe("data:image/jpeg;base64,xx");
   });
 });
 

@@ -2,6 +2,7 @@ import type { SourcePage } from "../types/guide";
 import { decodeImage } from "./imageDecode";
 import { extractVision } from "./vision";
 import { stepsFromExtract } from "./manualText";
+import { rasterizePdf as rasterizePdfImpl } from "./pdfPages";
 import type { ManualParse, UploadFile, VisionExtract } from "./types";
 
 export interface ParseManualOptions {
@@ -29,7 +30,7 @@ export async function parseManual(name: string, files: UploadFile[], opts?: Pars
 
   if (pdfs.length) {
     opts?.onProgress?.("Splitting PDF pages…");
-    const raster = opts?.rasterizePdf ?? (await import("./pdfPages")).rasterizePdf;
+    const raster = opts?.rasterizePdf ?? rasterizePdfImpl;
     for (const pdf of pdfs) {
       try {
         const rasters = await raster(pdf, pages.length);
