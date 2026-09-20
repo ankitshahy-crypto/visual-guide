@@ -8,6 +8,7 @@ import {
   type NarrationMode,
   type ResolvedAudioLine,
 } from "./narrationAudio";
+import { pipelineApiUrl } from "./pipelineApi";
 
 export interface EnsureAudioResult {
   status: NarrationMode;
@@ -16,7 +17,7 @@ export interface EnsureAudioResult {
 
 async function requestTts(lines: string[]): Promise<ResolvedAudioLine[] | null> {
   try {
-    const res = await fetch("/api/pipeline/tts", {
+    const res = await fetch(pipelineApiUrl("/api/pipeline/tts"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lines }),

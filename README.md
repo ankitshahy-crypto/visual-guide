@@ -26,6 +26,89 @@ npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-n
 
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
+## iOS shell (Capacitor)
+
+This is the same Vite/React app inside a WKWebView. **Capacitor** wraps `npm run build` (`dist/`) rather than rewriting screens. Expo was not used: an Expo/React Native app would duplicate Projects / New guide / Analyzing / Review / step list / player+TTS, and EAS is Expo-only. A WebView-inside-Expo wrapper is a poorer fit than Capacitor, which is built for this.
+
+Linux CI **cannot** compile an `.ipa`. Scaffold + `Info.plist` + Xcode project live in `ios/`. Build on a Mac.
+
+### Requirements (Mac)
+
+| Tool | Needed? | Notes |
+| --- | --- | --- |
+| macOS + Xcode 16+ (iOS 14.0 deployment target) | **Yes** — simulator, device, Archive | Xcode → Settings → Platforms → iOS SDK |
+| Apple Developer Program ($99/year) | For device, TestFlight, App Store | Simulator works with a free Apple ID |
+| CocoaPods / `pod install` | **No** | This project uses Capacitor 7 **Swift Package Manager** (`ios/App/CapApp-SPM`) |
+| EAS (Expo Application Services) | **No** | Not an Expo app |
+| Node 22 + `npm install` | Yes | Same as web |
+| Physical iPhone | Optional | Simulator is enough to click through screens; TestFlight needs a device |
+
+### Open in Xcode / run Simulator
+
+```bash
+npm install
+npm run ios:sync          # tsc + vite build → copy dist into ios/App/App/public + SPM packages
+# Xcode resolves @capacitor/* from node_modules (Package.swift path deps). npm install first.
+npm run ios:open          # opens ios/App/App.xcodeproj
+```
+
+In Xcode:
+
+1. Select the **App** target.
+2. Signing & Capabilities → your Team. Change **Bundle Identifier** if `app.visualguide.ios` is taken (also change `appId` in `capacitor.config.ts` to match).
+3. Run destination: iPhone 16 simulator (or any iOS 14+ sim).
+4. Press Run. First SPM resolve needs network (`capacitor-swift-pm`).
+
+Live-reload from `npm run dev` (Mac + simulator on the same LAN):
+
+```bash
+npm run dev
+CAPACITOR_LIVE_RELOAD=http://<mac-lan-ip>:5173 npm run ios:sync
+npm run ios:open
+```
+
+`ios/App/App/public` is gitignored; always `ios:sync` before Archive.
+
+### What works where
+
+| Surface | `npm run dev` (web) | Packaged iOS (this shell) |
+| --- | --- | --- |
+| Projects, New guide, Analyzing, Review, step list, player | Yes | Yes — same screens |
+| Golden chair + hashed TTS MP3s | Yes | Yes (bundled in `dist/`) |
+| IndexedDB drafts | This browser | This app install |
+| PDF / page-photo picker | OS file picker | Files + Photos; camera permission is declared for a later QR scanner |
+| Scan packaging QR | URL paste | URL paste (same) |
+| Safe area / status bar | N/A (desk-gray phone column) | Notch + home indicator padding; dark-content status bar |
+| `/api/pipeline/*` (YouTube captions, OpenAI vision, espeak/OpenAI TTS files) | Vite middleware | **No Node server.** oEmbed can fall back to `noembed.com`; captions/vision/file-TTS need `VITE_PIPELINE_API_URL` pointing at a host that implements the same routes, or skip video / use browser `speechSynthesis` |
+| Outbound network | Whatever the browser allows | HTTPS to YouTube / `i.ytimg.com` / `noembed.com` / Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) / optional `api.openai.com`. ATS is default (HTTPS only). No YouTube embed; we fetch metadata and poster JPEGs |
+| Remotion CLI / `npm run narrate` | Yes | N/A (Mac/Linux tools, not in the ipa) |
+
+App name on the home screen: **Visual Guide**. Placeholder bundle id: `app.visualguide.ios`.
+
+### Permissions (`ios/App/App/Info.plist`)
+
+| Key | Why |
+| --- | --- |
+| `NSPhotoLibraryUsageDescription` | New guide → page photos (system picker) |
+| `NSCameraUsageDescription` | Declared for a future packaging-QR scan. **Not used yet** — the control is still URL paste. Do not remove the string or a later camera picker can crash. |
+| `ITSAppUsesNonExemptEncryption` = `false` | HTTPS only; skip the export-compliance question in App Store Connect until you add crypto beyond TLS |
+
+Photo Library *add* / microphone keys are omitted (we do not save to Camera Roll or record audio).
+
+### Next: Apple Developer + TestFlight (checklist)
+
+Not done in this PR. Paid account required after Simulator.
+
+1. Enroll at [developer.apple.com/programs](https://developer.apple.com/programs).
+2. App Store Connect (ASC) → Apps → **+** → name **Visual Guide**, bundle id `app.visualguide.ios` (or your changed id), SKU of your choice.
+3. Xcode target → Signing & Capabilities → Team. Enable **Automatically manage signing** for Debug. For distribution, Xcode creates an Apple Distribution cert + App Store provisioning profile.
+4. `npm run ios:sync`. Product → Archive (Any iOS Device). Organizer → Distribute App → App Store Connect → Upload.
+5. ASC → TestFlight → wait for processing → Internal testers (App Store Connect Users) first. External TestFlight needs a Beta App Review (privacy policy URL, contact, demo account if you later add auth).
+6. Fill ASC privacy nutrition labels. This build: no tracking (`PrivacyInfo.xcprivacy`); drafts stay on-device (IndexedDB). YouTube/Fonts are outbound HTTPS. Update the form if you host `VITE_PIPELINE_API_URL`.
+7. App Store review (later): screenshots, review notes (golden chair is a fixture), encryption export already set in Info.plist.
+
+Change the bundle id in **both** `capacitor.config.ts` (`appId`) and Xcode (`PRODUCT_BUNDLE_IDENTIFIER` / Signing). Then `npx cap sync ios`.
+
 ## Screen map (this PR)
 
 Phone-width column on a desk-gray field. Paper white, black line art, square corners, one orange accent (`#f0552b`) for primary / do-this-now. Letter tags are black squares. Green (`#1e8e5a`) is the checkpoint band. Orange badge = review / conflict.
@@ -138,9 +221,9 @@ If neither files nor browser speech are available, the player shows a short stat
 
 ### What's still stubbed
 
-- Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill)
+- Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill). iOS camera permission is declared for that later scanner.
 - Human step editor, auth, share/publish
-- Native iOS app shell / App Store / marketing site
+- App Store submission / TestFlight upload (see iOS checklist). Marketing site.
 
 ## Manual + QR / YouTube gap-fill
 
@@ -160,12 +243,13 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 
 | Done | Next |
 | --- | --- |
-| Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Camera QR scan (URL paste stands in) |
+| Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Camera QR scan (URL paste stands in; iOS camera string is in Info.plist) |
 | Golden chair fixture still plays | Human step editor |
 | Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Auth, share/publish |
-| Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | Native iOS app shell |
-| Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | App Store packaging |
-| New guide + local draft persist + Review keep-manual / use-video | Marketing site / brand campaign (**later**) |
+| Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | App Store / TestFlight (cert + ASC; checklist above) |
+| Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | Hosted `/api/pipeline` for device YouTube captions / OpenAI |
+| Capacitor iOS shell (`ios/`, bundle id `app.visualguide.ios`) | Marketing site / brand campaign (**later**) |
+| New guide + local draft persist + Review keep-manual / use-video | |
 | parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | |
 | analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | |
 | mergeSources rules; Analyzing wired to real stages | |
@@ -182,6 +266,9 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `public/fixtures/` — sample page photos for the creator walkthrough
 - `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player
 - `src/chrome/` — phone shell, header, toggles, buttons
+- `src/native/` — Capacitor status bar / keyboard / splash init
+- `capacitor.config.ts` — app id `app.visualguide.ios`, `webDir: dist`
+- `ios/` — Xcode project (SPM). `npm run ios:sync` copies `dist/` into `ios/App/App/public`
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts
 - `public/golden/pages/` — chair manual page images

@@ -7,6 +7,8 @@ interface ImportMetaEnv {
   readonly VITE_TTS_PROVIDER?: string;
   readonly VITE_OPENAI_TTS_MODEL?: string;
   readonly VITE_OPENAI_TTS_VOICE?: string;
+  /** Origin that serves `/api/pipeline/*` for packaged iOS (empty = same origin / Vite). */
+  readonly VITE_PIPELINE_API_URL?: string;
 }
 
 interface ImportMeta {

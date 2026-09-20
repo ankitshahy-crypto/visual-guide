@@ -88,7 +88,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
             />
           </div>
           <input ref={pdfRef} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(e) => void onPdf(e)} />
-          <input ref={photoRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => void onPhotos(e)} />
+          <input ref={photoRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" multiple className="hidden" onChange={(e) => void onPhotos(e)} />
         </section>
 
         <section>
@@ -113,7 +113,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
               </button>
               {showQr ? (
                 <label className="block">
-                  <span className="text-sm text-ash">Camera scan is not in this web build. Paste the URL from the box QR:</span>
+                  <span className="text-sm text-ash">Camera scan is not in this build (iOS camera permission is declared for a later scanner). Paste the URL from the box QR:</span>
                   <input
                     className="mt-1 w-full border border-ink bg-paper px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
                     value={packagingUrl}
@@ -183,8 +183,9 @@ async function readFiles(list: FileList | null, role: "pdf" | "photo"): Promise<
     if (role === "pdf") {
       const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
       if (!isPdf) continue;
-    } else if (!file.type.startsWith("image/")) {
-      continue;
+    } else {
+      const isImage = file.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(file.name);
+      if (!isImage) continue;
     }
     next.push({
       name: file.name,

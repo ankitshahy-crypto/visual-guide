@@ -12,8 +12,17 @@
 }
 
 html, body, #root { height: 100%; }
+html { background: var(--color-paper); }
 body { background: var(--color-desk); color: var(--color-ink); font-family: var(--font-sans); }
 button, input, textarea, select { border-radius: 0; }
+
+/* Capacitor WKWebView + viewport-fit=cover: notch / home indicator / landscape insets. */
+.safe-shell {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+}
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
