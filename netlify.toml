@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Vite hash routes live on `/#/…`. This fallback still covers refresh on a
+# path-style URL and any future History API routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
