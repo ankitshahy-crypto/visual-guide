@@ -18,6 +18,23 @@ export function forcePipelineFixture(): boolean {
   return v === "1" || v.toLowerCase() === "true";
 }
 
+export type TtsProviderPref = "auto" | "openai" | "espeak" | "off";
+
+/** auto (default) = OpenAI when a key is set, else local espeak-ng, else none. */
+export function ttsProviderPref(): TtsProviderPref {
+  const v = (viteEnv("VITE_TTS_PROVIDER") || processEnv("TTS_PROVIDER") || "auto").toLowerCase();
+  if (v === "openai" || v === "espeak" || v === "off" || v === "auto") return v;
+  return "auto";
+}
+
+export function openaiTtsModel(): string {
+  return viteEnv("VITE_OPENAI_TTS_MODEL") || processEnv("OPENAI_TTS_MODEL") || "tts-1";
+}
+
+export function openaiTtsVoice(): string {
+  return viteEnv("VITE_OPENAI_TTS_VOICE") || processEnv("OPENAI_TTS_VOICE") || "alloy";
+}
+
 function viteEnv(key: string): string | undefined {
   try {
     const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;

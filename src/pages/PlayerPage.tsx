@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Guide, NarrationLevel, Step } from "../types/guide";
+import type { NarrationMode } from "../lib/narrationAudio";
 import StepPlayer from "../components/StepPlayer";
 import OrangeButton from "../chrome/OrangeButton";
 import InkButton from "../chrome/InkButton";
@@ -29,6 +30,7 @@ export default function PlayerPage({
   hasNext,
 }: Props) {
   const [choiceOpen, setChoiceOpen] = useState(Boolean(step.options));
+  const [narrationMode, setNarrationMode] = useState<NarrationMode | null>(null);
 
   useEffect(() => {
     setChoiceOpen(Boolean(step.options));
@@ -58,6 +60,7 @@ export default function PlayerPage({
           autoPlay={play}
           replayKey={replayKey}
           onEnded={onEnded}
+          onNarrationMode={setNarrationMode}
           controls={false}
         />
         {choiceOpen && step.options ? (
@@ -84,6 +87,17 @@ export default function PlayerPage({
           </div>
         ) : null}
       </div>
+
+      {narrationMode === "live" ? (
+        <p role="status" className="px-4 pt-2 text-sm text-ash">
+          Live voice (browser). Cached TTS files are not used for this step.
+        </p>
+      ) : null}
+      {narrationMode === "none" ? (
+        <p role="status" className="px-4 pt-2 text-sm text-ash">
+          No spoken audio. Allow browser speech or enable TTS — see README.
+        </p>
+      ) : null}
 
       <div className="grid grid-cols-2 gap-3 bg-paper px-4 py-4">
         <InkButton onClick={onReplay}>Replay</InkButton>
