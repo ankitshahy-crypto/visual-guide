@@ -9,7 +9,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 export default function OrangeButton({ variant = "solid", className = "", type, ...rest }: Props) {
   const look = variant === "solid"
     ? "border-action bg-action text-paper"
-    : "border-action bg-paper text-action";
+    : "border-action bg-chrome text-action";
   return (
     <button
       type={type ?? "button"}

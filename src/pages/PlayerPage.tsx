@@ -64,8 +64,8 @@ export default function PlayerPage({
           controls={false}
         />
         {choiceOpen && step.options ? (
-          <div className="absolute inset-0 z-10 flex flex-col justify-end bg-paper/95 p-4">
-            <div className="border border-ink bg-paper p-4">
+          <div className="absolute inset-0 z-10 flex flex-col justify-end bg-chrome/95 p-4">
+            <div className="border border-rule bg-chrome p-4">
               <p className="text-lg font-bold">{step.options.prompt}</p>
               <ul className="mt-3 space-y-2">
                 {step.options.choices.map((c) => {
@@ -73,7 +73,7 @@ export default function PlayerPage({
                   return (
                     <li
                       key={c.id}
-                      className={`border px-3 py-2 ${on ? "border-action bg-action text-paper" : "border-ink"}`}
+                      className={`border px-3 py-2 ${on ? "border-action bg-action text-paper" : "border-rule"}`}
                     >
                       {c.label}
                       {on ? " — start with this" : ""}
@@ -99,7 +99,7 @@ export default function PlayerPage({
         </p>
       ) : null}
 
-      <div className="grid grid-cols-2 gap-3 bg-paper px-4 py-4">
+      <div className="grid grid-cols-2 gap-3 bg-chrome px-4 py-4">
         <InkButton onClick={onReplay}>Replay</InkButton>
         <OrangeButton variant="outline" onClick={onNext}>{hasNext ? "Next" : "Done"}</OrangeButton>
       </div>

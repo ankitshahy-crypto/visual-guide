@@ -122,6 +122,7 @@ export default function StepPlayer({
   }, [mode, audio, level, replayKey, step, text]);
 
   return (
+    // Paper-white stage: manuals stay black-on-white. Chrome around this is dark.
     <div className="w-full bg-paper" style={{ aspectRatio: `${CLIP_W} / ${CLIP_H}` }}>
       <Player
         key={`${step.id}-${level}-${replayKey}`}

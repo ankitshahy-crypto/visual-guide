@@ -107,7 +107,7 @@ export default function Analyzing({ onBack, onCreated }: Props) {
             return (
               <li
                 key={s.id}
-                className={`flex items-center gap-3 border px-3 py-3 ${isCurrent ? "border-ink" : "border-transparent"}`}
+                className={`flex items-center gap-3 border px-3 py-3 ${isCurrent ? "border-chrome-ink" : "border-transparent"}`}
               >
                 <StageMark done={isDone} current={isCurrent} />
                 <div className="min-w-0 flex-1 text-lg">
@@ -143,10 +143,10 @@ function StageMark({ done, current }: { done: boolean; current: boolean }) {
   }
   if (done) {
     return (
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-ink text-ink">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center border-2 border-chrome-ink text-chrome-ink">
         <Check size={18} strokeWidth={3} />
       </span>
     );
   }
-  return <span className="h-7 w-7 shrink-0 border-2 border-ink" />;
+  return <span className="h-7 w-7 shrink-0 border-2 border-chrome-ink" />;
 }

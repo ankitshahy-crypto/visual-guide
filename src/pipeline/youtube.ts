@@ -1,3 +1,4 @@
+import { pipelineApiUrl } from "../lib/pipelineApi";
 import type { CaptionCue, VideoObservation } from "./types";
 
 const TEACH_RE = /\b(insert|tighten|fasten|attach|flip|place|click|snap|press|rotate|bolts?|screws?|hex|until|seats?|facing|upside|orientation|push|align|slide|start)\b/i;
@@ -61,13 +62,13 @@ export async function fetchVideoObservation(locators: {
   let status: VideoObservation["fetchStatus"] = "partial";
 
   if (videoId) {
-    const meta = await getJson(`/api/pipeline/youtube/oembed?url=${encodeURIComponent(url)}`)
+    const meta = await getJson(pipelineApiUrl(`/api/pipeline/youtube/oembed?url=${encodeURIComponent(url)}`))
       ?? await getJson(`https://noembed.com/embed?url=${encodeURIComponent(url)}`);
     if (meta && typeof meta === "object" && "title" in meta) {
       title = String((meta as { title?: string }).title ?? "") || null;
       log.push(`oEmbed: ${title}`);
     }
-    const capJson = await getJson(`/api/pipeline/youtube/captions?v=${encodeURIComponent(videoId)}`);
+    const capJson = await getJson(pipelineApiUrl(`/api/pipeline/youtube/captions?v=${encodeURIComponent(videoId)}`));
     if (capJson && typeof capJson === "object" && Array.isArray((capJson as { captions?: unknown }).captions)) {
       captions = (capJson as { captions: CaptionCue[] }).captions;
       log.push(`captions: ${captions.length} cues`);

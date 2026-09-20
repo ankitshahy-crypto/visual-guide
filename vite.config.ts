@@ -23,6 +23,8 @@ const pipelineApi = {
 };
 
 export default defineConfig({
+  // Relative asset URLs so the Capacitor iOS bundle loads from the local origin.
+  base: "./",
   plugins: [
     react(),
     tailwindcss(),

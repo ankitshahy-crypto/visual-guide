@@ -1,3 +1,4 @@
+import { pipelineApiUrl } from "../lib/pipelineApi";
 import { openaiApiKey, openaiVisionModel } from "./env";
 import type { Action, Part, Product, Verb } from "../types/guide";
 import type { SourcePage } from "../types/guide";
@@ -13,7 +14,7 @@ export async function openaiVisionExtract(pages: SourcePage[], name: string, key
   };
 
   // Dev server proxy keeps the key off the client bundle.
-  const viaProxy = await tryFetch("/api/pipeline/vision", {
+  const viaProxy = await tryFetch(pipelineApiUrl("/api/pipeline/vision"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

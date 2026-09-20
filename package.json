@@ -13,9 +13,17 @@
     "validate": "python3 scripts/validate.py",
     "narrate": "node scripts/generate-narration.mjs",
     "test": "vitest run",
-    "test:pipeline": "vitest run src/pipeline src/lib"
+    "test:pipeline": "vitest run src/pipeline src/lib",
+    "ios:sync": "npm run build && npx cap sync ios",
+    "ios:open": "npx cap open ios"
   },
   "dependencies": {
+    "@capacitor/app": "^7.1.2",
+    "@capacitor/core": "^7.6.9",
+    "@capacitor/ios": "^7.6.9",
+    "@capacitor/keyboard": "^7.0.6",
+    "@capacitor/splash-screen": "^7.0.5",
+    "@capacitor/status-bar": "^7.0.6",
     "@remotion/cli": "4.0.526",
     "@remotion/google-fonts": "4.0.526",
     "@remotion/player": "4.0.526",
@@ -27,6 +35,7 @@
     "remotion": "4.0.526"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.6.9",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",

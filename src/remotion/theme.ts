@@ -7,6 +7,7 @@ const font = loadFont("normal", { weights: ["400", "700"], subsets: ["latin"] })
 
 export const T = {
   font: font.fontFamily,
+  // Clip stage stays paper-white. Do not invert — letter tags need black-on-white.
   paper: "#ffffff",
   ink: "#000000",
   action: "#f0552b",

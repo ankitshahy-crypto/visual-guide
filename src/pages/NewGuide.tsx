@@ -63,7 +63,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
         <label className="block">
           <span className="font-bold">Project name:</span>
           <input
-            className="mt-1 w-full border border-ink bg-paper px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+            className="mt-1 w-full border border-rule bg-chrome px-3 py-2 text-chrome-ink placeholder:text-ash focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Project name"
@@ -88,7 +88,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
             />
           </div>
           <input ref={pdfRef} type="file" accept="application/pdf,.pdf" className="hidden" onChange={(e) => void onPdf(e)} />
-          <input ref={photoRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => void onPhotos(e)} />
+          <input ref={photoRef} type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/*" multiple className="hidden" onChange={(e) => void onPhotos(e)} />
         </section>
 
         <section>
@@ -98,7 +98,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
           ) : (
             <div className="mt-2 space-y-3">
               <input
-                className="w-full border border-ink bg-paper px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+                className="w-full border border-rule bg-chrome px-3 py-2 text-chrome-ink placeholder:text-ash focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
                 value={youtubeUrl}
                 onChange={(e) => setYoutubeUrl(e.target.value)}
                 placeholder="YouTube URL"
@@ -107,15 +107,15 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
               <button
                 type="button"
                 onClick={() => setShowQr(true)}
-                className="w-full border border-ink bg-paper px-3 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+                className="w-full border border-rule bg-chrome px-3 py-2.5 text-chrome-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
               >
                 Scan packaging QR
               </button>
               {showQr ? (
                 <label className="block">
-                  <span className="text-sm text-ash">Camera scan is not in this web build. Paste the URL from the box QR:</span>
+                  <span className="text-sm text-ash">Camera scan is not in this build (iOS camera permission is declared for a later scanner). Paste the URL from the box QR:</span>
                   <input
-                    className="mt-1 w-full border border-ink bg-paper px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+                    className="mt-1 w-full border border-rule bg-chrome px-3 py-2 text-chrome-ink placeholder:text-ash focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
                     value={packagingUrl}
                     onChange={(e) => setPackagingUrl(e.target.value)}
                     placeholder="https://…"
@@ -136,7 +136,7 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
         {error ? <p className="text-action" role="alert">{error}</p> : null}
       </div>
 
-      <div className="bg-paper px-4 pb-6 pt-2">
+      <div className="bg-chrome px-4 pb-6 pt-2">
         <OrangeButton onClick={continueCreate}>Continue</OrangeButton>
       </div>
     </div>
@@ -155,7 +155,7 @@ function UploadTile({
   onClear: () => void;
 }) {
   return (
-    <div className="border border-dashed border-ink">
+    <div className="border border-dashed border-rule">
       <button
         type="button"
         onClick={onClick}
@@ -168,7 +168,7 @@ function UploadTile({
         ) : null}
       </button>
       {files.length > 0 ? (
-        <button type="button" className="w-full border-t border-dashed border-ink py-1 text-sm text-ash" onClick={onClear}>
+        <button type="button" className="w-full border-t border-dashed border-rule py-1 text-sm text-ash" onClick={onClear}>
           Clear
         </button>
       ) : null}
@@ -183,8 +183,9 @@ async function readFiles(list: FileList | null, role: "pdf" | "photo"): Promise<
     if (role === "pdf") {
       const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
       if (!isPdf) continue;
-    } else if (!file.type.startsWith("image/")) {
-      continue;
+    } else {
+      const isImage = file.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif|gif)$/i.test(file.name);
+      if (!isImage) continue;
     }
     next.push({
       name: file.name,

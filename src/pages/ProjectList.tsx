@@ -40,7 +40,7 @@ export default function ProjectList({ golden, drafts, onOpen, onNew, onDelete, o
         ))}
       </div>
 
-      <div className="bg-paper px-4 pb-6 pt-2">
+      <div className="bg-chrome px-4 pb-6 pt-2">
         <OrangeButton onClick={onNew}>New guide</OrangeButton>
       </div>
     </div>
@@ -58,7 +58,7 @@ function ProjectCard({
 }) {
   const thumbStep = project.guide.steps.find((s) => s.figure) ?? project.guide.steps[0];
   return (
-    <article className="border border-ink bg-paper">
+    <article className="border border-rule bg-chrome">
       <button
         type="button"
         onClick={() => onOpen(project.id)}
@@ -75,7 +75,7 @@ function ProjectCard({
           <button
             type="button"
             onClick={onDelete}
-            className="text-sm text-ash hover:text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
+            className="text-sm text-ash hover:text-chrome-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
           >
             Remove
           </button>

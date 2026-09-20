@@ -16,3 +16,11 @@ __pycache__/
 *.tsbuildinfo
 public/narration/cache/
 public/narration/*.wav
+ios/App/App/public
+ios/App/build
+ios/App/Pods
+ios/App/output
+ios/DerivedData
+ios/App/App.xcworkspace/xcuserdata
+ios/App/App.xcodeproj/xcuserdata
+*.xcuserstate

@@ -8,7 +8,7 @@ may gap-fill. Video never silently overwrites the manual — conflicts
 become review_notes of kind "conflict".
 
 Design notes
-- Visual Guide is for ANY instruction set (furniture, toys, electronics).
+- Plainstep is for ANY instruction set (furniture, toys, electronics).
   The Newtral MagicH Pro chair is a golden test fixture, not the product.
 - One Step == one clip. Multi-action steps become beats inside the clip
   so numbering matches the manual.
