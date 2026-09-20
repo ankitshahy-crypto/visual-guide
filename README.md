@@ -28,6 +28,8 @@ npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-n
 
 Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
 
+iPhone Safari (no Mac): [docs/PHONE-PREVIEW.md](docs/PHONE-PREVIEW.md) — public HTTPS preview of the production `dist/` SPA. Claim the Vercel deployment within ~60 minutes or the temporary URL expires.
+
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
 
 ## iOS shell (Capacitor)
