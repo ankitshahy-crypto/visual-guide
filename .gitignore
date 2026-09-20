@@ -14,3 +14,5 @@ __pycache__/
 .venv/
 .python-version
 *.tsbuildinfo
+public/narration/cache/
+public/narration/*.wav

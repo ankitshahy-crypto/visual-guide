@@ -21,6 +21,7 @@ npm run validate       # pydantic check on both golden JSON copies
 npm run studio         # Remotion Studio: scrub any golden clip
 npm run render -- clip-s1 out/s1.mp4
 npm run render:all
+npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-ng or OPENAI_API_KEY)
 ```
 
 All `remotion` / `@remotion/*` packages are pinned to the same exact version in `package.json`.
@@ -52,10 +53,10 @@ Scan packaging QR is labeled as a URL paste in this web build. Same field as a c
 Open a project (start with the chair sample):
 
 1. Numbered step list. Each row has a thumbnail cropped from the manual drawing and a short duration.
-2. Tap a step: black number box + title, lettered part tags, the diagram zoomed to that step, one caption per action, narration as subtitles one sentence at a time.
+2. Tap a step: black number box + title, lettered part tags, the diagram zoomed to that step, one caption per action, spoken narration in sync with subtitles one sentence at a time.
 3. Green checkpoint band at the end of the clip. The step is not marked complete until that band has played. Skipping away mid-clip does not count.
 4. Choice steps show the options and which one to start with (chair step 7).
-5. **Simple words** toggle: every step has both standard and simple narration.
+5. **Simple words** toggle: every step has both standard and simple narration **and** matching spoken audio.
 6. **Play all** from the step list. **Replay** / **Next** on the player.
 7. Orange **review** flag for parser uncertainty; **conflict** when the optional video disagrees with the manual. The printed manual always stands.
 
@@ -67,7 +68,7 @@ Open a project (start with the chair sample):
 2. **analyzeVideo** — fetches YouTube oEmbed, captions, and poster frames via the `npm run dev` proxy (`/api/pipeline/...`). Music-only audio is ignored; teaching actions are derived from visuals + the printed manual. Beats are aligned to manual steps: extras become `inferred_from_video` gap-fills; disagreements become orange conflicts. The recorded fixture URL exercises this path offline.
 3. **mergeSources** — manual wins; video may add `inferred_from_video` actions/tips; disagreements become `review_notes` of kind `conflict` and never overwrite a manual action, figure, or part.
 4. **validate** — schema + parts catalog.
-5. **narrate** — fills standard + simple if the parse did not.
+5. **narrate** — fills standard + simple text if the parse did not. Spoken audio is hashed TTS (see below), not this text step.
 
 Analyzing checklist stages are the real pipeline phases (Reading manual → Watching video → Merging steps → Checking conflicts) with live status text.
 
@@ -81,9 +82,12 @@ Copy `.env.example` to `.env`. Keys are **not** required for the sample fixture 
 
 | Variable | Where | What it does |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | server (`npm run dev`) | `/api/pipeline/vision` posts page images to OpenAI (default model `gpt-4o-mini`) |
-| `OPENAI_VISION_MODEL` | server | override model id |
-| `VITE_OPENAI_API_KEY` | browser | last-resort direct call; **do not ship this in production** |
+| `OPENAI_API_KEY` | server (`npm run dev`) | `/api/pipeline/vision` posts page images to OpenAI (default model `gpt-4o-mini`); `/api/pipeline/tts` can use OpenAI Speech |
+| `OPENAI_VISION_MODEL` | server | override vision model id |
+| `OPENAI_TTS_MODEL` | server | OpenAI speech model (default `tts-1`) |
+| `OPENAI_TTS_VOICE` | server | OpenAI voice (default `alloy`) |
+| `TTS_PROVIDER` | server | `auto` (default), `openai`, `espeak`, or `off` |
+| `VITE_OPENAI_API_KEY` | browser | last-resort direct vision call; **do not ship this in production** |
 
 Without a key, photos still run local layout vision. Known MagicH / parts-list pages use the recorded fixture. Other manuals use PDF text when present; unknown photos get an honest incomplete catalog (letter tags if the orange grid is visible) and uncertainty notes.
 
@@ -98,10 +102,43 @@ Without a key, photos still run local layout vision. Known MagicH / parts-list p
 
 `public/golden/pages/` is the full chair scan if you want more steps. The golden player project on `#/` is authored JSON and is **not** overwritten by the creator.
 
+### Spoken narration (TTS)
+
+The chair sample ships **fixture audio**: one MP3 per unique sentence under `public/narration/`, keyed by a SHA-256 prefix of the normalized text (`src/data/narration-index.json`). Unchanged lines are not re-rendered. `StepClip` mounts Remotion `<Audio>` when those files exist, so the live player and `npm run render` stay aligned. Subtitle cue windows follow measured audio duration (sped up slightly if speech is longer than the clip).
+
+**Simple words** switches both the subtitle text and which hashed files play.
+
+| Path | When it runs | Needs a paid key? |
+| --- | --- | --- |
+| **Fixture files** | Golden chair (and any committed hashes) | No |
+| **Local espeak-ng** | `npm run narrate` and `POST /api/pipeline/tts` when `TTS_PROVIDER=auto` and no OpenAI key | No — `sudo apt-get install espeak-ng` (or `espeak`) plus `ffmpeg` |
+| **OpenAI Speech** | Same endpoints when `OPENAI_API_KEY` is set (or `TTS_PROVIDER=openai`) | Yes — higher-quality cached MP3s |
+| **Browser `speechSynthesis`** | Live player fallback when a step has no cached file (drafts, missing hashes) | No |
+| **Off** | `TTS_PROVIDER=off` skips file generation | — |
+
+Enable higher-quality cached files:
+
+```bash
+cp .env.example .env   # set OPENAI_API_KEY
+npm run narrate        # writes public/narration/*.mp3 and the index
+npm run dev
+```
+
+Local/dev without a key:
+
+```bash
+sudo apt-get install espeak-ng   # once
+npm run narrate                  # fixture-quality speech via espeak
+npm run dev                      # chair plays cached files; drafts use espeak via /api/pipeline/tts or browser voice
+```
+
+If neither files nor browser speech are available, the player shows a short status line under the clip pointing at this section. Analyzing, Review, and pipeline tests do not call TTS.
+
+`public/narration/cache/` is gitignored runtime output from the dev API. Committed fixture files live directly in `public/narration/`.
+
 ### What's still stubbed
 
 - Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill)
-- TTS audio (`<Audio>` slot in `StepClip`)
 - Human step editor, auth, share/publish
 - Native iOS app shell / App Store / marketing site
 
@@ -115,7 +152,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 
 - Letter-faithful crops of the actual manual drawings (not a restyled 3D redo)
 - Checkpoints: a step is not done until the green band
-- Simple words: a second narration track on every step
+- Simple words: a second narration track on every step (text + spoken audio)
 - Provenance on parts/tips/actions: `manual` | `inferred` | `generated` | `inferred_from_video`
 - Review flags for uncertainty and for manual-vs-video conflict
 
@@ -124,12 +161,13 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | Done | Next |
 | --- | --- |
 | Schema v0.2 (`source.manual` + optional `source.video`, `inferred_from_video`, structured review notes) | Camera QR scan (URL paste stands in) |
-| Golden chair fixture still plays | TTS audio (`<Audio>` slot in `StepClip`) |
-| Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Human step editor |
-| Clip player: Simple words, Play all, Replay/Next, checkpoints, review/conflict flags | Auth, share/publish |
-| New guide + local draft persist + Review keep-manual / use-video | Native iOS app shell |
-| parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | App Store packaging |
-| analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | Marketing site / brand campaign (**later**) |
+| Golden chair fixture still plays | Human step editor |
+| Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Auth, share/publish |
+| Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | Native iOS app shell |
+| Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | App Store packaging |
+| New guide + local draft persist + Review keep-manual / use-video | Marketing site / brand campaign (**later**) |
+| parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | |
+| analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | |
 | mergeSources rules; Analyzing wired to real stages | |
 
 ## Layout
@@ -137,7 +175,9 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `schema.py` — Pydantic contract v0.2
 - `golden/newtral-magich-pro.json` — chair fixture (copy at `src/data/golden/`)
 - `src/types/guide.ts` — TypeScript mirror
-- `src/pipeline/` — parseManual, analyzeVideo, mergeSources, narrate, runPipeline, layout vision, YouTube fetch
+- `src/pipeline/` — parseManual, analyzeVideo, mergeSources, narrate, tts, runPipeline, layout vision, YouTube fetch
+- `src/data/narration-index.json` — hashed TTS index for the golden chair
+- `public/narration/` — cached MP3s (`{hash}.mp3`); `cache/` is runtime-only
 - `src/pipeline/fixtures/` — recorded MagicH parse + sample video observation for CI/demo
 - `public/fixtures/` — sample page photos for the creator walkthrough
 - `src/pages/` — Projects, New guide, Analyzing, Review, step list, clip player

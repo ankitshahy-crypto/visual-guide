@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { callOpenAI } from "./openaiVision";
 import { openaiApiKey } from "./env";
 import type { SourcePage } from "../types/guide";
+import { ensureLines, ttsStatus } from "./tts";
 
 /** Vite middleware: YouTube fetch + optional OpenAI vision (keys stay on the server). */
 export async function handlePipelineApi(req: IncomingMessage, res: ServerResponse): Promise<boolean> {
@@ -30,6 +31,14 @@ export async function handlePipelineApi(req: IncomingMessage, res: ServerRespons
       const parsed = await callOpenAI(body.pages ?? [], body.name ?? "Untitled", key);
       if (!parsed) return send(res, 502, { error: "vision model returned nothing" });
       return send(res, 200, parsed);
+    }
+    if (url.pathname === "/api/pipeline/tts/status" && req.method === "GET") {
+      return send(res, 200, ttsStatus());
+    }
+    if (url.pathname === "/api/pipeline/tts" && req.method === "POST") {
+      const body = JSON.parse(await readBody(req)) as { lines?: string[] };
+      const result = await ensureLines(body.lines ?? []);
+      return send(res, 200, result);
     }
     return send(res, 404, { error: "not found" });
   } catch (err) {

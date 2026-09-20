@@ -3,11 +3,12 @@ import { AbsoluteFill, Sequence, spring, useCurrentFrame, useVideoConfig } from 
 import { Check } from "lucide-react";
 import type { Guide, NarrationLevel, Step } from "../../types/guide";
 import { CLIP_H, CLIP_W, schedule } from "../../lib/timing";
+import type { Cue } from "../../lib/sentences";
 import { StepHeader } from "../StepHeader";
 import { Subtitles } from "../Subtitles";
 import { T } from "../theme";
 
-interface Props { step: Step; guide: Guide; level: NarrationLevel }
+interface Props { step: Step; guide: Guide; level: NarrationLevel; cues?: Cue[] }
 
 const PAD = 56;
 const HEADER_H = 180;
@@ -15,7 +16,7 @@ const SUB_H = 190;
 const NOTE_H = 110;
 
 /** The parts list as a grid of letter tags — the checklist the user ticks against the bag. */
-export const PartsOverview: FC<Props> = ({ step, guide, level }) => {
+export const PartsOverview: FC<Props> = ({ step, guide, level, cues }) => {
   const sch = schedule(step);
   const parts = guide.parts;
   const cols = 4;
@@ -55,7 +56,7 @@ export const PartsOverview: FC<Props> = ({ step, guide, level }) => {
         </Sequence>
       ) : null}
       <div style={{ position: "absolute", bottom: 0, left: 0, width: CLIP_W, height: SUB_H, display: "flex", alignItems: "center", borderTop: `2px solid ${T.rule}` }}>
-        <Subtitles text={step.narration[level]} from={sch.body.from} to={sch.total} width={CLIP_W} />
+        <Subtitles text={step.narration[level]} from={sch.body.from} to={sch.total} cues={cues} width={CLIP_W} />
       </div>
     </AbsoluteFill>
   );

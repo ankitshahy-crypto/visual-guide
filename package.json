@@ -11,6 +11,7 @@
     "render": "remotion render src/remotion/index.ts",
     "render:all": "node scripts/render-all.mjs",
     "validate": "python3 scripts/validate.py",
+    "narrate": "node scripts/generate-narration.mjs",
     "test": "vitest run",
     "test:pipeline": "vitest run src/pipeline src/lib"
   },

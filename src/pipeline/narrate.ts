@@ -1,6 +1,6 @@
 import type { Narration, Step } from "../types/guide";
 
-/** Fill both reading levels. Real TTS + an editor pass come later. */
+/** Fill both reading levels (text). Spoken audio is hashed TTS in `tts.ts`. */
 export function narrate(step: Pick<Step, "title" | "actions" | "checkpoint">): Narration {
   const bits = step.actions.map((a) => a.detail).filter(Boolean);
   const body = bits.length ? bits.join(" ") : `Follow the diagram for ${step.title}.`;

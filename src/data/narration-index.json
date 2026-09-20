@@ -1,0 +1,469 @@
+{
+  "version": 1,
+  "provider": "espeak",
+  "generatedAt": "2026-09-20T12:34:56.596Z",
+  "files": {
+    "14c1663ea6ee1d27": {
+      "hash": "14c1663ea6ee1d27",
+      "file": "narration/14c1663ea6ee1d27.mp3",
+      "durationMs": 4788,
+      "text": "Before you start, lay out every part and check it against the list."
+    },
+    "7feb9a7818b19a4e": {
+      "hash": "7feb9a7818b19a4e",
+      "file": "narration/7feb9a7818b19a4e.mp3",
+      "durationMs": 5868,
+      "text": "You should have thirteen bolts in three sizes, five casters, and one hex key."
+    },
+    "32aa0b0ceaea7648": {
+      "hash": "32aa0b0ceaea7648",
+      "file": "narration/32aa0b0ceaea7648.mp3",
+      "durationMs": 2880,
+      "text": "Everything is tightened with that one key."
+    },
+    "e87be797c798da67": {
+      "hash": "e87be797c798da67",
+      "file": "narration/e87be797c798da67.mp3",
+      "durationMs": 3744,
+      "text": "You'll find one extra of each bolt type in the bag."
+    },
+    "55fa1098fae6bcd1": {
+      "hash": "55fa1098fae6bcd1",
+      "file": "narration/55fa1098fae6bcd1.mp3",
+      "durationMs": 2628,
+      "text": "That's a spare, not a missed step."
+    },
+    "0572c64062b9a30e": {
+      "hash": "0572c64062b9a30e",
+      "file": "narration/0572c64062b9a30e.mp3",
+      "durationMs": 2592,
+      "text": "First, lay out all the parts."
+    },
+    "50c4dfae28be761b": {
+      "hash": "50c4dfae28be761b",
+      "file": "narration/50c4dfae28be761b.mp3",
+      "durationMs": 1296,
+      "text": "Count them."
+    },
+    "d5f13af714298eca": {
+      "hash": "d5f13af714298eca",
+      "file": "narration/d5f13af714298eca.mp3",
+      "durationMs": 4716,
+      "text": "You need 13 bolts, 5 wheels, and 1 hex key."
+    },
+    "f22dcd556db1d22a": {
+      "hash": "f22dcd556db1d22a",
+      "file": "narration/f22dcd556db1d22a.mp3",
+      "durationMs": 3060,
+      "text": "One extra bolt of each size is a spare."
+    },
+    "f59832fd2745f059": {
+      "hash": "f59832fd2745f059",
+      "file": "narration/f59832fd2745f059.mp3",
+      "durationMs": 3384,
+      "text": "Step one: attach the mechanism to the seat."
+    },
+    "d1d270e4c876530b": {
+      "hash": "d1d270e4c876530b",
+      "file": "narration/d1d270e4c876530b.mp3",
+      "durationMs": 2304,
+      "text": "Flip the seat upside down."
+    },
+    "33706a5f3bd25dad": {
+      "hash": "33706a5f3bd25dad",
+      "file": "narration/33706a5f3bd25dad.mp3",
+      "durationMs": 6192,
+      "text": "Place the mechanism, part F, on the underside so its four holes line up with the seat."
+    },
+    "493d46a35d7e6a42": {
+      "hash": "493d46a35d7e6a42",
+      "file": "narration/493d46a35d7e6a42.mp3",
+      "durationMs": 4608,
+      "text": "Insert the four H bolts and tighten them with the L hex key."
+    },
+    "c632009e0d6bd7e4": {
+      "hash": "c632009e0d6bd7e4",
+      "file": "narration/c632009e0d6bd7e4.mp3",
+      "durationMs": 1332,
+      "text": "Step 1."
+    },
+    "32923776fb7eeed3": {
+      "hash": "32923776fb7eeed3",
+      "file": "narration/32923776fb7eeed3.mp3",
+      "durationMs": 1728,
+      "text": "Turn the seat over."
+    },
+    "c8d2627b5bd71b88": {
+      "hash": "c8d2627b5bd71b88",
+      "file": "narration/c8d2627b5bd71b88.mp3",
+      "durationMs": 2160,
+      "text": "Put part F on the bottom."
+    },
+    "120f158fac52b02d": {
+      "hash": "120f158fac52b02d",
+      "file": "narration/120f158fac52b02d.mp3",
+      "durationMs": 1656,
+      "text": "Line up the holes."
+    },
+    "fed6d6a6c4eb5e92": {
+      "hash": "fed6d6a6c4eb5e92",
+      "file": "narration/fed6d6a6c4eb5e92.mp3",
+      "durationMs": 2232,
+      "text": "Put in the 4 H bolts."
+    },
+    "90e72023bfa2c991": {
+      "hash": "90e72023bfa2c991",
+      "file": "narration/90e72023bfa2c991.mp3",
+      "durationMs": 2124,
+      "text": "Tighten them with the L key."
+    },
+    "527676f8e3cb96d5": {
+      "hash": "527676f8e3cb96d5",
+      "file": "narration/527676f8e3cb96d5.mp3",
+      "durationMs": 2916,
+      "text": "Step two: attach the armrests."
+    },
+    "df352977c440ab76": {
+      "hash": "df352977c440ab76",
+      "file": "narration/df352977c440ab76.mp3",
+      "durationMs": 2304,
+      "text": "Keep the seat upside down."
+    },
+    "c82717411868d1b8": {
+      "hash": "c82717411868d1b8",
+      "file": "narration/c82717411868d1b8.mp3",
+      "durationMs": 5652,
+      "text": "Position each armrest, part E, against the mounting plate on the side of the seat."
+    },
+    "27a6fcd9509d0860": {
+      "hash": "27a6fcd9509d0860",
+      "file": "narration/27a6fcd9509d0860.mp3",
+      "durationMs": 5616,
+      "text": "Secure each side with three I bolts, six in total, using the hex key."
+    },
+    "445d0145de00b044": {
+      "hash": "445d0145de00b044",
+      "file": "narration/445d0145de00b044.mp3",
+      "durationMs": 1260,
+      "text": "Step 2."
+    },
+    "0248c52d4dc44ebf": {
+      "hash": "0248c52d4dc44ebf",
+      "file": "narration/0248c52d4dc44ebf.mp3",
+      "durationMs": 3492,
+      "text": "Put an armrest, part E, on each side."
+    },
+    "5fcabe05da3383ef": {
+      "hash": "5fcabe05da3383ef",
+      "file": "narration/5fcabe05da3383ef.mp3",
+      "durationMs": 2592,
+      "text": "Use 3 I bolts on each side."
+    },
+    "9aab5d416bdf36e6": {
+      "hash": "9aab5d416bdf36e6",
+      "file": "narration/9aab5d416bdf36e6.mp3",
+      "durationMs": 1872,
+      "text": "Tighten with the L key."
+    },
+    "5e87a0c422edd16e": {
+      "hash": "5e87a0c422edd16e",
+      "file": "narration/5e87a0c422edd16e.mp3",
+      "durationMs": 3312,
+      "text": "Step three: attach the backrest bracket."
+    },
+    "a74d7b0f6433c97b": {
+      "hash": "a74d7b0f6433c97b",
+      "file": "narration/a74d7b0f6433c97b.mp3",
+      "durationMs": 5112,
+      "text": "Position bracket C at the rear of the mechanism and line up the three holes."
+    },
+    "93f3ff6ee12f7d42": {
+      "hash": "93f3ff6ee12f7d42",
+      "file": "narration/93f3ff6ee12f7d42.mp3",
+      "durationMs": 2556,
+      "text": "Fasten it with the three J bolts."
+    },
+    "55e05193398b7240": {
+      "hash": "55e05193398b7240",
+      "file": "narration/55e05193398b7240.mp3",
+      "durationMs": 1296,
+      "text": "Step 3."
+    },
+    "ab493c321c59c5bc": {
+      "hash": "ab493c321c59c5bc",
+      "file": "narration/ab493c321c59c5bc.mp3",
+      "durationMs": 3096,
+      "text": "Put bracket C on the back of the mechanism."
+    },
+    "e49c9e34343c0777": {
+      "hash": "e49c9e34343c0777",
+      "file": "narration/e49c9e34343c0777.mp3",
+      "durationMs": 1800,
+      "text": "Line up 3 holes."
+    },
+    "31ad237291807b93": {
+      "hash": "31ad237291807b93",
+      "file": "narration/31ad237291807b93.mp3",
+      "durationMs": 2088,
+      "text": "Put in 3 J bolts."
+    },
+    "66e938868e149519": {
+      "hash": "66e938868e149519",
+      "file": "narration/66e938868e149519.mp3",
+      "durationMs": 1044,
+      "text": "Tighten."
+    },
+    "c8515ba3e91e8317": {
+      "hash": "c8515ba3e91e8317",
+      "file": "narration/c8515ba3e91e8317.mp3",
+      "durationMs": 2808,
+      "text": "Step four: assemble the base."
+    },
+    "c64a5a294d78fa07": {
+      "hash": "c64a5a294d78fa07",
+      "file": "narration/c64a5a294d78fa07.mp3",
+      "durationMs": 7128,
+      "text": "The base, part M, arrives with four legs attached and one bolt, P, already in place."
+    },
+    "f4839f2484f1e8e2": {
+      "hash": "f4839f2484f1e8e2",
+      "file": "narration/f4839f2484f1e8e2.mp3",
+      "durationMs": 6876,
+      "text": "Slide the fifth leg, part N, into the open socket and tighten bolt P with the hex key."
+    },
+    "4d831230165bb92a": {
+      "hash": "4d831230165bb92a",
+      "file": "narration/4d831230165bb92a.mp3",
+      "durationMs": 1368,
+      "text": "Step 4."
+    },
+    "e9e0e0b95227b253": {
+      "hash": "e9e0e0b95227b253",
+      "file": "narration/e9e0e0b95227b253.mp3",
+      "durationMs": 1944,
+      "text": "Take the base, part M."
+    },
+    "8640602ad28f81aa": {
+      "hash": "8640602ad28f81aa",
+      "file": "narration/8640602ad28f81aa.mp3",
+      "durationMs": 2628,
+      "text": "Push leg N into the empty slot."
+    },
+    "3937745a157282fd": {
+      "hash": "3937745a157282fd",
+      "file": "narration/3937745a157282fd.mp3",
+      "durationMs": 2520,
+      "text": "Tighten bolt P with the L key."
+    },
+    "c05cfafac9e912a5": {
+      "hash": "c05cfafac9e912a5",
+      "file": "narration/c05cfafac9e912a5.mp3",
+      "durationMs": 3960,
+      "text": "Step five: insert the gas lift and casters."
+    },
+    "9881b802e05fddb3": {
+      "hash": "9881b802e05fddb3",
+      "file": "narration/9881b802e05fddb3.mp3",
+      "durationMs": 6084,
+      "text": "Drop the gas lift, part R, into the center hole of the base, wide end down."
+    },
+    "47272e50def7ec6b": {
+      "hash": "47272e50def7ec6b",
+      "file": "narration/47272e50def7ec6b.mp3",
+      "durationMs": 6336,
+      "text": "Then push a caster, part Q, into the socket at the end of each leg until it seats."
+    },
+    "001c6d07d3bd67a2": {
+      "hash": "001c6d07d3bd67a2",
+      "file": "narration/001c6d07d3bd67a2.mp3",
+      "durationMs": 1476,
+      "text": "Five in total."
+    },
+    "4357f761c1b4ebc6": {
+      "hash": "4357f761c1b4ebc6",
+      "file": "narration/4357f761c1b4ebc6.mp3",
+      "durationMs": 1404,
+      "text": "Step 5."
+    },
+    "cd0ab8e8c0bad36c": {
+      "hash": "cd0ab8e8c0bad36c",
+      "file": "narration/cd0ab8e8c0bad36c.mp3",
+      "durationMs": 3168,
+      "text": "Put the gas lift R into the middle of the base."
+    },
+    "82d527453ea9501b": {
+      "hash": "82d527453ea9501b",
+      "file": "narration/82d527453ea9501b.mp3",
+      "durationMs": 2448,
+      "text": "Push a wheel Q into each leg."
+    },
+    "37126e141484efb0": {
+      "hash": "37126e141484efb0",
+      "file": "narration/37126e141484efb0.mp3",
+      "durationMs": 1404,
+      "text": "Do all 5."
+    },
+    "67736fd159184c1b": {
+      "hash": "67736fd159184c1b",
+      "file": "narration/67736fd159184c1b.mp3",
+      "durationMs": 3132,
+      "text": "Step six: put the seat on the base."
+    },
+    "7ac0f5130020f6c9": {
+      "hash": "7ac0f5130020f6c9",
+      "file": "narration/7ac0f5130020f6c9.mp3",
+      "durationMs": 6516,
+      "text": "Turn the seat assembly upright, then lower the socket under the mechanism onto the top of the gas lift."
+    },
+    "999d3254ca9dcf47": {
+      "hash": "999d3254ca9dcf47",
+      "file": "narration/999d3254ca9dcf47.mp3",
+      "durationMs": 1656,
+      "text": "Press down firmly."
+    },
+    "38f4ee1b75e45d71": {
+      "hash": "38f4ee1b75e45d71",
+      "file": "narration/38f4ee1b75e45d71.mp3",
+      "durationMs": 2988,
+      "text": "It locks fully the first time you sit in it."
+    },
+    "e532be1839218f6b": {
+      "hash": "e532be1839218f6b",
+      "file": "narration/e532be1839218f6b.mp3",
+      "durationMs": 1404,
+      "text": "Step 6."
+    },
+    "dbe72445c3303b4f": {
+      "hash": "dbe72445c3303b4f",
+      "file": "narration/dbe72445c3303b4f.mp3",
+      "durationMs": 2304,
+      "text": "Turn the seat right side up."
+    },
+    "43503e807f291bde": {
+      "hash": "43503e807f291bde",
+      "file": "narration/43503e807f291bde.mp3",
+      "durationMs": 2448,
+      "text": "Set it on top of the gas lift."
+    },
+    "148956cc33d14146": {
+      "hash": "148956cc33d14146",
+      "file": "narration/148956cc33d14146.mp3",
+      "durationMs": 1548,
+      "text": "Push down hard."
+    },
+    "7667ca6628d8225a": {
+      "hash": "7667ca6628d8225a",
+      "file": "narration/7667ca6628d8225a.mp3",
+      "durationMs": 2988,
+      "text": "Step seven: attach the backrest."
+    },
+    "e52b6a62f3b6b276": {
+      "hash": "e52b6a62f3b6b276",
+      "file": "narration/e52b6a62f3b6b276.mp3",
+      "durationMs": 6948,
+      "text": "Hold the backrest, part B, against the bracket so the bracket's end goes into the slot on the back."
+    },
+    "caae9181b9e92feb": {
+      "hash": "caae9181b9e92feb",
+      "file": "narration/caae9181b9e92feb.mp3",
+      "durationMs": 4968,
+      "text": "Inside the slot are three height marks: one, two, and three."
+    },
+    "fb95fde0466b6a30": {
+      "hash": "fb95fde0466b6a30",
+      "file": "narration/fb95fde0466b6a30.mp3",
+      "durationMs": 6192,
+      "text": "Line up with the one you want, then push knob K through from behind and tighten it by hand."
+    },
+    "d2b09aba44f22e6d": {
+      "hash": "d2b09aba44f22e6d",
+      "file": "narration/d2b09aba44f22e6d.mp3",
+      "durationMs": 2016,
+      "text": "You can change this later."
+    },
+    "9ef5d3f0211e392f": {
+      "hash": "9ef5d3f0211e392f",
+      "file": "narration/9ef5d3f0211e392f.mp3",
+      "durationMs": 1440,
+      "text": "Step 7."
+    },
+    "3d52c38cb0082f00": {
+      "hash": "3d52c38cb0082f00",
+      "file": "narration/3d52c38cb0082f00.mp3",
+      "durationMs": 2664,
+      "text": "Put the backrest B onto the bracket."
+    },
+    "ab59663f58fba025": {
+      "hash": "ab59663f58fba025",
+      "file": "narration/ab59663f58fba025.mp3",
+      "durationMs": 3348,
+      "text": "Pick a height: 1, 2, or 3."
+    },
+    "e4ef881075bfc879": {
+      "hash": "e4ef881075bfc879",
+      "file": "narration/e4ef881075bfc879.mp3",
+      "durationMs": 3456,
+      "text": "Push knob K in from the back and turn it tight."
+    },
+    "1584880a0a22869d": {
+      "hash": "1584880a0a22869d",
+      "file": "narration/1584880a0a22869d.mp3",
+      "durationMs": 3132,
+      "text": "Step eight: attach the silicone cover."
+    },
+    "402cec060103b636": {
+      "hash": "402cec060103b636",
+      "file": "narration/402cec060103b636.mp3",
+      "durationMs": 4356,
+      "text": "Snap cover G over the bracket joint on the side of the backrest."
+    },
+    "0666e1b0ff1c2931": {
+      "hash": "0666e1b0ff1c2931",
+      "file": "narration/0666e1b0ff1c2931.mp3",
+      "durationMs": 1188,
+      "text": "Step 8."
+    },
+    "9dfb6d08cb013d59": {
+      "hash": "9dfb6d08cb013d59",
+      "file": "narration/9dfb6d08cb013d59.mp3",
+      "durationMs": 3060,
+      "text": "Snap cover G over the joint on the side."
+    },
+    "e0904e0a40bf879e": {
+      "hash": "e0904e0a40bf879e",
+      "file": "narration/e0904e0a40bf879e.mp3",
+      "durationMs": 2880,
+      "text": "Step nine: attach the headrest."
+    },
+    "9b31c146bb794554": {
+      "hash": "9b31c146bb794554",
+      "file": "narration/9b31c146bb794554.mp3",
+      "durationMs": 7200,
+      "text": "Slide the headrest post, part A, straight down into the slot at the top of the backrest until it seats."
+    },
+    "2f6167da36e0de82": {
+      "hash": "2f6167da36e0de82",
+      "file": "narration/2f6167da36e0de82.mp3",
+      "durationMs": 1944,
+      "text": "That's the chair assembled."
+    },
+    "256f6c401ddabeab": {
+      "hash": "256f6c401ddabeab",
+      "file": "narration/256f6c401ddabeab.mp3",
+      "durationMs": 1404,
+      "text": "Step 9."
+    },
+    "2e07534f039795cb": {
+      "hash": "2e07534f039795cb",
+      "file": "narration/2e07534f039795cb.mp3",
+      "durationMs": 3420,
+      "text": "Push the headrest A down into the top of the backrest."
+    },
+    "ed251864987c367e": {
+      "hash": "ed251864987c367e",
+      "file": "narration/ed251864987c367e.mp3",
+      "durationMs": 864,
+      "text": "Done."
+    }
+  }
+}
