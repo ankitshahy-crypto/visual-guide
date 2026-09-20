@@ -6,7 +6,7 @@ import { loadRecordedFixtureFiles, recordedFixturePending } from "../lib/fixture
 import { setPendingCreate } from "../lib/pendingCreate";
 import type { StoredFile } from "../lib/projectsStore";
 import {
-  LIVE_PROCESSING_NEEDS_SERVER,
+  liveUploadBlocked,
   looksLikeStaticHost,
   pipelineAvailable,
 } from "../lib/staticHost";
@@ -86,21 +86,26 @@ export default function NewGuide({ onCancel, onContinue, autoFixture }: Props) {
   };
 
   const continueCreate = () => {
-    setError(null);
-    const files = [...pdfs, ...photos];
-    if (!name.trim()) { setError("Name the project."); return; }
-    if (!files.length) { setError("Add a PDF or page photos. The manual is required."); return; }
-    if (staticHost) {
-      setError(LIVE_PROCESSING_NEEDS_SERVER);
-      return;
-    }
-    setPendingCreate({
-      name: name.trim(),
-      files,
-      youtubeUrl: skippedVideo ? undefined : (youtubeUrl.trim() || undefined),
-      packagingUrl: skippedVideo ? undefined : (packagingUrl.trim() || undefined),
-    });
-    onContinue();
+    void (async () => {
+      setError(null);
+      const files = [...pdfs, ...photos];
+      if (!name.trim()) { setError("Name the project."); return; }
+      if (!files.length) { setError("Add a PDF or page photos. The manual is required."); return; }
+      const available = looksLikeStaticHost() ? false : await pipelineAvailable();
+      const blocked = liveUploadBlocked({ fixture: false, pipelineAvailable: available });
+      if (blocked) {
+        setStaticHost(true);
+        setError(blocked);
+        return;
+      }
+      setPendingCreate({
+        name: name.trim(),
+        files,
+        youtubeUrl: skippedVideo ? undefined : (youtubeUrl.trim() || undefined),
+        packagingUrl: skippedVideo ? undefined : (packagingUrl.trim() || undefined),
+      });
+      onContinue();
+    })();
   };
 
   return (

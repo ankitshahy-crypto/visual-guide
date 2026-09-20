@@ -40,7 +40,7 @@ describe("static / no-API host", () => {
     const analyzing = readFileSync(resolve(root, "src/pages/Analyzing.tsx"), "utf8");
     const app = readFileSync(resolve(root, "src/App.tsx"), "utf8");
     expect(neu).toContain("Use fixture pages (no API key)");
-    expect(neu).toContain("LIVE_PROCESSING_NEEDS_SERVER");
+    expect(neu).toContain("liveUploadBlocked");
     expect(neu).toContain("autoFixture");
     expect(neu).toContain("data-static-preview-banner");
     expect(analyzing).toContain("liveUploadBlocked");
