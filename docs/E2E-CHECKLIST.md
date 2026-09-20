@@ -4,6 +4,8 @@ One human pass when the iOS shell (or a release cut) is ready. Not per-PR. Per-P
 
 Display name: **Plainstep**. Icon: white field, black step path, orange square with white check.
 
+Chrome is **dark** (near-black / charcoal, light text, one orange accent). The clip / Remotion **player stage stays paper-white** with black line art — do not invert the figure canvas.
+
 Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bottom.
 
 **Platform for this session**
@@ -32,11 +34,11 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` Projects lists the chair sample (and any local drafts below it)
-- [ ] Open chair → step list: numbered rows, cropped thumbs, a duration on each row
+- [ ] `#/` Projects lists the chair sample (and any local drafts below it) on **dark chrome** (charcoal, light text, orange New guide)
+- [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
-- [ ] Open step 1: clip player shows number/title, letter tags, figure, captions
+- [ ] Open step 1: **white** clip player (paper stage) on **dark** chrome; number/title, letter tags, figure, captions. Letter tags stay black-on-white.
 - [ ] Spoken narration on **standard** (fixture MP3s on the chair). If silent: iOS Silent switch / web autoplay — Replay after a tap. Status line under the clip documents browser-voice / none (README **Spoken narration**)
 - [ ] Green checkpoint band plays at end of clip; leaving mid-clip does **not** mark the step done
 - [ ] **Replay** restarts the clip; **Next** goes to the following step
@@ -82,7 +84,8 @@ On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack
 
 - [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still on Projects (IndexedDB: this browser / this app install). Golden chair still listed
 - [ ] Chrome strings say **Plainstep** (tab title, home screen). No leftover **Visual Guide** in headers, titles, or system name
-- [ ] Safe areas on iOS: header below notch; Continue / Replay / Next above home indicator
+- [ ] Chrome is dark (near-black), clip player stage is paper-white (black line art, orange do-this-now, green checkpoint on white)
+- [ ] Safe areas on iOS: header below notch; Continue / Replay / Next above home indicator; light-content status bar (white icons on dark chrome)
 - [ ] New guide file pick on iOS does not crash (photo library / camera usage strings are in Info.plist; camera scan still unused)
 
 ---

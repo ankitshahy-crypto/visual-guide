@@ -7,8 +7,8 @@ interface Props {
 export default function MenuSheet({ onClose, onProjects, onNew }: Props) {
   return (
     <div className="absolute inset-0 z-40">
-      <button type="button" aria-label="Close menu" className="absolute inset-0 bg-ink/25" onClick={onClose} />
-      <nav className="absolute left-0 right-0 top-0 border-b border-ink bg-paper px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+      <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/50" onClick={onClose} />
+      <nav className="absolute left-0 right-0 top-0 border-b border-rule bg-chrome px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
         <ul className="space-y-1">
           <li>
             <button type="button" className="w-full px-2 py-2 text-left text-lg font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-action" onClick={onProjects}>

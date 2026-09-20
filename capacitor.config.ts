@@ -12,7 +12,7 @@ const config: CapacitorConfig = {
   appId: "app.plainstep.ios",
   appName: "Plainstep",
   webDir: "dist",
-  backgroundColor: "#ffffff",
+  backgroundColor: "#111214",
   ios: {
     // Xcode *build* scheme (target is still `App`). Not a display name.
     // Future URL / deep-link schemes: lowercase `plainstep`.
@@ -24,13 +24,13 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchAutoHide: true,
       launchShowDuration: 0,
-      backgroundColor: "#ffffff",
+      backgroundColor: "#111214",
       showSpinner: false,
     },
     StatusBar: {
-      style: "DARK",
+      style: "LIGHT",
       overlaysWebView: true,
-      backgroundColor: "#ffffff",
+      backgroundColor: "#111214",
     },
     Keyboard: {
       resize: KeyboardResize.Body,

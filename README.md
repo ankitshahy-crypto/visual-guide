@@ -4,7 +4,7 @@
 
 This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**.
 
-The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, paper white).
+The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, **dark chrome** default). The clip / Remotion player stage stays **paper white**.
 
 The **Newtral MagicH Pro office chair is a golden test fixture**, not the product.
 
@@ -82,7 +82,7 @@ npm run ios:open
 | IndexedDB drafts | This browser | This app install |
 | PDF / page-photo picker | OS file picker | Files + Photos; camera permission is declared for a later QR scanner |
 | Scan packaging QR | URL paste | URL paste (same) |
-| Safe area / status bar | N/A (desk-gray phone column) | Notch + home indicator padding; dark-content status bar |
+| Safe area / status bar | N/A (desk-black phone column) | Notch + home indicator padding; light-content status bar (white icons on dark chrome) |
 | `/api/pipeline/*` (YouTube captions, OpenAI vision, espeak/OpenAI TTS files) | Vite middleware | **No Node server.** oEmbed can fall back to `noembed.com`; captions/vision/file-TTS need `VITE_PIPELINE_API_URL` pointing at a host that implements the same routes, or skip video / use browser `speechSynthesis` |
 | Outbound network | Whatever the browser allows | HTTPS to YouTube / `i.ytimg.com` / `noembed.com` / Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`) / optional `api.openai.com`. ATS is default (HTTPS only). No YouTube embed; we fetch metadata and poster JPEGs |
 | Remotion CLI / `npm run narrate` | Yes | N/A (Mac/Linux tools, not in the ipa) |
@@ -117,7 +117,7 @@ Change the bundle id in **both** `capacitor.config.ts` (`appId`) and Xcode (`PRO
 
 ## Screen map (this PR)
 
-Phone-width column on a desk-gray field. Paper white, black line art, square corners, one orange accent (`#f0552b`) for primary / do-this-now. Letter tags are black squares. Green (`#1e8e5a`) is the checkpoint band. Orange badge = review / conflict.
+Phone-width column on a near-black desk. **App chrome** is charcoal (`#111214`) with light text and one orange accent (`#f0552b`) for primary actions and review badges. The **clip / Remotion player stage** stays paper white with black line art — manuals are black-on-white; do not invert the figure canvas. Letter tags are black squares. Green (`#1e8e5a`) is the checkpoint band on the white stage. Orange badge = review / conflict.
 
 **Assembler**
 
@@ -255,6 +255,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | App Store / TestFlight (cert + ASC; checklist above) |
 | Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | Hosted `/api/pipeline` for device YouTube captions / OpenAI |
 | Capacitor iOS shell (`ios/`, bundle id `app.plainstep.ios`, product name Plainstep) | Marketing site / brand campaign (**later**) |
+| Dark chrome default (clip / Remotion stage stays paper-white) | System light theme (optional, later) |
 | New guide + local draft persist + Review keep-manual / use-video | |
 | parseManual: PDF raster + layout vision + optional OpenAI + recorded fixture | |
 | analyzeVideo: YouTube fetch/captions/frames, music-only ignored, beat alignment | |
@@ -290,4 +291,4 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - Figure bboxes are normalized `[x0, y0, x1, y1]` on the manual page image.
 - `review_notes[].kind` is `uncertainty` or `conflict`.
 
-Clip visual language (from the MagicH Pro manual, not a brand system): white paper, black line art, square corners, one orange accent (`#f0552b`). Green (`#1e8e5a`) is reserved for the checkpoint band.
+Clip visual language (from the MagicH Pro manual, not a brand system): white paper, black line art, square corners, one orange accent (`#f0552b`) for “do this now” on the **clip stage**. App chrome is dark; do not invert the figure canvas. Green (`#1e8e5a`) is reserved for the checkpoint band.

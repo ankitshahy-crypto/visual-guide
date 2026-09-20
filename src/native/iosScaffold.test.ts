@@ -37,6 +37,35 @@ describe("iOS Capacitor scaffold", () => {
     expect(e2e).toContain("## A. Assembler");
     expect(e2e).toContain("## B. Creator");
     expect(e2e).toContain("## Findings");
+    expect(e2e.toLowerCase()).toContain("dark chrome");
+    expect(e2e.toLowerCase()).toContain("paper-white");
+  });
+
+  it("defaults app chrome to dark and keeps the clip stage paper-white", () => {
+    const css = readFileSync(resolve(root, "src/index.css"), "utf8");
+    expect(css).toContain("--color-chrome: #111214");
+    expect(css).toContain("--color-paper: #ffffff");
+    expect(css).toContain("--color-ink: #000000");
+    expect(css).toContain("color-scheme: dark");
+
+    const remotion = readFileSync(resolve(root, "src/remotion/theme.ts"), "utf8");
+    expect(remotion).toContain('paper: "#ffffff"');
+    expect(remotion).toContain('ink: "#000000"');
+
+    const player = readFileSync(resolve(root, "src/components/StepPlayer.tsx"), "utf8");
+    expect(player).toContain("bg-paper");
+
+    const thumb = readFileSync(resolve(root, "src/components/FigureThumb.tsx"), "utf8");
+    expect(thumb).toContain("bg-paper");
+    expect(thumb).toContain("border-ink");
+
+    expect(cap).toContain('backgroundColor: "#111214"');
+    expect(cap).toContain('style: "LIGHT"');
+    expect(plist).toContain("UIStatusBarStyleLightContent");
+
+    const native = readFileSync(resolve(root, "src/native/initNative.ts"), "utf8");
+    expect(native).toContain("Style.Light");
+    expect(native).not.toContain("Style.Dark");
   });
 
   it("uses Plainstep + placeholder bundle id that is easy to change", () => {

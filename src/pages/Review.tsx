@@ -53,7 +53,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
           ) : (
             <ul className="space-y-3">
               {fills.map((item) => (
-                <li key={item.key} className="border border-ink p-3">
+                <li key={item.key} className="border border-rule p-3">
                   <div className="flex gap-3">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center bg-ink text-xs font-bold text-paper">In</span>
                     <div className="min-w-0 flex-1">
@@ -77,7 +77,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
           ) : (
             <ul className="space-y-3">
               {conflicts.map((item, i) => (
-                <li key={item.key} className="border border-ink p-3">
+                <li key={item.key} className="border border-chrome-ink p-3">
                   <div className="flex items-start gap-2">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center bg-action text-sm font-bold text-paper">{i + 1}</span>
                     <div className="min-w-0 flex-1">
@@ -101,7 +101,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
         </section>
       </div>
 
-      <div className="bg-paper px-4 pb-6 pt-2">
+      <div className="bg-chrome px-4 pb-6 pt-2">
         <OrangeButton onClick={onOpenGuide}>Open guide</OrangeButton>
       </div>
     </div>

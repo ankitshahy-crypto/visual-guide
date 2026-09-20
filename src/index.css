@@ -2,18 +2,22 @@
 
 @theme {
   --font-sans: "Atkinson Hyperlegible", system-ui, sans-serif;
+  /* Clip / Remotion stage (manuals stay black-on-white). */
   --color-paper: #ffffff;
   --color-ink: #000000;
   --color-action: #f0552b;
   --color-check: #1e8e5a;
-  --color-desk: #e9edf1;
-  --color-ash: #6b6f75;
-  --color-rule: #c9ced4;
+  /* App chrome default (dark). */
+  --color-chrome: #111214;
+  --color-chrome-ink: #f3f4f5;
+  --color-desk: #08090a;
+  --color-ash: #9b9fa6;
+  --color-rule: #3a3d42;
 }
 
 html, body, #root { height: 100%; }
-html { background: var(--color-paper); }
-body { background: var(--color-desk); color: var(--color-ink); font-family: var(--font-sans); }
+html { background: var(--color-chrome); color-scheme: dark; }
+body { background: var(--color-desk); color: var(--color-chrome-ink); font-family: var(--font-sans); }
 button, input, textarea, select { border-radius: 0; }
 
 /* Capacitor WKWebView + viewport-fit=cover: notch / home indicator / landscape insets. */
