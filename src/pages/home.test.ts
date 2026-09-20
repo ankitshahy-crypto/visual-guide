@@ -16,11 +16,27 @@ describe("in-app home (Projects)", () => {
     expect(home).toContain("Review AI steps");
     expect(home).toContain("Follow clips with checkpoints");
     expect(home).toContain("Simple words");
-    expect(home).toContain("Try a sample");
+    expect(home).toContain("Try MagicH Pro Chair");
     expect(home).toContain("Your guides");
-    expect(home).toContain("No guides yet. Tap New guide to turn a PDF or page photos into clips.");
+    expect(home).toContain("No guides yet");
+    expect(home).toContain("Tap New guide to turn a PDF or page photos into clips.");
     expect(home).toContain("New guide");
-    expect(home).toContain("badge=\"Sample\"");
+    expect(home).toContain("Sample");
+  });
+
+  it("uses a Plainstep-orange hero, not a paper-white home stage", () => {
+    expect(home).toContain("data-home-hero");
+    expect(home).toContain("rounded-[28px] bg-action");
+    expect(home).toContain("Try MagicH Pro Chair");
+  });
+
+  it("does not clone Pocket home chrome", () => {
+    expect(home).not.toContain("Refer");
+    expect(home).not.toContain("streak");
+    expect(home).not.toContain("Training your Pocket");
+    expect(home).not.toContain("Ask Pocket");
+    expect(home).not.toContain("Start now");
+    expect(home).not.toMatch(/tab bar|bottom-nav|Ask Pocket/i);
   });
 
   it("keeps help, seller, and the orange New guide CTA", () => {
@@ -28,7 +44,7 @@ describe("in-app home (Projects)", () => {
     expect(home).toContain("SUPPORT_MAILTO");
     expect(home).toContain("LEGAL_OWNER");
     expect(home).toContain("Help & support");
-    expect(home).toContain("<OrangeButton onClick={onNew}>New guide</OrangeButton>");
+    expect(home).toContain("onClick={onNew}>New guide</OrangeButton>");
   });
 
   it("does not add a marketing-site route", () => {

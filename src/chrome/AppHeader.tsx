@@ -6,6 +6,8 @@ interface Props {
   title: string;
   subtitle?: string;
   wordmark?: boolean;
+  /** Rounded icon hits — home chrome only; other screens stay square. */
+  soft?: boolean;
   back?: () => void;
   menu?: boolean;
   onProjects?: () => void;
@@ -19,6 +21,7 @@ export default function AppHeader({
   title,
   subtitle,
   wordmark = false,
+  soft = false,
   back,
   menu = false,
   onProjects,
@@ -29,25 +32,18 @@ export default function AppHeader({
 }: Props) {
   const [open, setOpen] = useState(false);
   const showMenu = menu && onProjects && onNew;
+  const hit = `flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-action ${
+    soft ? "rounded-full border border-rule" : ""
+  }`;
 
   const menuBtn = showMenu ? (
-    <button
-      type="button"
-      aria-label="Menu"
-      onClick={() => setOpen(true)}
-      className="flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
-    >
-      <Menu size={26} strokeWidth={2.25} />
+    <button type="button" aria-label="Menu" onClick={() => setOpen(true)} className={hit}>
+      <Menu size={22} strokeWidth={2.25} />
     </button>
   ) : null;
 
   const left = back ? (
-    <button
-      type="button"
-      aria-label="Back"
-      onClick={back}
-      className="flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-action"
-    >
+    <button type="button" aria-label="Back" onClick={back} className={hit}>
       <ChevronLeft size={28} strokeWidth={2.25} />
     </button>
   ) : showMenu && menuSide === "left" ? menuBtn : <span className="h-10 w-10" />;
@@ -60,7 +56,7 @@ export default function AppHeader({
       alt=""
       width={32}
       height={32}
-      className="h-8 w-8 shrink-0 border border-rule bg-paper"
+      className={`h-8 w-8 shrink-0 bg-paper ${soft ? "rounded-[9px]" : "border border-rule"}`}
     />
   ) : null;
 

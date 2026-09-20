@@ -34,7 +34,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` home is **dark chrome** (charcoal, light text, orange New guide): **Plainstep** wordmark + pitch, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), Try a sample frames **MagicH Pro Chair**, Your guides lists drafts or empty-state copy
+- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair**, Your guides (drafts or empty-state card), orange **New guide**. Help `ankit@triagedesk.ai`. No tab bar.
 - [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
@@ -74,7 +74,7 @@ Use this when OpenAI / live YouTube should not be required:
 - [ ] Review: **Filled from video** → **Accept** (if any fills)
 - [ ] Review: **Conflicts** → **Keep manual** and **Use video** (Use video must **not** overwrite the printed action; it records a tip)
 - [ ] **Open guide** → step list for that draft → play at least one step
-- [ ] Draft appears under Your guides; golden chair is still under Try a sample unchanged
+- [ ] Draft appears under Your guides; golden chair is still the hero sample unchanged
 
 On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack captions; the fixture URL above still exercises gap-fill offline. Note that in Findings if it fails.
 
@@ -82,7 +82,7 @@ On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack
 
 ## C. Regression / polish
 
-- [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still under Your guides (IndexedDB: this browser / this app install). Golden chair still under Try a sample
+- [ ] Reload the page (web) or kill/reopen the app (iOS): local **drafts** are still under Your guides (IndexedDB: this browser / this app install). Golden chair still the hero sample
 - [ ] Chrome strings say **Plainstep** (tab title, home screen). No leftover **Visual Guide** in headers, titles, or system name
 - [ ] Menu → **Help & support** is `mailto:ankit@triagedesk.ai` (legal line TriageDesk AI LLC). Dark chrome sheet.
 - [ ] Chrome is dark (near-black), clip player stage is paper-white (black line art, orange do-this-now, green checkpoint on white)

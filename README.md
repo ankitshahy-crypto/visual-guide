@@ -134,7 +134,7 @@ Phone-width column on a near-black desk. **App chrome** is charcoal (`#111214`) 
 
 | Hash | Screen | What it does |
 | --- | --- | --- |
-| `#/` | Home (Projects) | **Plainstep** wordmark + pitch, How it works, Try a sample (golden chair), Your guides (local drafts / empty), **New guide**. Hamburger: Projects, New guide, **Help & support** (`mailto:ankit@triagedesk.ai`) |
+| `#/` | Home (Projects) | **Plainstep** wordmark, orange hero (pitch + How it works + **Try MagicH Pro Chair**), Your guides (local drafts / empty), **New guide**. Hamburger: Projects, New guide, **Help & support** (`mailto:ankit@triagedesk.ai`) |
 | `#/p/:id` | Step list | Simple words + Play all; cropped thumbs; numbered rows; orange Review badge |
 | `#/p/:id/s/:stepId` | Clip player | Number/title, letter chips, figure, caption, green checkpoint (inside the clip); Replay / Next. Choice overlay when the step has options. |
 

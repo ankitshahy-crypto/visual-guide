@@ -7,17 +7,18 @@ interface Props {
   guide: Guide;
   step?: Step;
   size?: number;
+  className?: string;
 }
 
-export default function FigureThumb({ guide, step, size = 80 }: Props) {
+export default function FigureThumb({ guide, step, size = 80, className = "" }: Props) {
   const page = step?.figure ? pageByKey(guide, step.figure.page) : undefined;
   if (!step?.figure || !page) {
-    return <div className="shrink-0 border border-ink bg-paper" style={{ width: size, height: size }} />;
+    return <div className={`shrink-0 border border-ink bg-paper ${className}`} style={{ width: size, height: size }} />;
   }
   const aspect = page.width && page.height ? page.width / page.height : 0.7;
   const c = computeCrop({ w: size, h: size, bbox: asBBox(step.figure.bbox), aspect });
   return (
-    <div className="relative shrink-0 overflow-hidden border border-ink bg-paper" style={{ width: size, height: size }}>
+    <div className={`relative shrink-0 overflow-hidden border border-ink bg-paper ${className}`} style={{ width: size, height: size }}>
       <img
         src={pageImageUrl(page.image)}
         alt=""
