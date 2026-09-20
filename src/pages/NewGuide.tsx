@@ -1,16 +1,23 @@
-import { useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { Upload } from "lucide-react";
 import AppHeader from "../chrome/AppHeader";
 import OrangeButton from "../chrome/OrangeButton";
+import { loadRecordedFixtureFiles, recordedFixturePending } from "../lib/fixtureCreate";
 import { setPendingCreate } from "../lib/pendingCreate";
 import type { StoredFile } from "../lib/projectsStore";
+import {
+  LIVE_PROCESSING_NEEDS_SERVER,
+  looksLikeStaticHost,
+  pipelineAvailable,
+} from "../lib/staticHost";
 
 interface Props {
   onCancel: () => void;
   onContinue: () => void;
+  autoFixture?: boolean;
 }
 
-export default function NewGuide({ onCancel, onContinue }: Props) {
+export default function NewGuide({ onCancel, onContinue, autoFixture }: Props) {
   const [name, setName] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [packagingUrl, setPackagingUrl] = useState("");
@@ -19,8 +26,45 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
   const [pdfs, setPdfs] = useState<StoredFile[]>([]);
   const [photos, setPhotos] = useState<StoredFile[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [staticHost, setStaticHost] = useState(() => looksLikeStaticHost());
+  const [fixtureBusy, setFixtureBusy] = useState(false);
   const pdfRef = useRef<HTMLInputElement>(null);
   const photoRef = useRef<HTMLInputElement>(null);
+  const onContinueRef = useRef(onContinue);
+  const startedAuto = useRef(false);
+  onContinueRef.current = onContinue;
+
+  useEffect(() => {
+    let cancelled = false;
+    if (looksLikeStaticHost()) {
+      setStaticHost(true);
+      return;
+    }
+    void pipelineAvailable().then((ok) => {
+      if (!cancelled) setStaticHost(!ok);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  const startFixture = async () => {
+    if (fixtureBusy) return;
+    setError(null);
+    setFixtureBusy(true);
+    try {
+      const files = await loadRecordedFixtureFiles();
+      setPendingCreate(recordedFixturePending(files, name));
+      onContinueRef.current();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+      setFixtureBusy(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!autoFixture || startedAuto.current) return;
+    startedAuto.current = true;
+    void startFixture();
+  }, [autoFixture]);
 
   const onPdf = async (e: ChangeEvent<HTMLInputElement>) => {
     const next = await readFiles(e.target.files, "pdf");
@@ -46,6 +90,10 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
     const files = [...pdfs, ...photos];
     if (!name.trim()) { setError("Name the project."); return; }
     if (!files.length) { setError("Add a PDF or page photos. The manual is required."); return; }
+    if (staticHost) {
+      setError(LIVE_PROCESSING_NEEDS_SERVER);
+      return;
+    }
     setPendingCreate({
       name: name.trim(),
       files,
@@ -60,6 +108,21 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
       <AppHeader title="New guide" back={onCancel} align="center" />
 
       <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-4 pb-4 pt-2">
+        {staticHost ? (
+          <section data-static-preview-banner className="border border-action px-3 py-3">
+            <p className="text-sm leading-snug">
+              This preview has no live server. Creator path: recorded fixture pages only.
+            </p>
+            <OrangeButton
+              className="mt-3"
+              onClick={() => void startFixture()}
+              disabled={fixtureBusy}
+            >
+              {fixtureBusy ? "Loading fixture pages…" : "Use fixture pages (no API key)"}
+            </OrangeButton>
+          </section>
+        ) : null}
+
         <label className="block">
           <span className="font-bold">Project name:</span>
           <input
@@ -133,11 +196,25 @@ export default function NewGuide({ onCancel, onContinue }: Props) {
           )}
         </section>
 
+        {!staticHost ? (
+          <button
+            type="button"
+            className="text-ash underline-offset-2 hover:underline"
+            onClick={() => void startFixture()}
+            disabled={fixtureBusy}
+          >
+            Use fixture pages (no API key)
+          </button>
+        ) : null}
+
         {error ? <p className="text-action" role="alert">{error}</p> : null}
+        {autoFixture && fixtureBusy && !error ? (
+          <p className="text-ash" aria-live="polite">Loading fixture pages…</p>
+        ) : null}
       </div>
 
       <div className="bg-chrome px-4 pb-2 pt-2">
-        <OrangeButton onClick={continueCreate}>Continue</OrangeButton>
+        <OrangeButton onClick={continueCreate} disabled={fixtureBusy}>Continue</OrangeButton>
       </div>
     </div>
   );

@@ -26,6 +26,16 @@ The workflow in `.github/workflows/pages.yml` builds `npm run build` with `VITE_
 
 This host is a static `dist/` SPA. There is no Node `/api/pipeline/*`. Do not set `VITE_OPENAI_API_KEY`.
 
+## Creator on this preview
+
+Pages ships `dist/` only. Live PDF / page-photo + YouTube waits on APIs that 404 — that used to hang on **Analyzing**. Now:
+
+- New guide shows **Use fixture pages (no API key)** first.
+- `#/new?fixture=1` loads the recorded parts-list + assembly-steps photos and `vgfixture001`, then Analyzing → Review offline.
+- A live upload without that fixture path errors immediately: *Live processing needs a server. Use fixture pages on this preview, or run locally with API.*
+
+**Chair sample is unaffected.** For live processing, run `npm run dev` (or a host with `/api/pipeline`).
+
 ## Backup (anonymous Vercel — expires unless claimed)
 
 Root-host Vercel still uses relative Vite `base` (`./`). Claim within ~60 minutes if you use this path.
