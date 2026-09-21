@@ -36,7 +36,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair** (opens the sample — not create), Your guides (drafts or empty-state card). Header has **no + / New guide** button. Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). **New** on that pill is the only create entry. Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
+- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), sample card with a **page thumbnail** + **Try sample** (opens MagicH — not create; no blank white bar), Your guides spaced below the sample (drafts or empty-state card). Header has **no + / New guide** button. Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). **New** on that pill is the only create entry. Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
 - [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
