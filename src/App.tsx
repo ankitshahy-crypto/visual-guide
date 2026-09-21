@@ -193,7 +193,6 @@ export default function App() {
               golden={golden}
               drafts={drafts}
               onOpen={(id) => go(`/p/${encodeURIComponent(id)}`)}
-              onNew={() => go("/new")}
               onDelete={onDelete}
               onProjects={() => go("/")}
             />
@@ -216,7 +215,7 @@ export default function App() {
           ) : null}
 
           {route.page === "help" ? (
-            <HelpPage onHome={() => go("/")} onNew={() => go("/new")} />
+            <HelpPage onHome={() => go("/")} />
           ) : null}
 
           {route.page === "review" && open ? (
@@ -224,7 +223,6 @@ export default function App() {
               key={open.id}
               project={open}
               onProjects={() => go("/")}
-              onNew={() => go("/new")}
               onOpenGuide={() => go(`/p/${encodeURIComponent(open.id)}`)}
               onChange={(next) => { void patchOpen(next); }}
             />

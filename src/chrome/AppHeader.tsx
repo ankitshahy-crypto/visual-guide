@@ -11,7 +11,6 @@ interface Props {
   back?: () => void;
   menu?: boolean;
   onProjects?: () => void;
-  onNew?: () => void;
   trailing?: ReactNode;
   align?: "left" | "center";
   menuSide?: "left" | "right";
@@ -25,13 +24,12 @@ export default function AppHeader({
   back,
   menu = false,
   onProjects,
-  onNew,
   trailing,
   align = "left",
   menuSide = "left",
 }: Props) {
   const [open, setOpen] = useState(false);
-  const showMenu = menu && onProjects && onNew;
+  const showMenu = Boolean(menu && onProjects);
   const hit = `flex h-10 w-10 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-action ${
     soft ? "rounded-full border border-rule" : ""
   }`;
@@ -77,7 +75,6 @@ export default function AppHeader({
         <MenuSheet
           onClose={() => setOpen(false)}
           onProjects={() => { setOpen(false); onProjects?.(); }}
-          onNew={() => { setOpen(false); onNew?.(); }}
         />
       ) : null}
     </>

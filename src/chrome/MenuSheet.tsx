@@ -3,10 +3,9 @@ import { LEGAL_OWNER, SUPPORT_EMAIL, SUPPORT_MAILTO } from "../lib/support";
 interface Props {
   onClose: () => void;
   onProjects: () => void;
-  onNew: () => void;
 }
 
-export default function MenuSheet({ onClose, onProjects, onNew }: Props) {
+export default function MenuSheet({ onClose, onProjects }: Props) {
   return (
     <div className="absolute inset-0 z-40">
       <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/50" onClick={onClose} />
@@ -15,11 +14,6 @@ export default function MenuSheet({ onClose, onProjects, onNew }: Props) {
           <li>
             <button type="button" className="w-full px-2 py-2 text-left text-lg font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-action" onClick={onProjects}>
               Projects
-            </button>
-          </li>
-          <li>
-            <button type="button" className="w-full px-2 py-2 text-left text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-action" onClick={onNew}>
-              New guide
             </button>
           </li>
           <li>

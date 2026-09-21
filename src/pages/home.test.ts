@@ -6,6 +6,7 @@ const root = resolve(import.meta.dirname, "../..");
 const home = readFileSync(resolve(import.meta.dirname, "ProjectList.tsx"), "utf8");
 const app = readFileSync(resolve(import.meta.dirname, "../App.tsx"), "utf8");
 const nav = readFileSync(resolve(root, "src/chrome/BottomNav.tsx"), "utf8");
+const menu = readFileSync(resolve(root, "src/chrome/MenuSheet.tsx"), "utf8");
 const help = readFileSync(resolve(import.meta.dirname, "HelpPage.tsx"), "utf8");
 const stepPlayer = readFileSync(resolve(root, "src/components/StepPlayer.tsx"), "utf8");
 
@@ -70,5 +71,18 @@ describe("in-app home (Projects)", () => {
     expect(stepPlayer).toContain("Paper-white stage");
     expect(app).toContain('route.page === "help" ? "help"');
     expect(app).toContain("tab ? (");
+  });
+
+  it("uses only the bottom New tab to create — not header + or a home New guide button", () => {
+    expect(home).not.toContain('aria-label="New guide"');
+    expect(home).not.toContain("from \"lucide-react\"");
+    expect(home).not.toContain("onNew");
+    expect(home).not.toContain("New guide");
+    expect(menu).not.toContain("New guide");
+    expect(menu).toContain("Help & support");
+    expect(nav).toContain('label: "New"');
+    expect(home).toContain("Try MagicH Pro Chair");
+    expect(home).toContain("onOpen(golden.id)");
+    expect(home).toContain("Tap New to turn a PDF or page photos into clips.");
   });
 });
