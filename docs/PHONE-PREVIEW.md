@@ -21,7 +21,7 @@ The workflow in `.github/workflows/pages.yml` builds `npm run build` with `VITE_
 ## What you should see
 
 1. iPhone Safari → paste https://ankitshahy-crypto.github.io/visual-guide/
-2. `#/` is dark chrome with a large **orange** hero (**Clear assembly videos from any manual**), How it works, **Try MagicH Pro Chair**, and a floating **Home / New / Help** pill.
+2. `#/` is dark chrome with a large **orange** hero (**Clear assembly videos from any manual**), How it works, sample card (**page thumbnail** + **Try sample** — not a blank white bar), and a floating **Home / New / Help** pill.
 3. Golden chair + hashed MP3s work without an API key. If audio is silent, tap Replay (Safari autoplay).
 
 This host is a static `dist/` SPA. There is no Node `/api/pipeline/*`. Do not set `VITE_OPENAI_API_KEY`.
@@ -41,7 +41,7 @@ Pages ships `dist/` only. Live PDF / page-photo + YouTube waits on APIs that 404
 Wait for Actions → **Pages** on `main` to be green, then hard-refresh Safari (or open a Private tab) so the old hashed JS is not reused.
 
 1. https://ankitshahy-crypto.github.io/visual-guide/ — home, orange hero, Home / New / Help pill.
-2. **Try MagicH Pro Chair** → step list thumbs load (not `/assets/...` 404s) → open step 1. Paper-white clip + hashed MP3. Replay if silent.
+2. **Try sample** → step list thumbs load (not `/assets/...` 404s) → open step 1. Paper-white clip + hashed MP3. Replay if silent.
 3. `#/new` → **Use fixture pages (no API key)** (or `#/new?fixture=1`). Analyzing checklist must advance; it must **not** show *Importing a module script failed.*
 4. Analyzing → Review → Open guide. Draft appears under Your guides. Chair sample still on home.
 

@@ -7,12 +7,11 @@ import type { StoredProject } from "../lib/projectsStore";
 interface Props {
   project: StoredProject;
   onProjects: () => void;
-  onNew: () => void;
   onOpenGuide: () => void;
   onChange: (next: StoredProject) => void;
 }
 
-export default function Review({ project, onProjects, onNew, onOpenGuide, onChange }: Props) {
+export default function Review({ project, onProjects, onOpenGuide, onChange }: Props) {
   const accepted = new Set(project.acceptedFills ?? []);
   const fills = listFills(project.guide).filter((f) => !accepted.has(f.key));
   const conflicts = listConflicts(project.guide);
@@ -39,7 +38,7 @@ export default function Review({ project, onProjects, onNew, onOpenGuide, onChan
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <AppHeader title="Review" menu menuSide="right" onProjects={onProjects} onNew={onNew} />
+      <AppHeader title="Review" menu menuSide="right" onProjects={onProjects} />
 
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-4 pb-4 pt-2">
         <section>

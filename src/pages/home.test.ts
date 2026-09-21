@@ -6,6 +6,7 @@ const root = resolve(import.meta.dirname, "../..");
 const home = readFileSync(resolve(import.meta.dirname, "ProjectList.tsx"), "utf8");
 const app = readFileSync(resolve(import.meta.dirname, "../App.tsx"), "utf8");
 const nav = readFileSync(resolve(root, "src/chrome/BottomNav.tsx"), "utf8");
+const menu = readFileSync(resolve(root, "src/chrome/MenuSheet.tsx"), "utf8");
 const help = readFileSync(resolve(import.meta.dirname, "HelpPage.tsx"), "utf8");
 const stepPlayer = readFileSync(resolve(root, "src/components/StepPlayer.tsx"), "utf8");
 
@@ -18,7 +19,7 @@ describe("in-app home (Projects)", () => {
     expect(home).toContain("Review AI steps");
     expect(home).toContain("Follow clips with checkpoints");
     expect(home).toContain("Simple words");
-    expect(home).toContain("Try MagicH Pro Chair");
+    expect(home).toContain("Try sample");
     expect(home).toContain("Your guides");
     expect(home).toContain("No guides yet");
     expect(home).toContain("Tap New to turn a PDF or page photos into clips.");
@@ -28,7 +29,9 @@ describe("in-app home (Projects)", () => {
   it("uses a Plainstep-orange hero, not a paper-white home stage", () => {
     expect(home).toContain("data-home-hero");
     expect(home).toContain("rounded-[28px] bg-action");
-    expect(home).toContain("Try MagicH Pro Chair");
+    expect(home).toContain("Try sample");
+    expect(home).toContain("data-sample-card");
+    expect(home).toContain("data-sample-cta");
   });
 
   it("does not clone Pocket home chrome", () => {
@@ -70,5 +73,33 @@ describe("in-app home (Projects)", () => {
     expect(stepPlayer).toContain("Paper-white stage");
     expect(app).toContain('route.page === "help" ? "help"');
     expect(app).toContain("tab ? (");
+  });
+
+  it("uses only the bottom New tab to create — not header + or a home New guide button", () => {
+    expect(home).not.toContain('aria-label="New guide"');
+    expect(home).not.toContain("from \"lucide-react\"");
+    expect(home).not.toContain("onNew");
+    expect(home).not.toContain("New guide");
+    expect(menu).not.toContain("New guide");
+    expect(menu).toContain("Help & support");
+    expect(nav).toContain('label: "New"');
+    expect(home).toContain("Try sample");
+    expect(home).toContain("onOpen(golden.id)");
+    expect(home).toContain("Tap New to turn a PDF or page photos into clips.");
+  });
+
+  it("shows a page thumbnail and labeled Try sample, not a blank paper bar", () => {
+    expect(home).toContain("SamplePageThumb");
+    expect(home).toContain("pageImageUrl");
+    expect(home).toContain("Try sample");
+    expect(home).toContain("data-sample-cta");
+    expect(home).toContain("bg-action py-3.5");
+    expect(home).not.toContain("bg-paper py-3.5");
+    expect(home).not.toContain("text-ink");
+    expect(home).not.toContain("Try MagicH Pro Chair");
+    expect(home).toContain("mt-6 shrink-0");
+    expect(home).toContain("shrink-0 flex-col overflow-hidden");
+    expect(home).not.toContain('drafts.length === 0 ? "flex-1"');
+    expect(home).not.toContain("mt-auto");
   });
 });

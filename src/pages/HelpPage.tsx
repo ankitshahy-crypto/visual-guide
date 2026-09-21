@@ -3,13 +3,12 @@ import AppHeader from "../chrome/AppHeader";
 
 interface Props {
   onHome: () => void;
-  onNew: () => void;
 }
 
-export default function HelpPage({ onHome, onNew }: Props) {
+export default function HelpPage({ onHome }: Props) {
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <AppHeader title="Help" menu onProjects={onHome} onNew={onNew} align="center" />
+      <AppHeader title="Help" menu onProjects={onHome} align="center" />
       <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-4 pb-4 pt-2">
         <section>
           <h2 className="text-lg font-bold">Help & support</h2>

@@ -36,7 +36,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Authored JSON — creator does not overwrite it.
 
-- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), dominant **Try MagicH Pro Chair**, Your guides (drafts or empty-state card). Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
+- [ ] `#/` home is **dark chrome** with a large **orange** hero (not paper-white, not a yellow Pocket clone): **Plainstep** wordmark, How it works (Upload manual → Review AI steps → Follow clips with checkpoints), sample card with a **page thumbnail** + **Try sample** (opens MagicH — not create; no blank white bar), Your guides spaced below the sample (drafts or empty-state card). Header has **no + / New guide** button. Floating dark pill nav: **Home / New / Help** (not Ask / To-dos). **New** on that pill is the only create entry. Help tab or menu still `ankit@triagedesk.ai`. No Pocket Refer/streak.
 - [ ] Open chair → step list: numbered rows, cropped thumbs (white paper thumbs), a duration on each row
 - [ ] **Simple words** toggle is on the step list
 - [ ] **Play all** is on the step list
@@ -54,13 +54,13 @@ Golden project: **MagicH Pro Chair** (`#/p/newtral-magich-pro-assembly`). Author
 
 `#/new` → `#/new/analyzing` → `#/p/:id/review` (if fills/conflicts) → step list / player.
 
-Continue is blocked without a name and without a PDF or page photos.
+Open create from the bottom pill **New** only (not a header + or home New guide button). Continue is blocked without a name and without a PDF or page photos.
 
 ### Fixture path (no paid APIs)
 
 Use this when OpenAI / live YouTube should not be required (this is the **only** creator path on GitHub Pages):
 
-1. New guide → **Use fixture pages (no API key)**, or open `#/new?fixture=1` (auto-starts Analyzing)
+1. Bottom **New** → **Use fixture pages (no API key)**, or open `#/new?fixture=1` (auto-starts Analyzing)
 2. Or name the project and upload `public/fixtures/parts-list.jpg` + `public/fixtures/assembly-steps.jpg` with video `https://www.youtube.com/watch?v=vgfixture001` — **`npm run dev` only**. On Pages, Continue without the fixture button errors instead of hanging.
 3. Analyzing → Review (filled from video + conflicts) → Open guide
 
