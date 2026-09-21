@@ -98,6 +98,7 @@ describe("in-app home (Projects)", () => {
     expect(home).not.toContain("text-ink");
     expect(home).not.toContain("Try MagicH Pro Chair");
     expect(home).toContain("mt-6 shrink-0");
+    expect(home).toContain("shrink-0 flex-col overflow-hidden");
     expect(home).not.toContain('drafts.length === 0 ? "flex-1"');
     expect(home).not.toContain("mt-auto");
   });

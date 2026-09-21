@@ -36,7 +36,7 @@ export default function ProjectList({ golden, drafts, onOpen, onDelete, onProjec
         <section
           data-home-hero
           aria-labelledby="home-hero-heading"
-          className="flex flex-col overflow-hidden rounded-[28px] bg-action p-3 pb-4 pt-4 text-paper"
+          className="flex shrink-0 flex-col overflow-hidden rounded-[28px] bg-action p-3 pb-4 pt-4 text-paper"
         >
           <div className="px-2">
             <p id="home-hero-heading" className="text-[1.65rem] font-bold leading-[1.15]">
