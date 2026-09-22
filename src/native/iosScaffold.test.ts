@@ -122,11 +122,12 @@ describe("iOS Capacitor scaffold", () => {
     expect(pbx).toContain("PRODUCT_BUNDLE_IDENTIFIER = app.plainstep.ios;");
   });
 
-  it("sets the iOS deployment target to 15.0 (Xcode rejects 14.0)", () => {
+  it("sets the iOS deployment target to 17.0", () => {
     expect(pbx).not.toContain("IPHONEOS_DEPLOYMENT_TARGET = 14.0;");
-    expect(pbx.match(/IPHONEOS_DEPLOYMENT_TARGET = 15\.0;/g)).toHaveLength(4);
+    expect(pbx).not.toContain("IPHONEOS_DEPLOYMENT_TARGET = 15.0;");
+    expect(pbx.match(/IPHONEOS_DEPLOYMENT_TARGET = 17\.0;/g)).toHaveLength(4);
     const spm = readFileSync(resolve(root, "ios/App/CapApp-SPM/Package.swift"), "utf8");
-    expect(spm).toContain("platforms: [.iOS(.v15)]");
+    expect(spm).toContain("platforms: [.iOS(.v17)]");
   });
 
   it("locks display spelling to Plainstep (capital P only) and ids to lowercase plainstep", () => {
