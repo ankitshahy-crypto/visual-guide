@@ -51,6 +51,11 @@ describe("realistic prompts", () => {
     expect(doc).toContain("npm run realistic");
     expect(doc).toContain("never required");
     expect(doc).toContain("--product-photo");
+    expect(doc).toContain("any guide");
+    expect(doc).toContain("Assembly manuals are the critical path");
+    const schema = readFileSync(resolve(root, "schema.py"), "utf8");
+    expect(schema).toContain("procedural instructions");
+    expect(schema).toContain("not a limit on the schema");
   });
 });
 

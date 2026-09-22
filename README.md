@@ -1,12 +1,12 @@
 # Plainstep
 
-**Plainstep** turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short clip with lettered part tags. The MagicH Pro sample prefers realistic photos of the parts and the assembly; any step without a generated still still uses the manual's own drawing.
+**Plainstep** turns a procedure into clear, numbered clips: a guide, its steps, and the parts those steps use. Assembly manuals are the critical path that proves this. The MagicH Pro chair is the golden sample for that path, not the product boundary. Other how-to domains come after assembly works. The sample prefers realistic photos of the parts and the steps; any step without a generated still still uses the source drawing.
 
 This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**. Legal owner: **TriageDesk AI LLC**. Help & support: [ankit@triagedesk.ai](mailto:ankit@triagedesk.ai).
 
 The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, **dark chrome** default). The clip / Remotion player stage stays **paper white**.
 
-The **Newtral MagicH Pro office chair is a golden test fixture**, not the product.
+The **Newtral MagicH Pro office chair is the golden assembly fixture**, not the product. The schema stays a procedure (guide, steps, parts) so a later domain does not need a new contract.
 
 One step == one clip. The same React component (`src/remotion/StepClip.tsx`) plays live in the browser via `@remotion/player` and renders to MP4 via the Remotion CLI.
 
@@ -229,7 +229,7 @@ If neither files nor browser speech are available, the player shows a short stat
 
 Pencil crops are the fallback. When `src/data/realistic-index.json` has a photo for this guide and step, the clip and the step-list thumbnail show that photo instead. Part chips do the same. Letter tags, checkpoints, simple words, and the action text stay on the manual. The app does not call an image API.
 
-Committed MagicH photos live in `public/golden/realistic/` (10 step stills and 17 part chips). They are grounded in the step diagrams, the parts list, and the cover photo already in the manual. A photo of the parts bag or the finished chair is never required. If a later PDF has no cover, the script looks up the model number from the manual, and `--product-photo` is only a fallback after that. How to regenerate, including `OPENAI_API_KEY`, `gpt-image-1`, and cost: [docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md).
+Committed MagicH photos live in `public/golden/realistic/` (10 step stills and 17 part chips). The same generator works for any guide: a step diagram, the parts list, and a finished-product image from the source when it has one. A photo of the parts or the finished product is never required. If a later PDF has no cover, the script looks up the model number from the source, and `--product-photo` is only a fallback after that. How to regenerate, including `OPENAI_API_KEY`, `gpt-image-1`, and cost: [docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md).
 
 ```bash
 npm run realistic -- --dry-run     # free: print prompts and a rough dollar estimate
