@@ -42,7 +42,7 @@ All `remotion` / `@remotion/*` packages are pinned to the same exact version in 
 
 This is the same Vite/React app inside a WKWebView. **Capacitor** wraps `npm run build` (`dist/`) rather than rewriting screens. Expo was not used: an Expo/React Native app would duplicate Projects / New guide / Analyzing / Review / step list / player+TTS, and EAS is Expo-only. A WebView-inside-Expo wrapper is a poorer fit than Capacitor, which is built for this.
 
-Linux CI **cannot** compile an `.ipa`. Scaffold + `Info.plist` + Xcode project live in `ios/`. **Build on a Mac — full command list: [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md).** GitHub Pages is not part of this path.
+Linux CI **cannot** compile an `.ipa`. Scaffold + `Info.plist` + Xcode project live in `ios/`. **Build on a Mac — full command list: [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md).** GitHub Pages is not part of this path. Minimum iOS deployment is **15.0** (current Xcode rejects 14.0).
 
 ```bash
 npm install
@@ -53,7 +53,7 @@ npm run ios:open          # opens ios/App/App.xcodeproj (refuses if you skipped 
 #   npm run ios:live-sync && npm run ios:open
 ```
 
-In Xcode: **App** target → Team → iPhone 16 simulator → Run. Bundle id `app.plainstep.ios`. CocoaPods / EAS: not used (Capacitor 7 SPM). Simulator: free Apple ID. Device / TestFlight / App Store: Apple Developer Program ($99/year) — checklist in the deploy doc.
+In Xcode: **App** target → Team → **General → Minimum Deployments: iOS 15.0** (the project file already sets this; if a local copy still shows 14.0, set it there and rebuild) → iPhone 16 simulator (or any iOS 15+) → Run. Bundle id `app.plainstep.ios`. CocoaPods / EAS: not used (Capacitor 7 SPM). Simulator: free Apple ID. Device / TestFlight / App Store: Apple Developer Program ($99/year) — checklist in the deploy doc.
 
 `ios/App/App/public` is gitignored (placeholder `.gitkeep` only); always `ios:sync` after pull and before Archive. Unset `CAPACITOR_LIVE_RELOAD` and `VITE_BASE` for a packaged build.
 
