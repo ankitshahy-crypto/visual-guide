@@ -8,15 +8,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Clip player + hashed TTS + speechSynthesis need a playback session
-        // even when the hardware Silent switch is on.
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            // Player still runs; spoken audio may stay silent until the user unmutes.
-        }
+        // Clip player, hashed TTS, and speechSynthesis need playback even when
+        // the hardware Silent switch is on. A failed session must not abort launch.
+        configurePlaybackSession()
         return true
+    }
+
+    /// `.playback` ignores the Silent switch. `.spokenAudio` can trap
+    /// (`EXC_BREAKPOINT`) on device during launch instead of throwing, so this
+    /// uses the default mode and mixes with other audio. Thrown errors are logged.
+    private func configurePlaybackSession() {
+        let session = AVAudioSession.sharedInstance()
+        let configured = applyPlaybackCategory(session, options: [.mixWithOthers])
+            || applyPlaybackCategory(session, options: [])
+        guard configured else { return }
+        do {
+            try session.setActive(true)
+        } catch {
+            NSLog("Plainstep: AVAudioSession setActive failed: \(error.localizedDescription). Launch continues.")
+        }
+    }
+
+    private func applyPlaybackCategory(_ session: AVAudioSession, options: AVAudioSession.CategoryOptions) -> Bool {
+        do {
+            try session.setCategory(.playback, mode: .default, options: options)
+            return true
+        } catch {
+            NSLog("Plainstep: AVAudioSession setCategory(.playback, options: \(options.rawValue)) failed: \(error.localizedDescription). Launch continues.")
+            return false
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -32,6 +52,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
+    }
+
+    func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let config = UISceneConfiguration(
+            name: "Default Configuration",
+            sessionRole: connectingSceneSession.role
+        )
+        config.delegateClass = SceneDelegate.self
+        return config
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

@@ -122,6 +122,29 @@ describe("iOS Capacitor scaffold", () => {
     expect(pbx).toContain("PRODUCT_BUNDLE_IDENTIFIER = app.plainstep.ios;");
   });
 
+  it("launches through UIScene and does not trap on the audio session", () => {
+    const appDelegate = readFileSync(resolve(root, "ios/App/App/AppDelegate.swift"), "utf8");
+    const scene = readFileSync(resolve(root, "ios/App/App/SceneDelegate.swift"), "utf8");
+    expect(appDelegate).not.toContain("mode: .spokenAudio");
+    expect(appDelegate).toContain(".playback");
+    expect(appDelegate).toContain(".mixWithOthers");
+    expect(appDelegate).toContain("mode: .default");
+    expect(appDelegate).toContain("catch");
+    expect(appDelegate).toContain("Launch continues");
+    expect(appDelegate).toContain("configurationForConnecting");
+    expect(appDelegate).toContain("SceneDelegate.self");
+    expect(scene).toContain("CAPBridgeViewController()");
+    expect(scene).toContain("makeKeyAndVisible()");
+    expect(scene).toContain("ApplicationDelegateProxy");
+    expect(plist).toContain("UIApplicationSceneManifest");
+    expect(plist).toContain("$(PRODUCT_MODULE_NAME).SceneDelegate");
+    expect(plist).toContain("<string>Main</string>");
+    expect(pbx).toContain("SceneDelegate.swift in Sources");
+    expect(pbx).toContain("public in Resources");
+    const bundleCheck = readFileSync(resolve(root, "scripts/check-ios-bundle.mjs"), "utf8");
+    expect(bundleCheck).toContain("WKWebView home would be blank");
+  });
+
   it("sets the iOS deployment target to 17.0", () => {
     expect(pbx).not.toContain("IPHONEOS_DEPLOYMENT_TARGET = 14.0;");
     expect(pbx).not.toContain("IPHONEOS_DEPLOYMENT_TARGET = 15.0;");
