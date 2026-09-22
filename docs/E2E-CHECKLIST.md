@@ -14,7 +14,7 @@ Copy this file (or tick in GitHub) for the session. Fill **Findings** at the bot
 - [ ] iOS Simulator (this shell)
 - [ ] Physical iPhone (optional) — or https://ankitshahy-crypto.github.io/visual-guide/ after [PHONE-PREVIEW.md](PHONE-PREVIEW.md)
 
-Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and **B** if a Mac + Simulator can pick files) on iOS. Packaged iOS has no Vite `/api/pipeline` server — use the fixture YouTube URL, or skip live captions (see README **What works where**).
+Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and **B** if a Mac + Simulator can pick files) on iOS. Packaged iOS has no Vite `/api/pipeline` server — chair + **Use fixture pages (no API key)** work offline (see [IOS-DEPLOY.md](IOS-DEPLOY.md)). Live PDF/YouTube: `npm run ios:live-sync` + `npm run dev`, or later `VITE_PIPELINE_API_URL`.
 
 **GitHub Pages preview** (`https://ankitshahy-crypto.github.io/visual-guide/`): assembler **chair** + creator **fixture path only**. There is no `/api/pipeline`. Use **Use fixture pages (no API key)** or `#/new?fixture=1`. Do not expect a live PDF/YouTube upload to finish Analyzing on that host.
 
@@ -24,7 +24,7 @@ Run **A–C** on web. If this session signs off the iOS shell, repeat **A** (and
 
 - [ ] `npm install`
 - [ ] Web: `npm run dev` → http://localhost:5173 (`#/` home / Projects)
-- [ ] iOS (Mac): `npm run ios:sync` then `npm run ios:open` — README **Open in Xcode / run Simulator**. Select **App** target, Team, iPhone simulator, Run
+- [ ] iOS (Mac): follow [IOS-DEPLOY.md](IOS-DEPLOY.md) — `npm run ios:sync` then `npm run ios:open`. Select **App** target, Team, iPhone simulator, Run. GitHub Pages is not required.
 - [ ] Browser tab / PWA title is **Plainstep**
 - [ ] iOS home screen / Simulator name is **Plainstep** (not a mid-word capital S)
 - [ ] App icon is the locked mark (path → orange square check), not a generic Capacitor icon
@@ -77,7 +77,7 @@ Use this when OpenAI / live YouTube should not be required (this is the **only**
 - [ ] **Open guide** → step list for that draft → play at least one step
 - [ ] Draft appears under Your guides; golden chair is still the hero sample unchanged
 
-On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL may lack captions; the fixture URL above still exercises gap-fill offline. Note that in Findings if it fails.
+On packaged iOS without `VITE_PIPELINE_API_URL`, a **live** YouTube URL is blocked (no `/api/pipeline`); use fixture pages or `npm run ios:live-sync` + `npm run dev` ([IOS-DEPLOY.md](IOS-DEPLOY.md)). The fixture URL above still exercises gap-fill offline.
 
 ---
 
