@@ -12,7 +12,7 @@ Display name: **Plainstep**. Bundle id: `app.plainstep.ios`. Icon: white field, 
 
 | Tool | Needed? | Notes |
 | --- | --- | --- |
-| macOS + **Xcode 16+** | **Yes** | App Store → Xcode. Then Xcode → Settings → Platforms → install the **iOS** SDK. Deployment target is iOS 14.0. |
+| macOS + **Xcode 16+** | **Yes** | App Store → Xcode. Then Xcode → Settings → Platforms → install the **iOS** SDK. Minimum deployment is **iOS 17.0** (Xcode’s recommended Minimum Deployments). Current Xcode rejects 14.0. |
 | Xcode command-line tools | Yes | `xcode-select --install` if `xcodebuild` is missing |
 | **Node 22** + npm | Yes | `node -v` |
 | Apple ID | Simulator | Free. Add it in Xcode → Settings → Accounts if Run asks for a team |
@@ -21,7 +21,7 @@ Display name: **Plainstep**. Bundle id: `app.plainstep.ios`. Icon: white field, 
 | Expo / EAS | **No** | Not an Expo app |
 | GitHub Pages | **No** | Do not set `VITE_BASE`. Do not open the `.github.io` URL in the app |
 
-Open Xcode once so it can finish installing simulators (Window → Devices and Simulators → Simulators → + → iPhone 16 or any iOS 14+).
+Open Xcode once so it can finish installing simulators (Window → Devices and Simulators → Simulators → + → iPhone 16 or any iOS 17+).
 
 ---
 
@@ -65,9 +65,10 @@ In Xcode:
 
 1. Left sidebar: select the **App** target (the project is `App.xcodeproj`).
 2. Signing & Capabilities → **Automatically manage signing** → Team = your Apple ID (Personal Team is enough for Simulator). Bundle Identifier stays **`app.plainstep.ios`**. If Xcode says the id is taken on a *device* profile, change it in **both** Xcode and `capacitor.config.ts` (`appId`), then `npx cap sync ios` again.
-3. Run destination (toolbar): **iPhone 16** (or any iOS 14+ simulator). Not “Any iOS Device” — that is for Archive.
-4. Press **Run** (▶). First launch resolves Swift packages (`capacitor-swift-pm`); needs network once.
-5. Home screen name is **Plainstep**. You should see dark chrome, the orange hero, **Try MagicH Pro Chair**, and the Home / New / Help pill.
+3. **General → Minimum Deployments** must be **iOS 17.0**. The project file already sets this. If a local Xcode copy still shows 14.0 or 15.0, set it to 17.0 and rebuild.
+4. Run destination (toolbar): **iPhone 16** (or any iOS 17+ simulator). Not “Any iOS Device” — that is for Archive.
+5. Press **Run** (▶). First launch resolves Swift packages (`capacitor-swift-pm`); needs network once.
+6. Home screen name is **Plainstep**. You should see dark chrome, the orange hero, **Try MagicH Pro Chair**, and the Home / New / Help pill.
 
 If Run fails:
 
