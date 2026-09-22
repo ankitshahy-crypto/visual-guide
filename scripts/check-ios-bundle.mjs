@@ -14,6 +14,8 @@ const required = [
   "fixtures/parts-list.jpg",
   "fixtures/assembly-steps.jpg",
   "golden/pages/p-01.jpg",
+  "golden/realistic/steps/s1.jpg",
+  "golden/realistic/parts/D.jpg",
   "icons/plainstep-app-icon.png",
 ];
 

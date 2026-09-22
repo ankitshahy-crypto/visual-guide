@@ -1,5 +1,6 @@
 import type { StoredProject } from "../lib/projectsStore";
 import { pageImageUrl } from "../lib/pageImage";
+import { realisticStepSrc } from "../lib/realistic";
 import { LEGAL_OWNER, SUPPORT_EMAIL, SUPPORT_MAILTO } from "../lib/support";
 import AppHeader from "../chrome/AppHeader";
 import FigureThumb from "../components/FigureThumb";
@@ -116,15 +117,21 @@ export default function ProjectList({ golden, drafts, onOpen, onDelete, onProjec
 
 function SamplePageThumb({ guide, step }: { guide: Guide; step?: Step }) {
   const page = step?.figure ? pageByKey(guide, step.figure.page) : undefined;
-  if (!page) {
+  let realistic: string | null = null;
+  for (let i = guide.steps.length - 1; i >= 0; i--) {
+    realistic = realisticStepSrc(guide, guide.steps[i].id);
+    if (realistic) break;
+  }
+  const src = realistic ?? (page ? pageImageUrl(page.image) : null);
+  if (!src) {
     return <div className="h-28 w-full rounded-xl border border-ink bg-paper" />;
   }
   return (
     <div className="relative h-28 w-full overflow-hidden rounded-xl border border-ink bg-paper">
       <img
-        src={pageImageUrl(page.image)}
+        src={src}
         alt=""
-        className="h-full w-full object-cover object-[center_18%]"
+        className={realistic ? "h-full w-full object-cover" : "h-full w-full object-cover object-[center_18%]"}
       />
     </div>
   );

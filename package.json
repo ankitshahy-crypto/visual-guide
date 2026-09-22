@@ -12,6 +12,7 @@
     "render:all": "node scripts/render-all.mjs",
     "validate": "python3 scripts/validate.py",
     "narrate": "node scripts/generate-narration.mjs",
+    "realistic": "node scripts/generate-realistic.mjs",
     "test": "vitest run",
     "test:pipeline": "vitest run src/pipeline src/lib",
     "ios:sync": "npm run build && npx cap sync ios && node scripts/check-ios-bundle.mjs",

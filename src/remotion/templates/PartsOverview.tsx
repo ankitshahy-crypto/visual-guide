@@ -1,7 +1,9 @@
 import type { FC } from "react";
-import { AbsoluteFill, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, Sequence, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Check } from "lucide-react";
 import type { Guide, NarrationLevel, Step } from "../../types/guide";
+import { realisticPartSrc } from "../../lib/realistic";
+import { remotionPublicSrc } from "../../lib/remotionSrc";
 import { CLIP_H, CLIP_W, schedule } from "../../lib/timing";
 import type { Cue } from "../../lib/sentences";
 import { StepHeader } from "../StepHeader";
@@ -34,13 +36,27 @@ export const PartsOverview: FC<Props> = ({ step, guide, level, cues }) => {
       <div style={{ position: "absolute", top: HEADER_H, left: PAD, width: gridW, display: "flex", flexWrap: "wrap", gap }}>
         {parts.map((p) => {
           const tool = p.kind === "tool";
-          return (
-            <div key={p.id} style={{ width: tileW, height: tileH, border: tool ? `2px dashed ${T.ash}` : `2px solid ${T.ink}`, display: "flex", flexDirection: "column" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ background: tool ? T.paper : T.ink, color: tool ? T.ink : T.paper, fontWeight: 700, fontSize: 28, width: 48, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>{p.id}</div>
-                <div style={{ fontSize: 24, color: T.ash, paddingRight: 10 }}>×{p.qty}</div>
+          const photo = realisticPartSrc(guide, p.id);
+          const border = tool ? `2px dashed ${T.ash}` : `2px solid ${T.ink}`;
+          if (!photo) {
+            return (
+              <div key={p.id} style={{ width: tileW, height: tileH, border, display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ background: tool ? T.paper : T.ink, color: tool ? T.ink : T.paper, fontWeight: 700, fontSize: 28, width: 48, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>{p.id}</div>
+                  <div style={{ fontSize: 24, color: T.ash, paddingRight: 10 }}>×{p.qty}</div>
+                </div>
+                <div style={{ padding: "8px 10px", fontSize: 22, lineHeight: 1.2, color: T.ink }}>{p.name}</div>
               </div>
-              <div style={{ padding: "8px 10px", fontSize: 22, lineHeight: 1.2, color: T.ink }}>{p.name}</div>
+            );
+          }
+          return (
+            <div key={p.id} style={{ width: tileW, height: tileH, border, display: "flex", flexDirection: "column", overflow: "hidden", background: T.paper }}>
+              <div style={{ flex: 1, position: "relative", minHeight: 0 }}>
+                <Img src={remotionPublicSrc(photo)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <div style={{ position: "absolute", left: 0, top: 0, background: tool ? T.paper : T.ink, color: tool ? T.ink : T.paper, fontWeight: 700, fontSize: 28, width: 48, height: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>{p.id}</div>
+                <div style={{ position: "absolute", right: 0, top: 0, background: T.paper, color: T.ash, fontSize: 22, lineHeight: 1, padding: "6px 8px" }}>×{p.qty}</div>
+              </div>
+              <div style={{ height: 48, padding: "4px 8px", fontSize: 16, lineHeight: 1.15, color: T.ink, overflow: "hidden" }}>{p.name}</div>
             </div>
           );
         })}

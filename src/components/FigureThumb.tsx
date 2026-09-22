@@ -2,6 +2,7 @@ import type { Guide, Step } from "../types/guide";
 import { pageByKey } from "../types/guide";
 import { asBBox, computeCrop } from "../lib/crop";
 import { pageImageUrl } from "../lib/pageImage";
+import { realisticStepSrc } from "../lib/realistic";
 
 interface Props {
   guide: Guide;
@@ -11,6 +12,14 @@ interface Props {
 }
 
 export default function FigureThumb({ guide, step, size = 80, className = "" }: Props) {
+  const realistic = step ? realisticStepSrc(guide, step.id) : null;
+  if (realistic) {
+    return (
+      <div className={`relative shrink-0 overflow-hidden border border-ink bg-paper ${className}`} style={{ width: size, height: size }}>
+        <img src={realistic} alt="" className="h-full w-full object-cover" />
+      </div>
+    );
+  }
   const page = step?.figure ? pageByKey(guide, step.figure.page) : undefined;
   if (!step?.figure || !page) {
     return <div className={`shrink-0 border border-ink bg-paper ${className}`} style={{ width: size, height: size }} />;
