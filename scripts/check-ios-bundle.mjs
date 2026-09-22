@@ -33,8 +33,17 @@ if (!html.includes("Plainstep")) {
 if (html.includes("/visual-guide/assets/")) {
   fail("bundle was built with GitHub Pages base /visual-guide/. Unset VITE_BASE and rebuild (Pages is not used for iOS).");
 }
-if (!html.includes("./assets/") && !html.includes("assets/")) {
-  fail("bundled index.html has no Vite assets — the WKWebView would be a blank shell");
+const assetRefs = [
+  ...html.matchAll(/(?:src|href)="(\.?\/?(?:assets\/[^"]+))"/g),
+].map((match) => match[1].replace(/^\.\//, "").replace(/^\//, ""));
+const jsAssets = assetRefs.filter((rel) => rel.endsWith(".js"));
+if (jsAssets.length === 0) {
+  fail("bundled index.html has no Vite JS asset — the WKWebView home would be blank");
+}
+for (const rel of assetRefs) {
+  if (!existsSync(resolve(publicDir, rel))) {
+    fail(`index.html references ${rel} but that file is missing from ios/App/App/public`);
+  }
 }
 
 for (const rel of required) {

@@ -77,8 +77,9 @@ If Run fails:
 | `public` / `index.html` missing | `npm run ios:sync` then Run again |
 | SPM / Capacitor package not found | `npm install` then File → Packages → Reset Package Caches |
 | Signing / Team required | Xcode → Settings → Accounts → Apple ID; pick Personal Team |
-| Blank white/black WebView | Rebuild without `VITE_BASE`; confirm `ios/App/App/public/index.html` uses `./assets/…` not `/visual-guide/assets/…` |
-| Spoken audio silent | Hardware → uncheck Silent, or tap Replay (AVAudioSession is `.playback`) |
+| Blank white/black WebView | Rebuild without `VITE_BASE`; confirm `ios/App/App/public/index.html` uses `./assets/…` not `/visual-guide/assets/…`. `ios:sync` checks those files exist. |
+| Launch pauses on `AppDelegate` with `EXC_BREAKPOINT` (black screen) | Current Xcode asserts when an app has no UIScene lifecycle. `SceneDelegate` creates the Capacitor window and bridge. Audio session errors are logged and do not abort launch. |
+| Spoken audio silent | Category is `.playback` with `.mixWithOthers` (default mode). That ignores the Silent switch and does not use `.spokenAudio`, which can trap on device during launch. If setup fails, the app still opens; tap Replay. |
 
 **Assembler (no API):** tap **Try MagicH Pro Chair** → step list → play a step (paper-white stage, hashed MP3s, green checkpoint). Chair is bundled in `dist/`.
 
