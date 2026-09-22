@@ -30,8 +30,20 @@ const html = readFileSync(indexHtml, "utf8");
 if (!html.includes("Plainstep")) {
   fail("bundled index.html is not Plainstep");
 }
-if (html.includes("/visual-guide/assets/")) {
-  fail("bundle was built with GitHub Pages base /visual-guide/. Unset VITE_BASE and rebuild (Pages is not used for iOS).");
+if (html.includes("/visual-guide/")) {
+  fail("bundle was built with GitHub Pages base /visual-guide/. Unset VITE_BASE and rebuild (Pages is not used for iOS). npm run ios:sync forces base ./.");
+}
+if (!html.includes('src="./assets/')) {
+  fail('bundled index.html has no relative src="./assets/…" script. The WKWebView home stays blank. Rebuild with npm run ios:sync (CAPACITOR_IOS_BUILD=1).');
+}
+if (/(?:src|href)="\/assets\//.test(html)) {
+  fail('bundled index.html uses absolute /assets/ paths. Capacitor needs ./assets/.');
+}
+if (/<script\b[^>]*\scrossorigin\b/.test(html)) {
+  fail("bundled index.html still marks module scripts crossorigin. Rebuild with npm run ios:sync.");
+}
+if (!html.includes('id="plainstep-boot"')) {
+  fail("bundled index.html is missing the visible boot fallback (plainstep-boot).");
 }
 const assetRefs = [
   ...html.matchAll(/(?:src|href)="(\.?\/?(?:assets\/[^"]+))"/g),
@@ -74,9 +86,22 @@ if (cfg.webDir !== "dist") {
 }
 
 if (cfg.server?.url) {
-  console.warn(
-    `ios bundle: live-reload URL is set (${cfg.server.url}). Simulator will load that host, not the packaged dist/. Unset CAPACITOR_LIVE_RELOAD and re-run npm run ios:sync for TestFlight / offline fixture.`,
-  );
+  let host = "";
+  try {
+    host = new URL(cfg.server.url).hostname.toLowerCase();
+  } catch {
+    host = "";
+  }
+  const loopback = host === "localhost" || host === "127.0.0.1" || host === "::1";
+  if (loopback) {
+    console.warn(
+      `ios bundle: live-reload is ${cfg.server.url}. A physical iPhone cannot open localhost (that host is the phone). The iOS shell ignores this URL on device and loads bundled public/. Simulator can still use it. For device live-reload, set CAPACITOR_LIVE_RELOAD to the Mac LAN IP.`,
+    );
+  } else {
+    console.warn(
+      `ios bundle: live-reload URL is set (${cfg.server.url}). The app loads that host, not only the packaged dist/. Unset CAPACITOR_LIVE_RELOAD and re-run npm run ios:sync for a device / TestFlight / offline fixture.`,
+    );
+  }
 } else {
   console.log("ios bundle: packaged dist/ (no live-reload). Chair + fixture work offline. No GitHub Pages.");
 }

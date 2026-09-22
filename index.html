@@ -17,8 +17,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="margin:0;background:#111214;color:#f3f4f5">
+    <div id="root">
+      <p id="plainstep-boot" style="margin:0;padding:48px 24px;font:600 17px/1.4 system-ui,sans-serif">
+        Loading Plainstep…
+      </p>
+    </div>
+    <script>
+      (function () {
+        function fail(reason) {
+          var boot = document.getElementById("plainstep-boot");
+          if (!boot || !boot.isConnected) return;
+          if (boot.textContent && boot.textContent.indexOf("Loading Plainstep") === -1) return;
+          boot.textContent =
+            "Plainstep opened, but the home screen did not start (" +
+            reason +
+            "). On the Mac: git pull, unset CAPACITOR_LIVE_RELOAD, unset VITE_BASE, npm run ios:sync, then Xcode Run. Safari → Develop → your iPhone → Plainstep.";
+        }
+        window.addEventListener("error", function (e) {
+          fail((e && e.message) || "script error");
+        });
+        window.setTimeout(function () {
+          var boot = document.getElementById("plainstep-boot");
+          if (boot && boot.isConnected) fail("scripts did not render the home UI");
+        }, 8000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

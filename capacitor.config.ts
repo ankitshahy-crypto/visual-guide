@@ -49,9 +49,12 @@ const config: CapacitorConfig = {
       resizeOnFullScreen: true,
     },
   },
+  // Do not set server.iosScheme to "https". WKWebView already handles https, so
+  // Capacitor rejects it and serves the bundle at capacitor://localhost.
+  // server.url is live-reload only (CAPACITOR_LIVE_RELOAD). A localhost URL
+  // blanks a physical iPhone; the bridge ignores loopback on device.
   server: {
     hostname: "localhost",
-    iosScheme: "https",
     androidScheme: "https",
   },
 };

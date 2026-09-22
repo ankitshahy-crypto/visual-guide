@@ -59,11 +59,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
+        // Returning a configuration replaces the Info.plist scene entirely.
+        // Without the Main storyboard here, UIKit never installs
+        // CAPBridgeViewController and the phone stays black.
         let config = UISceneConfiguration(
             name: "Default Configuration",
             sessionRole: connectingSceneSession.role
         )
         config.delegateClass = SceneDelegate.self
+        config.storyboard = UIStoryboard(name: "Main", bundle: nil)
         return config
     }
 
