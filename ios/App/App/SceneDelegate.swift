@@ -4,8 +4,13 @@ import Capacitor
 /// UIScene lifecycle required by current Xcode. Without this, launch hits
 /// `EXC_BREAKPOINT` on `AppDelegate` (`@UIApplicationMain`) and the phone stays black.
 ///
-/// Matches the Capacitor iOS template: the bridge window is created here, not only
-/// via the storyboard. URL opens go through `ApplicationDelegateProxy` (Capacitor 7).
+/// The bridge window comes from `Main.storyboard` (`UISceneStoryboardFile`), which
+/// `AppDelegate.configurationForConnecting` must also set — that method replaces the
+/// Info.plist scene, so a missing storyboard there drops `CAPBridgeViewController`.
+/// Replacing the storyboard window with a second `UIWindow` leaves a zero-size
+/// WKWebView (Capacitor builds it at `.zero`) and the phone stays black.
+///
+/// URL opens go through `ApplicationDelegateProxy` (Capacitor 7).
 /// `SceneDelegateProxy` is the same job on Capacitor 8.5+; this project stays on the
 /// proxy that already ships with the installed iOS package.
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -22,9 +27,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = CAPBridgeViewController()
-        window?.makeKeyAndVisible()
+        if window == nil || window?.rootViewController == nil {
+            NSLog("Plainstep: storyboard window missing. Creating CAPBridgeViewController().")
+            let created = UIWindow(windowScene: windowScene)
+            let bounds = windowScene.coordinateSpace.bounds
+            created.frame = bounds
+            created.backgroundColor = UIColor(red: 17 / 255, green: 18 / 255, blue: 20 / 255, alpha: 1)
+            let bridge = PlainstepBridgeViewController()
+            created.rootViewController = bridge
+            created.makeKeyAndVisible()
+            bridge.view.frame = created.bounds
+            bridge.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            window = created
+        } else if !(window?.rootViewController is CAPBridgeViewController) {
+            NSLog("Plainstep: root is \(type(of: window?.rootViewController)). Installing CAPBridgeViewController().")
+            let bridge = PlainstepBridgeViewController()
+            window?.rootViewController = bridge
+            window?.makeKeyAndVisible()
+            bridge.view.frame = window?.bounds ?? windowScene.coordinateSpace.bounds
+            bridge.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        } else {
+            NSLog("Plainstep: using Main.storyboard window. Not replacing it. bounds=\(window?.bounds ?? .zero)")
+            window?.backgroundColor = UIColor(red: 17 / 255, green: 18 / 255, blue: 20 / 255, alpha: 1)
+        }
 
         // Plugins register while the bridge view loads. Deliver launch URLs on the
         // next turn so listeners exist. `lastURL` is still set for getLaunchUrl().

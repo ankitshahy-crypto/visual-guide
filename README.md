@@ -55,7 +55,7 @@ npm run ios:open          # opens ios/App/App.xcodeproj (refuses if you skipped 
 
 In Xcode: **App** target → Team → **General → Minimum Deployments: iOS 17.0** (the project file already sets this) → iPhone 16 simulator (or any iOS 17+) → Run. Bundle id `app.plainstep.ios`. CocoaPods / EAS: not used (Capacitor 7 SPM). Simulator: free Apple ID. Device / TestFlight / App Store: Apple Developer Program ($99/year) — checklist in the deploy doc.
 
-`ios/App/App/public` is gitignored (placeholder `.gitkeep` only); always `ios:sync` after pull and before Archive. Unset `CAPACITOR_LIVE_RELOAD` and `VITE_BASE` for a packaged build.
+`ios/App/App/public` is gitignored (placeholder `.gitkeep` only); always `ios:sync` after pull and before Archive. `ios:sync` forces `base: "./"` so a leftover `VITE_BASE=/visual-guide/` cannot blank the WebView. Unset `CAPACITOR_LIVE_RELOAD` for a packaged device build (`localhost` is not the phone). If Run stays dark, the screen should say why; Web Inspector steps are in [docs/IOS-DEPLOY.md](docs/IOS-DEPLOY.md).
 
 ### What works where
 

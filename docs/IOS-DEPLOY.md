@@ -51,7 +51,7 @@ npm run ios:open          # opens ios/App/App.xcodeproj (refuses if you skipped 
 
 What `ios:sync` does:
 
-1. `tsc --noEmit && vite build` with default `base: "./"` (Capacitor / local). **Unset `VITE_BASE`** — `/visual-guide/` is Pages-only and will blank the WKWebView.
+1. `tsc --noEmit && vite build` with `CAPACITOR_IOS_BUILD=1`, which forces `base: "./"` even if the shell still has Pages `VITE_BASE=/visual-guide/`. That prefix 404s every module script and the WKWebView stays dark.
 2. Copies `dist/` → `ios/App/App/public` (that folder is gitignored; a `.gitkeep` exists only so Xcode’s folder reference is not red after clone).
 3. Refreshes `capacitor.config.json` + SPM path deps under `node_modules/@capacitor/*`.
 
@@ -68,7 +68,7 @@ In Xcode:
 3. **General → Minimum Deployments** must be **iOS 17.0**. The project file already sets this. If a local Xcode copy still shows 14.0 or 15.0, set it to 17.0 and rebuild.
 4. Run destination (toolbar): **iPhone 16** (or any iOS 17+ simulator). Not “Any iOS Device” — that is for Archive.
 5. Press **Run** (▶). First launch resolves Swift packages (`capacitor-swift-pm`); needs network once.
-6. Home screen name is **Plainstep**. You should see dark chrome, the orange hero, **Try MagicH Pro Chair**, and the Home / New / Help pill.
+6. Home screen name is **Plainstep**. You should see dark chrome, the orange hero, **Try sample**, and the Home / New / Help pill.
 
 If Run fails:
 
@@ -77,11 +77,41 @@ If Run fails:
 | `public` / `index.html` missing | `npm run ios:sync` then Run again |
 | SPM / Capacitor package not found | `npm install` then File → Packages → Reset Package Caches |
 | Signing / Team required | Xcode → Settings → Accounts → Apple ID; pick Personal Team |
-| Blank white/black WebView | Rebuild without `VITE_BASE`; confirm `ios/App/App/public/index.html` uses `./assets/…` not `/visual-guide/assets/…`. `ios:sync` checks those files exist. |
-| Launch pauses on `AppDelegate` with `EXC_BREAKPOINT` (black screen) | Current Xcode asserts when an app has no UIScene lifecycle. `SceneDelegate` creates the Capacitor window and bridge. Audio session errors are logged and do not abort launch. |
+| Blank white/black WebView | `npm run ios:sync` (forces `base: "./"`). Confirm `ios/App/App/public/index.html` uses `./assets/…`, not `/visual-guide/` or `/assets/…`. Unset `CAPACITOR_LIVE_RELOAD` before a device Run — `http://localhost:5173` is the Mac, and the phone stays dark. See **Physical iPhone** below. |
+| Launch pauses on `AppDelegate` with `EXC_BREAKPOINT` (black screen) | Current Xcode asserts when an app has no UIScene lifecycle. `Info.plist` and `application(_:configurationForConnecting:)` both attach `Main.storyboard` (the bridge). Do not replace that window in `SceneDelegate`. Audio session errors are logged and do not abort launch. |
 | Spoken audio silent | Category is `.playback` with `.mixWithOthers` (default mode). That ignores the Silent switch and does not use `.spokenAudio`, which can trap on device during launch. If setup fails, the app still opens; tap Replay. |
 
-**Assembler (no API):** tap **Try MagicH Pro Chair** → step list → play a step (paper-white stage, hashed MP3s, green checkpoint). Chair is bundled in `dist/`.
+### Physical iPhone (blank screen)
+
+Xcode **Build Succeeded** only compiles the shell. The home UI is the Vite bundle in `ios/App/App/public`, which git does not contain. After every `git pull`:
+
+```bash
+git pull origin main
+npm install
+unset CAPACITOR_LIVE_RELOAD
+unset VITE_BASE
+npm run ios:sync          # must print: ios bundle: ok
+```
+
+Then Xcode → destination **your iPhone** → **Run**. You should see dark chrome, the orange hero, **Try sample**, and Home / New / Help.
+
+What was keeping the phone black:
+
+- `application(_:configurationForConnecting:)` replaced the Info.plist scene and did not attach `Main.storyboard`, so the Capacitor bridge never came from the storyboard. `SceneDelegate` also built a second window. Capacitor creates the WKWebView at size zero; if that view never grows, Run looks successful and the screen stays black.
+- `CAPACITOR_LIVE_RELOAD=http://localhost:5173` (`npm run ios:live-sync`) is the Mac. On a phone, localhost is the phone. The shell now ignores a loopback `server.url` on device and loads bundled `public/`. Simulator live-reload can still use localhost. Device live-reload needs the Mac LAN IP (section 3).
+- `VITE_BASE=/visual-guide/` (GitHub Pages) makes `index.html` request `/visual-guide/assets/…`, which 404s in the app. `npm run ios:sync` forces `base: "./"` (`./assets/…`) even if that variable is still set.
+
+If the bundle is missing or the document never loads, the phone shows a short message instead of a black view (and Xcode logs lines starting with `Plainstep:`). A stuck **Loading Plainstep…** means `index.html` loaded and the module script did not.
+
+### Safari Web Inspector (the app WebView)
+
+1. iPhone: **Settings → Safari → Advanced → Web Inspector** on.
+2. Mac Safari: **Settings → Advanced → Show features for web developers**.
+3. Connect the iPhone, tap Trust, unlock it, and Run Plainstep from Xcode (Debug). The web view is inspectable on iOS 16.4+.
+4. Mac Safari menu **Develop → [your iPhone] → Plainstep**. The page is `capacitor://localhost` (Capacitor does not actually serve `https://localhost`; WKWebView refuses an `https` custom scheme).
+5. Use the Console for module, MIME, and 404 errors. Reload from the inspector after `ios:sync` if you changed web code.
+
+**Assembler (no API):** tap **Try sample** (MagicH Pro Chair) → step list → play a step (paper-white stage, hashed MP3s, green checkpoint). Chair is bundled in `dist/`.
 
 **Creator (no API):** New guide → **Use fixture pages (no API key)** (or `#/new?fixture=1`) → Analyzing → Review → Open guide. Packaged iOS is treated like a static host: no `/api/pipeline`, so live PDF/YouTube is blocked on purpose. Fixture + chair do **not** need Pages.
 
