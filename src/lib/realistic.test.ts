@@ -21,6 +21,9 @@ describe("realistic stills index", () => {
     expect(realisticStepFile({ ...guide, guide_id: "other-manual" }, "s1")).toBeNull();
     expect(realisticPartFile({ ...guide, guide_id: "other-manual" }, "A")).toBeNull();
     expect(realisticStepFile(guide, "missing")).toBeNull();
+    expect(bundledRealisticIndex.product_reference?.source).toBe("manual-cover");
+    expect(bundledRealisticIndex.product_reference?.page).toBe("1");
+    expect(bundledRealisticIndex.product_reference?.image).toBe("pages/p-01.jpg");
   });
 
   it("points at committed jpeg files", () => {

@@ -9,6 +9,13 @@ export interface RealisticIndex {
   provider: string;
   note?: string;
   generatedAt?: string;
+  /** Which finished-product photo the stills were grounded on. The player does not read this. */
+  product_reference?: {
+    source: "manual-cover" | "catalog-fetch" | "user-upload" | "none";
+    page?: string;
+    image?: string;
+    detail?: string;
+  };
   steps: Record<string, string>;
   parts: Record<string, string>;
 }

@@ -2,7 +2,13 @@
   "version": 1,
   "guide_id": "newtral-magich-pro-assembly",
   "provider": "sample",
-  "note": "Committed MagicH Pro sample stills grounded in the golden page crops, parts list, and cover photo. The player never calls an image API. Regenerate with npm run realistic (OPENAI_API_KEY). See docs/REALISTIC-VISUALS.md.",
+  "note": "Committed MagicH Pro sample stills. Appearance is the cover photo already in the manual (page 1). Spatial layout is the step diagram. Names and quantities are the parts list. No user photo. Regenerate with npm run realistic. See docs/REALISTIC-VISUALS.md.",
+  "product_reference": {
+    "source": "manual-cover",
+    "page": "1",
+    "image": "pages/p-01.jpg",
+    "detail": "Finished-product photo is page 1 already in the manual (pages/p-01.jpg). No user photo is required."
+  },
   "steps": {
     "s0": "golden/realistic/steps/s0.jpg",
     "s1": "golden/realistic/steps/s1.jpg",

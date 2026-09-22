@@ -229,7 +229,7 @@ If neither files nor browser speech are available, the player shows a short stat
 
 Pencil crops are the fallback. When `src/data/realistic-index.json` has a photo for this guide and step, the clip and the step-list thumbnail show that photo instead. Part chips do the same. Letter tags, checkpoints, simple words, and the action text stay on the manual. The app does not call an image API.
 
-Committed MagicH photos live in `public/golden/realistic/` (10 step stills and 17 part chips). How to regenerate them for this chair or another PDF, including `OPENAI_API_KEY`, `gpt-image-1`, and cost: [docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md).
+Committed MagicH photos live in `public/golden/realistic/` (10 step stills and 17 part chips). They are grounded in the step diagrams, the parts list, and the cover photo already in the manual. A photo of the parts bag or the finished chair is never required. If a later PDF has no cover, the script looks up the model number from the manual, and `--product-photo` is only a fallback after that. How to regenerate, including `OPENAI_API_KEY`, `gpt-image-1`, and cost: [docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md).
 
 ```bash
 npm run realistic -- --dry-run     # free: print prompts and a rough dollar estimate

@@ -7,6 +7,15 @@ import type { Guide, Step } from "../types/guide";
 import { assertGuide } from "../lib/validate";
 import type { RealisticIndex } from "../lib/realistic";
 import {
+  catalogQuery,
+  fetchCatalogImage,
+  manualProductPage,
+  ocrImageText,
+  productIdentifiers,
+  selectProductReference,
+  type ProductReference,
+} from "./productReference";
+import {
   buildPartPrompt,
   buildStepPrompt,
   estimateImageUsd,
@@ -106,9 +115,69 @@ function clamp(n: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, n));
 }
 
-function coverPath(guide: Guide): string | null {
-  const page = guide.source.manual.pages.find((p) => p.label === "cover") ?? guide.source.manual.pages[0];
-  return page ? resolveManualImage(page.image) : null;
+function tryManualImage(image: string): string | null {
+  try {
+    return resolveManualImage(image);
+  } catch {
+    return null;
+  }
+}
+
+/** Cover/hero in the PDF, else a model-number lookup, else an optional local photo. */
+export async function chooseProductReference(
+  guide: Guide,
+  userPhoto: string | null,
+  dryRun: boolean,
+  scratch: string,
+): Promise<ProductReference> {
+  const page = manualProductPage(guide);
+  const manualPath = page ? tryManualImage(page.image) : null;
+  let extra = "";
+  if (!manualPath) {
+    for (const candidate of guide.source.manual.pages.slice(0, 2)) {
+      const image = tryManualImage(candidate.image);
+      if (image) extra += `\n${ocrImageText(image)}`;
+    }
+  }
+  const identifiers = productIdentifiers(guide, extra);
+  const query = catalogQuery(guide, identifiers);
+  if (manualPath) {
+    return selectProductReference({
+      manualPath,
+      manualPage: page?.page,
+      manualImage: page?.image,
+      catalogPath: null,
+      userPath: userPhoto,
+      identifiers,
+      query,
+    });
+  }
+  if (dryRun) {
+    const pending = selectProductReference({
+      manualPath: null,
+      catalogPath: null,
+      userPath: null,
+      identifiers,
+      catalogPending: true,
+      query,
+    });
+    if (userPhoto) {
+      pending.detail += " A --product-photo file is present and will be used only if that search returns nothing.";
+    }
+    return pending;
+  }
+  mkdirSync(scratch, { recursive: true });
+  const catalogPath = identifiers.length
+    ? await fetchCatalogImage(query, join(scratch, "catalog-product.jpg"))
+    : null;
+  const userPath = userPhoto && existsSync(userPhoto) ? userPhoto : null;
+  return selectProductReference({
+    manualPath: null,
+    catalogPath,
+    userPath,
+    identifiers,
+    query,
+  });
 }
 
 function outputLayout(guide: Guide): { relRoot: string; indexPath: string } {
@@ -238,6 +307,12 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
   const guide = assertGuide(JSON.parse(readFileSync(guidePath, "utf8")));
   const dryRun = flag(argv, "--dry-run") === true;
   const force = flag(argv, "--force") === true;
+  const userPhotoFlag = flag(argv, "--product-photo");
+  const requestedPhoto = typeof userPhotoFlag === "string" ? userPhotoFlag : null;
+  if (requestedPhoto && !existsSync(requestedPhoto)) {
+    console.warn(`--product-photo not found: ${requestedPhoto}. It is optional and will not be used.`);
+  }
+  const userPhoto = requestedPhoto && existsSync(requestedPhoto) ? requestedPhoto : null;
   const stepFilter = splitList(flag(argv, "--steps"));
   const partFilter = splitList(flag(argv, "--parts"));
   const steps = guide.steps.filter((s) => !stepFilter || stepFilter.has(s.id));
@@ -256,24 +331,33 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
   console.log(`Rough list-price estimate: $${cost.toFixed(2)} before input-image tokens. Check https://openai.com/api/pricing`);
   console.log("The app does not call this API at runtime. Committed files are what the player shows.");
 
+  const scratch = join(tmpdir(), "plainstep-realistic");
+  const product = await chooseProductReference(guide, userPhoto, dryRun, scratch);
+  console.log(`Product reference: ${product.kind}`);
+  console.log(product.detail);
+  console.log(`Identifiers from the manual: ${product.identifiers.join(", ") || "(none)"}`);
+  console.log("Generation inputs: step diagram + parts list text + finished-product photo when the priority above found one.");
+
   if (dryRun) {
-    const cover = coverPath(guide);
-    console.log(`Cover reference: ${cover ?? "(none)"}`);
-    for (const step of steps) console.log(`\n--- step ${step.id} ---\n${buildStepPrompt(guide, step)}`);
-    for (const part of parts) console.log(`\n--- part ${part.id} ---\n${buildPartPrompt(guide, part)}`);
+    for (const step of steps) console.log(`\n--- step ${step.id} ---\n${buildStepPrompt(guide, step, product.kind)}`);
+    for (const part of parts) console.log(`\n--- part ${part.id} ---\n${buildPartPrompt(guide, part, product.kind)}`);
     return;
   }
   if (!key) {
     throw new Error("OPENAI_API_KEY is not set. Copy .env.example to .env or run with --dry-run. See docs/REALISTIC-VISUALS.md.");
   }
 
-  const scratch = join(tmpdir(), "plainstep-realistic");
   mkdirSync(join(outDir, "steps"), { recursive: true });
   mkdirSync(join(outDir, "parts"), { recursive: true });
   const index = readIndex(indexPath, guide, `openai:${model}`);
   index.provider = `openai:${model}`;
   index.generatedAt = new Date().toISOString();
-  const cover = coverPath(guide);
+  index.product_reference = {
+    source: product.kind,
+    page: product.page,
+    image: product.image,
+    detail: product.detail,
+  };
 
   for (const step of steps) {
     const rel = `${relRoot}/steps/${step.id}.jpg`;
@@ -283,12 +367,12 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
       index.steps[step.id] = rel;
       continue;
     }
-    const refs = referencesForStep(guide, step, cover, scratch);
+    const refs = referencesForStep(guide, step, product.path, scratch);
     console.log(`generate ${rel}`);
     const bytes = await openaiImage({
       key,
       model,
-      prompt: buildStepPrompt(guide, step),
+      prompt: buildStepPrompt(guide, step, product.kind),
       size: stepImageSize(),
       quality,
       fidelity,
@@ -307,12 +391,12 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
       index.parts[part.id] = rel;
       continue;
     }
-    const refs = [cover, partsPage].filter((p): p is string => Boolean(p));
+    const refs = [product.path, partsPage].filter((p): p is string => Boolean(p));
     console.log(`generate ${rel}`);
     const bytes = await openaiImage({
       key,
       model,
-      prompt: buildPartPrompt(guide, part),
+      prompt: buildPartPrompt(guide, part, product.kind),
       size: partImageSize(),
       quality,
       fidelity,
@@ -343,9 +427,9 @@ function partsOverviewPage(guide: Guide): string | null {
   return page ? resolveManualImage(page.image) : null;
 }
 
-function referencesForStep(guide: Guide, step: Step, cover: string | null, scratch: string): string[] {
+function referencesForStep(guide: Guide, step: Step, productPhoto: string | null, scratch: string): string[] {
   const refs: string[] = [];
-  if (cover) refs.push(cover);
+  if (productPhoto) refs.push(productPhoto);
   if (step.figure) {
     const page = guide.source.manual.pages.find((p) => p.page === step.figure?.page);
     if (page) {

@@ -49,6 +49,8 @@ describe("realistic prompts", () => {
     expect(script).toContain("cliRealistic.ts");
     expect(doc).toContain("OPENAI_API_KEY");
     expect(doc).toContain("npm run realistic");
+    expect(doc).toContain("never required");
+    expect(doc).toContain("--product-photo");
   });
 });
 
