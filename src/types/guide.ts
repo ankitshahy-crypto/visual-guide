@@ -1,4 +1,6 @@
 // Mirrors schema.py (v0.2). Keep the two in sync by hand until we generate one from the other.
+// A Guide is a procedure: steps plus a parts catalog. MagicH is the golden assembly
+// fixture that proves the path, not a chair-only schema.
 
 export type ContentModel = "procedural" | "expository";
 export type Template = "parts_overview" | "figure_action" | "options" | "caution";

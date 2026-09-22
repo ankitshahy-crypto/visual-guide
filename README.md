@@ -1,12 +1,12 @@
 # Plainstep
 
-**Plainstep** turns **any** instruction set — furniture, toys, electronics, not chairs only — into clear, numbered clips. An assembler opens a project, taps a step, and watches a short video that uses the manual's own drawings and lettered part tags.
+**Plainstep** turns a procedure into clear, numbered clips: a guide, its steps, and the parts those steps use. Assembly manuals are the critical path that proves this. The MagicH Pro chair is the golden sample for that path, not the product boundary. Other how-to domains come after assembly works. The sample prefers realistic photos of the parts and the steps; any step without a generated still still uses the source drawing.
 
 This GitHub repository is still named `visual-guide`. The product / App Store display name is **Plainstep**. Legal owner: **TriageDesk AI LLC**. Help & support: [ankit@triagedesk.ai](mailto:ankit@triagedesk.ai).
 
 The product destination is an **iOS App Store** app. This repo is the clip engine, data contract, and creator pipeline. **Marketing site and brand campaign come later.** Chrome here is the approved assembler/creator screen map (mobile-first, **dark chrome** default). The clip / Remotion player stage stays **paper white**.
 
-The **Newtral MagicH Pro office chair is a golden test fixture**, not the product.
+The **Newtral MagicH Pro office chair is the golden assembly fixture**, not the product. The schema stays a procedure (guide, steps, parts) so a later domain does not need a new contract.
 
 One step == one clip. The same React component (`src/remotion/StepClip.tsx`) plays live in the browser via `@remotion/player` and renders to MP4 via the Remotion CLI.
 
@@ -24,6 +24,7 @@ npm run studio         # Remotion Studio: scrub any golden clip
 npm run render -- clip-s1 out/s1.mp4
 npm run render:all
 npm run narrate        # rebuild hashed TTS files for the golden chair (espeak-ng or OPENAI_API_KEY)
+npm run realistic -- --dry-run   # prompts + cost for realistic stills; add OPENAI_API_KEY to generate
 ```
 
 Human **end-to-end session** (not per-PR): [docs/E2E-CHECKLIST.md](docs/E2E-CHECKLIST.md). Per-PR safety net is still `npm test`.
@@ -224,6 +225,18 @@ If neither files nor browser speech are available, the player shows a short stat
 
 `public/narration/cache/` is gitignored runtime output from the dev API. Committed fixture files live directly in `public/narration/`.
 
+### Realistic stills (MagicH sample)
+
+Pencil crops are the fallback. When `src/data/realistic-index.json` has a photo for this guide and step, the clip and the step-list thumbnail show that photo instead. Part chips do the same. Letter tags, checkpoints, simple words, and the action text stay on the manual. The app does not call an image API.
+
+Committed MagicH photos live in `public/golden/realistic/` (10 step stills and 17 part chips). The same generator works for any guide: a step diagram, the parts list, and a finished-product image from the source when it has one. A photo of the parts or the finished product is never required. If a later PDF has no cover, the script looks up the model number from the source, and `--product-photo` is only a fallback after that. How to regenerate, including `OPENAI_API_KEY`, `gpt-image-1`, and cost: [docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md).
+
+```bash
+npm run realistic -- --dry-run     # free: print prompts and a rough dollar estimate
+npm run realistic -- --steps s1    # one still, needs OPENAI_API_KEY, skips existing files
+npm run ios:sync                   # bundle the committed photos into the Simulator
+```
+
 ### What's still stubbed
 
 - Live **camera** QR scan (the field is a URL paste; same value a camera scan would fill). iOS camera permission is declared for that later scanner.
@@ -238,7 +251,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 
 ## Differentiators (product, not ads)
 
-- Letter-faithful crops of the actual manual drawings (not a restyled 3D redo)
+- Realistic stills when a generated photo is bundled for that step or part; otherwise a letter-faithful crop of the manual drawing. Actions, letter tags, and checkpoints still come from the manual.
 - Checkpoints: a step is not done until the green band
 - Simple words: a second narration track on every step (text + spoken audio)
 - Provenance on parts/tips/actions: `manual` | `inferred` | `generated` | `inferred_from_video`
@@ -253,6 +266,7 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 | Approved screen map: Projects, step list, clip player, New guide, Analyzing, Review | Auth, share/publish |
 | Clip player: Simple words, spoken TTS, Play all, Replay/Next, checkpoints, review/conflict flags | App Store / TestFlight (cert + ASC; checklist above) |
 | Hashed TTS (`<Audio>` in `StepClip`; espeak fixture / OpenAI / browser fallback) | Hosted `/api/pipeline` for device YouTube captions / OpenAI |
+| MagicH realistic stills (`public/golden/realistic/`, player falls back to the manual crop) | `npm run realistic` for any other PDF ([docs/REALISTIC-VISUALS.md](docs/REALISTIC-VISUALS.md)) |
 | Capacitor iOS shell (`ios/`, bundle id `app.plainstep.ios`, product name Plainstep) | Marketing site / brand campaign (**later**) |
 | Help & support `ankit@triagedesk.ai` (in-app mailto + ASC notes); owner TriageDesk AI LLC | Hosted support / privacy URLs |
 | Dark chrome default (clip / Remotion stage stays paper-white) | System light theme (optional, later) |
@@ -283,6 +297,9 @@ Pipeline rule: video **fills gaps**. If video and manual disagree, the step gets
 - `src/lib/projectsStore.ts` — IndexedDB drafts
 - `projects/` — on-disk convention for exported drafts
 - `public/golden/pages/` — chair manual page images
+- `public/golden/realistic/` — MagicH sample photos (step stills + part chips)
+- `src/data/realistic-index.json` — which golden steps and parts have those photos
+- `docs/REALISTIC-VISUALS.md` — image script, `OPENAI_API_KEY`, regenerate, cost
 - `src/remotion/` — clip templates (inline styles; Tailwind is chrome-only)
 
 ## Schema notes

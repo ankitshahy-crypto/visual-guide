@@ -7,7 +7,9 @@ import { CLIP_H, CLIP_W, schedule } from "../../lib/timing";
 import type { Cue } from "../../lib/sentences";
 import { asBBox } from "../../lib/crop";
 import { verbIcon, verbLabel } from "../../lib/verbs";
+import { realisticStepSrc } from "../../lib/realistic";
 import { FigureCrop } from "../FigureCrop";
+import { RealisticStill } from "../RealisticStill";
 import { StepHeader } from "../StepHeader";
 import { Subtitles } from "../Subtitles";
 import { T, box } from "../theme";
@@ -28,6 +30,7 @@ export const FigureAction: FC<Props> = ({ step, guide, level, cues }) => {
   const sch = schedule(step);
 
   const page = step.figure ? pageByKey(guide, step.figure.page) : undefined;
+  const realistic = realisticStepSrc(guide, step.id);
   const aspect = page?.width && page?.height ? page.width / page.height : 0.7;
   const zoom = interpolate(frame, [sch.body.from, sch.total], [1.0, 1.14], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const ring = spring({ frame: frame - sch.body.from - 10, fps, config: { damping: 14 } });
@@ -63,7 +66,9 @@ export const FigureAction: FC<Props> = ({ step, guide, level, cues }) => {
 
       {/* the manual's own drawing, zoomed to this step */}
       <div style={{ position: "absolute", top: FIG_TOP, left: 0, width: CLIP_W, height: FIG_H }}>
-        {step.figure && page ? (
+        {realistic ? (
+          <RealisticStill src={realistic} w={CLIP_W} h={FIG_H} zoom={zoom} />
+        ) : step.figure && page ? (
           <FigureCrop
             image={page.image}
             bbox={asBBox(step.figure.bbox)}

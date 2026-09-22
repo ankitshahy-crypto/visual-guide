@@ -1,17 +1,22 @@
 """
 Guide schema v0.2 — the contract between parser, player, and renderer.
 
-v0.1 came from golden/newtral-magich-pro.json (the chair fixture).
-v0.2 adds multi-source guides: the printed/photographed manual is the
+Plainstep is a how-to product for procedural instructions in any domain.
+The contract is a procedure: one Guide, ordered steps, and a parts catalog.
+Assembly manuals are the critical path that proves the product. The
+Newtral MagicH Pro chair (golden/newtral-magich-pro.json) is the fixture
+for that path, not a limit on the schema. A later procedure that is not
+furniture uses the same Guide, steps, and parts.
+
+v0.1 came from that golden fixture.
+v0.2 adds multi-source guides: the printed or photographed source is the
 source of truth; an optional video (YouTube and/or a packaging QR URL)
-may gap-fill. Video never silently overwrites the manual — conflicts
+may gap-fill. Video never silently overwrites the source — conflicts
 become review_notes of kind "conflict".
 
 Design notes
-- Plainstep is for ANY instruction set (furniture, toys, electronics).
-  The Newtral MagicH Pro chair is a golden test fixture, not the product.
 - One Step == one clip. Multi-action steps become beats inside the clip
-  so numbering matches the manual.
+  so numbering matches the source.
 - Parts are a catalog on the Guide; steps reference them by id.
 - Narration ships at two reading levels. Both are required so the
   Simple words toggle is never empty.
@@ -107,7 +112,7 @@ class SourcePage(BaseModel):
 
 
 class ManualSource(BaseModel):
-    """Printed or photographed manual — always the source of truth."""
+    """Printed or photographed procedure — always the source of truth."""
     type: str  # "pdf" | "manual_photos"
     file: Optional[str] = None
     pages: list[SourcePage] = Field(default_factory=list)
@@ -136,7 +141,8 @@ class Sources(BaseModel):
 
 
 class Part(BaseModel):
-    id: str = Field(min_length=1, max_length=8)  # the manual's own letter/number
+    """Named item a step uses. The id is the source's own letter or number."""
+    id: str = Field(min_length=1, max_length=8)  # the source's own letter/number
     name: str
     qty: int = Field(ge=1)
     kind: PartKind
@@ -258,6 +264,7 @@ class Step(BaseModel):
 # --------------------------------------------------------------------------- root
 
 class Guide(BaseModel):
+    """One procedure: product identity, source pages, a parts catalog, and steps."""
     schema_version: str
     guide_id: str
     title: str

@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "guide_id": "newtral-magich-pro-assembly",
+  "provider": "sample",
+  "note": "Committed MagicH Pro sample stills. Appearance is the cover photo already in the manual (page 1). Spatial layout is the step diagram. Names and quantities are the parts list. No user photo. Regenerate with npm run realistic. See docs/REALISTIC-VISUALS.md.",
+  "product_reference": {
+    "source": "manual-cover",
+    "page": "1",
+    "image": "pages/p-01.jpg",
+    "detail": "Finished-product photo is page 1 already in the manual (pages/p-01.jpg). No user photo is required."
+  },
+  "steps": {
+    "s0": "golden/realistic/steps/s0.jpg",
+    "s1": "golden/realistic/steps/s1.jpg",
+    "s2": "golden/realistic/steps/s2.jpg",
+    "s3": "golden/realistic/steps/s3.jpg",
+    "s4": "golden/realistic/steps/s4.jpg",
+    "s5": "golden/realistic/steps/s5.jpg",
+    "s6": "golden/realistic/steps/s6.jpg",
+    "s7": "golden/realistic/steps/s7.jpg",
+    "s8": "golden/realistic/steps/s8.jpg",
+    "s9": "golden/realistic/steps/s9.jpg"
+  },
+  "parts": {
+    "A": "golden/realistic/parts/A.jpg",
+    "B": "golden/realistic/parts/B.jpg",
+    "C": "golden/realistic/parts/C.jpg",
+    "D": "golden/realistic/parts/D.jpg",
+    "E": "golden/realistic/parts/E.jpg",
+    "F": "golden/realistic/parts/F.jpg",
+    "G": "golden/realistic/parts/G.jpg",
+    "H": "golden/realistic/parts/H.jpg",
+    "I": "golden/realistic/parts/I.jpg",
+    "J": "golden/realistic/parts/J.jpg",
+    "K": "golden/realistic/parts/K.jpg",
+    "L": "golden/realistic/parts/L.jpg",
+    "M": "golden/realistic/parts/M.jpg",
+    "N": "golden/realistic/parts/N.jpg",
+    "P": "golden/realistic/parts/P.jpg",
+    "Q": "golden/realistic/parts/Q.jpg",
+    "R": "golden/realistic/parts/R.jpg"
+  }
+}
